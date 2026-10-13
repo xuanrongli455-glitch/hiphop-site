@@ -3,6 +3,8 @@ title: "更高兄弟 Higher Brothers：把成都说唱带向世界的四人组"
 date: 2026-10-13
 tags: ["艺人", "厂牌", "成都"]
 description: "更高兄弟（Higher Brothers）档案：成员、厂牌渊源与代表作品。"
+image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Higher_Brothers_Icebox_2019.jpg/960px-Higher_Brothers_Icebox_2019.jpg"
+image_caption: "更高兄弟做客亚特兰大 Icebox 珠宝店（2019）。图片：Moyopoyo / Wikimedia Commons，CC BY-SA 4.0"
 ---
 
 ## 基本信息
@@ -19,7 +21,7 @@ description: "更高兄弟（Higher Brothers）档案：成员、厂牌渊源与
 
 ## 为什么重要
 
-更高兄弟是中文说唱国际化的标志性组合。他们把四川方言说唱嫁接在国际水准的 trap 制作上——Migos、A$AP Rocky 等美国 rapper 都曾公开称赞《Made In China》的 MV，被《纽约时报》称为"席卷全球的 Hip-Hop 超级新星"。2018 年与 Joji、Rich Brian 合作的《Midsummer Madness》在美国拿下 RIAA 白金认证。
+更高兄弟是中文说唱国际化的标志性组合。他们把四川方言说唱嫁接在国际水准的 trap 制作上——Migos、A$AP Rocky 等美国 rapper 都曾公开称赞《Made In China》的 MV，被《纽约时报》称为"席卷全球的 Hip-Hop 超级新星"。2018 年与 Joji、Rich Brian 合作的《Midsummer Madness》在美国拿下 [RIAA 白金认证](https://zh.wikipedia.org/wiki/RIAA%E8%AE%A4%E8%AF%81)（美国唱片业协会颁发，单曲销量/流媒体折算破百万）。
 
 ## 代表作品
 
