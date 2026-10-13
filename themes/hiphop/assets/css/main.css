@@ -62,7 +62,18 @@ a { color: inherit; }
   background: var(--gold); color: #0a0a0c;
   font-family: var(--font-display); font-size: 22px; border-radius: 8px;
   transform: rotate(-4deg);
+  transition: transform .3s ease, box-shadow .3s ease;
 }
+.brand:hover .brand-mark { transform: rotate(4deg) scale(1.08); box-shadow: 0 0 26px rgba(242,178,52,.4); }
+/* 光标跟随微光 */
+.cursor-glow {
+  position: fixed; left: 0; top: 0; z-index: 1;
+  width: 560px; height: 560px; margin: -280px 0 0 -280px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(242,178,52,.075) 0%, transparent 62%);
+  pointer-events: none; opacity: 0; transition: opacity .45s ease;
+}
+body.glow-on .cursor-glow { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .cursor-glow { display: none; } }
 .brand-text { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.06em; }
 .brand-text em { font-style: normal; color: var(--gold); font-size: 14px; margin-left: 6px; letter-spacing: 0.2em; }
 .site-nav { display: flex; gap: 28px; }
