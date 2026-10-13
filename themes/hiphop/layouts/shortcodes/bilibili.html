@@ -1,0 +1,8 @@
+<figure class="video-embed reveal">
+  <div class="video-frame">
+    <iframe src="https://player.bilibili.com/player.html?bvid={{ .Get "bv" }}&page=1&high_quality=1&danmaku=0"
+      scrolling="no" frameborder="0" allowfullscreen="true" loading="lazy"
+      title="{{ .Get "caption" | default "Bilibili 视频" }}"></iframe>
+  </div>
+  {{ with .Get "caption" }}<figcaption>{{ . }}（来源：哔哩哔哩）</figcaption>{{ end }}
+</figure>
