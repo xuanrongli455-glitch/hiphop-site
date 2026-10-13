@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  {{ partial "head.html" . }}
+  <style>
+    .dm-wrap{max-width:1120px;margin:0 auto;padding:3rem 1.25rem 4.5rem;position:relative}
+    .dm-overline{font-family:"Anton",Impact,sans-serif;color:#f2b234;letter-spacing:.35em;font-size:.85rem;margin:0 0 .6rem}
+    .dm-title{font-size:clamp(2.6rem,6vw,4.4rem);line-height:1.1;margin:0 0 .8rem;font-weight:900}
+    .dm-sub{color:#9a9aa3;max-width:640px;margin:0 0 2rem;line-height:1.7}
+    .dm-giant{position:absolute;top:1.2rem;right:0;font-family:"Anton",Impact,sans-serif;font-size:clamp(4rem,12vw,9rem);color:transparent;-webkit-text-stroke:1px rgba(242,178,52,.16);line-height:1;pointer-events:none;user-select:none;white-space:nowrap}
+    .dm-layout{display:grid;grid-template-columns:1fr 330px;gap:1.5rem;align-items:start}
+    @media(max-width:900px){.dm-layout{grid-template-columns:1fr}.dm-giant{display:none}}
+    .dm-mapbox{background:#101013;border:1px solid #26262c;border-radius:16px;padding:1rem;position:relative;overflow:hidden}
+    .dm-mapbox svg{display:block;width:100%;height:auto}
+    .prov{cursor:pointer;outline:none}
+    .prov path,.prov circle{fill:#16161a;stroke:#3d3d46;stroke-width:2;transition:fill .25s ease,stroke .25s ease}
+    .prov:hover path,.prov:hover circle,.prov:focus-visible path,.prov:focus-visible circle{fill:rgba(242,178,52,.16);stroke:#f2b234}
+    .prov.active path,.prov.active circle{fill:#f2b234;stroke:#f2b234}
+    .prov text{fill:#9a9aa3;font-size:15px;pointer-events:none;transition:fill .25s ease;text-anchor:middle}
+    .prov.active text{fill:#0a0a0c;font-weight:700}
+    .prov .city{font-size:11px;fill:#6d6d76}
+    .prov.active .city{fill:#0a0a0c}
+    .dm-card{background:#111114;border:1px solid #26262c;border-top:3px solid #f2b234;border-radius:14px;padding:1.6rem;min-height:300px}
+    @media(min-width:901px){.dm-card{position:sticky;top:1rem}}
+    .dm-card-empty{color:#6d6d76;text-align:center;padding:3.5rem 1rem;line-height:2}
+    .dm-card-region{color:#f2b234;letter-spacing:.25em;font-size:.78rem;margin-bottom:.5rem}
+    .dm-card-artist{font-size:1.9rem;font-weight:900;margin:0 0 .8rem;line-height:1.25}
+    .dm-card-desc{color:#c9c9d1;line-height:1.8;margin:0 0 1.2rem}
+    .dm-badge{display:inline-block;font-size:.75rem;border-radius:999px;padding:.28rem .8rem;letter-spacing:.08em}
+    .dm-badge.ok{background:rgba(242,178,52,.14);color:#f2b234;border:1px solid rgba(242,178,52,.5)}
+    .dm-badge.pending{background:#1c1c21;color:#9a9aa3;border:1px solid #3a3a42}
+    .dm-chips{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.6rem}
+    .dm-chip{background:#141417;border:1px solid #2e2e35;color:#e8e8ea;border-radius:999px;padding:.55rem 1.1rem;cursor:pointer;font-size:.92rem;transition:all .2s ease}
+    .dm-chip:hover{border-color:#f2b234;color:#f2b234}
+    .dm-chip.active{background:#f2b234;border-color:#f2b234;color:#0a0a0c;font-weight:700}
+    .dm-footnote{margin-top:2.2rem;color:#6d6d76;font-size:.85rem;line-height:1.8;border-top:1px dashed #2c2c33;padding-top:1.2rem}
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  {{ partial "header.html" . }}
+  <main class="dm-wrap">
+    <div class="dm-giant" aria-hidden="true">DIALECT</div>
+    <p class="dm-overline">DIALECT RAP MAP · DEMO</p>
+    <h1 class="dm-title">方言说唱地图</h1>
+    <p class="dm-sub">从川渝的雾都到岭南的粤语区——点击地图上的省份，看看各地的方言说唱代表人物。形状为示意，点位大致对应真实方位。</p>
+
+    <div class="dm-layout">
+      <div class="dm-mapbox">
+        <svg viewBox="0 0 800 620" role="img" aria-label="中国方言说唱示意地图">
+          <defs>
+            <pattern id="dmdots" width="26" height="26" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1.4" fill="#222228"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="800" height="620" fill="url(#dmdots)" rx="12"/>
+
+          <!-- 新疆 -->
+          <g class="prov" data-region="xinjiang" tabindex="0" role="button" aria-label="新疆">
+            <path d="M70,150 L185,108 L252,148 L242,252 L182,322 L92,302 L46,222 Z"/>
+            <text x="150" y="212">新疆</text>
+            <text class="city" x="150" y="232">喀什</text>
+          </g>
+          <!-- 云南 -->
+          <g class="prov" data-region="yunnan" tabindex="0" role="button" aria-label="云南">
+            <path d="M272,442 L352,426 L376,470 L340,512 L282,502 L256,472 Z"/>
+            <text x="315" y="474">云南</text>
+          </g>
+          <!-- 四川 -->
+          <g class="prov" data-region="sichuan" tabindex="0" role="button" aria-label="四川">
+            <path d="M300,332 L396,316 L421,361 L406,416 L321,426 L286,381 Z"/>
+            <text x="353" y="372">四川</text>
+            <text class="city" x="353" y="392">成都</text>
+          </g>
+          <!-- 重庆 -->
+          <g class="prov" data-region="chongqing" tabindex="0" role="button" aria-label="重庆">
+            <path d="M421,352 L461,346 L469,379 L426,386 Z"/>
+            <text x="445" y="371" style="font-size:12px">重庆</text>
+          </g>
+          <!-- 陕西 -->
+          <g class="prov" data-region="shaanxi" tabindex="0" role="button" aria-label="陕西">
+            <path d="M386,216 L431,206 L446,261 L436,316 L396,316 L381,261 Z"/>
+            <text x="413" y="262">陕西</text>
+            <text class="city" x="413" y="282">西安</text>
+          </g>
+          <!-- 湖南 -->
+          <g class="prov" data-region="hunan" tabindex="0" role="button" aria-label="湖南">
+            <path d="M476,386 L536,379 L546,431 L486,439 Z"/>
+            <text x="511" y="415">湖南</text>
+          </g>
+          <!-- 湖北 -->
+          <g class="prov" data-region="hubei" tabindex="0" role="button" aria-label="湖北">
+            <path d="M466,321 L546,313 L553,371 L473,379 Z"/>
+            <text x="509" y="350">湖北</text>
+          </g>
+          <!-- 广东 -->
+          <g class="prov" data-region="guangdong" tabindex="0" role="button" aria-label="广东">
+            <path d="M511,461 L621,453 L656,486 L631,521 L521,516 Z"/>
+            <text x="582" y="489">广东</text>
+          </g>
+          <!-- 北京 -->
+          <g class="prov" data-region="beijing" tabindex="0" role="button" aria-label="北京">
+            <circle cx="566" cy="176" r="12"/>
+            <text x="566" y="150">北京</text>
+          </g>
+          <!-- 上海 -->
+          <g class="prov" data-region="shanghai" tabindex="0" role="button" aria-label="上海">
+            <circle cx="630" cy="302" r="12"/>
+            <text x="630" y="276">上海</text>
+          </g>
+        </svg>
+      </div>
+
+      <aside class="dm-card" aria-live="polite">
+        <div class="dm-card-empty" id="dmCardEmpty">👆<br>点击地图上的省份<br>看看那里的方言说唱代表</div>
+        <div id="dmCardBody" hidden>
+          <div class="dm-card-region" id="dmRegion"></div>
+          <div class="dm-card-artist" id="dmArtist"></div>
+          <p class="dm-card-desc" id="dmDesc"></p>
+          <span class="dm-badge" id="dmBadge"></span>
+        </div>
+      </aside>
+    </div>
+
+    <div class="dm-chips" id="dmChips" aria-label="地区快捷选择"></div>
+
+    <p class="dm-footnote">Demo 说明：地图形状为示意，仅点位对应大致方位；人物资料持续收集中，「待核实」条目欢迎在右下角留言提名你家乡的代表。</p>
+  </main>
+  {{ partial "footer.html" . }}
+
+  <script>
+  (function(){
+    var REGIONS = {
+      sichuan:  {label:"四川", city:"成都", artist:"Higher Brothers", desc:"CDC 厂牌，把四川方言 Trap 带向世界，《Made In China》是中文说唱国际化的名片。", verified:true},
+      chongqing:{label:"重庆", city:"雾都", artist:"GAI", desc:"GOSH 厂牌灵魂人物，一句「勒是雾都」把江湖气的重庆说唱带上主流舞台。", verified:true},
+      shaanxi:  {label:"陕西", city:"西安", artist:"红花会", desc:"西安地下说唱的标志性厂牌，硬核街头风格；地下 8 英里也诞生于西安。", verified:true},
+      guangdong:{label:"广东", city:"广州 / 清远", artist:"Yamy 郭颖", desc:"广东清远人，全粤语 EP《南下》，把粤剧与广东民乐写进说唱的粤语代表。", verified:true},
+      beijing:  {label:"北京", city:"北京", artist:"阴三儿 (IN3)", desc:"北京地下说唱先驱，京味儿十足的街头叙事，《北京晚报》是代表作。", verified:true},
+      shanghai: {label:"上海", city:"上海", artist:"GALI", desc:"上海首位开体育馆演唱会的 rapper，新生代领军人物。", verified:true},
+      hunan:    {label:"湖南", city:"长沙", artist:"C-Block", desc:"长沙方言说唱代表，《话长沙》把市井烟火气写进歌里。", verified:true},
+      hubei:    {label:"湖北", city:"武汉", artist:"虚位以待", desc:"武汉代表人物收集中——欢迎在右下角留言提名你心中的湖北说唱代表。", verified:false},
+      xinjiang: {label:"新疆", city:"喀什", artist:"艾热", desc:"来自喀什的技术流代表，凭实力把「新疆说唱」四个字唱响全国。", verified:true},
+      yunnan:   {label:"云南", city:"曲靖", artist:"满舒克", desc:"云南曲靖人，旋律说唱的代表人物之一。", verified:true}
+    };
+    var ORDER = ["xinjiang","yunnan","sichuan","chongqing","shaanxi","hunan","hubei","guangdong","beijing","shanghai"];
+
+    var empty = document.getElementById("dmCardEmpty"),
+        body = document.getElementById("dmCardBody"),
+        rEl = document.getElementById("dmRegion"),
+        aEl = document.getElementById("dmArtist"),
+        dEl = document.getElementById("dmDesc"),
+        bEl = document.getElementById("dmBadge"),
+        chipsBox = document.getElementById("dmChips");
+
+    function select(key){
+      var r = REGIONS[key];
+      if(!r) return;
+      document.querySelectorAll(".prov").forEach(function(g){
+        g.classList.toggle("active", g.getAttribute("data-region") === key);
+      });
+      chipsBox.querySelectorAll(".dm-chip").forEach(function(c){
+        c.classList.toggle("active", c.getAttribute("data-region") === key);
+      });
+      empty.hidden = true;
+      body.hidden = false;
+      rEl.textContent = r.label + " · " + r.city;
+      aEl.textContent = r.artist;
+      dEl.textContent = r.desc;
+      bEl.textContent = r.verified ? "资料已核实" : "待核实";
+      bEl.className = "dm-badge " + (r.verified ? "ok" : "pending");
+    }
+
+    ORDER.forEach(function(key){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "dm-chip";
+      b.setAttribute("data-region", key);
+      b.textContent = REGIONS[key].label;
+      b.addEventListener("click", function(){ select(key); });
+      chipsBox.appendChild(b);
+    });
+
+    document.querySelectorAll(".prov").forEach(function(g){
+      var key = g.getAttribute("data-region");
+      g.addEventListener("click", function(){ select(key); });
+      g.addEventListener("keydown", function(e){
+        if(e.key === "Enter" || e.key === " "){ e.preventDefault(); select(key); }
+      });
+    });
+
+    select("sichuan");
+  })();
+  </script>
+  {{ $js := resources.Get "js/main.js" | minify | fingerprint }}
+  <script src="{{ $js.RelPermalink }}" defer></script>
+</body>
+</html>
