@@ -1,0 +1,37 @@
+baseURL: "https://hiphop.ccwu.cc/"
+languageCode: "zh-cn"
+defaultContentLanguage: "zh-cn"
+title: "HipHop 中文站"
+theme: "hiphop"
+
+params:
+  description: "说唱 / 街舞 / 潮流文化中文资讯站"
+  author: "HipHop 中文站"
+  defaultTheme: dark
+  showReadingTime: true
+  showPostNavLinks: true
+  showBreadCrumbs: true
+  showToc: true
+  # Knocket 在线客服：在 knocket.trtc.io 注册后把小部件 ID 填到这里
+  # knocketWidgetID: "你的小部件ID"
+
+menu:
+  main:
+    - name: 资讯
+      url: /news/
+      weight: 10
+    - name: 新歌推荐
+      url: /music/
+      weight: 20
+    - name: 艺人/厂牌
+      url: /artists/
+      weight: 30
+    - name: 演出日历
+      url: /events/
+      weight: 40
+    - name: 关于
+      url: /about/
+      weight: 50
+
+outputs:
+  home: [HTML, RSS]
