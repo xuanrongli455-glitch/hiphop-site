@@ -59,12 +59,10 @@ a { color: inherit; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
 .brand-mark {
   width: 36px; height: 36px; display: grid; place-items: center;
-  background: var(--gold); color: #0a0a0c;
-  font-family: var(--font-display); font-size: 22px; border-radius: 8px;
   transform: rotate(-4deg);
-  transition: transform .3s ease, box-shadow .3s ease;
+  transition: transform .3s ease, filter .3s ease;
 }
-.brand:hover .brand-mark { transform: rotate(4deg) scale(1.08); box-shadow: 0 0 26px rgba(242,178,52,.4); }
+.brand:hover .brand-mark { transform: rotate(3deg) scale(1.1); filter: drop-shadow(0 0 10px rgba(242,178,52,.45)); }
 /* 光标跟随微光 */
 .cursor-glow {
   position: fixed; left: 0; top: 0; z-index: 1;
