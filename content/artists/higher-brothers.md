@@ -21,7 +21,7 @@ image_caption: "更高兄弟做客亚特兰大 Icebox 珠宝店（2019）。图�
 
 ## 为什么重要
 
-更高兄弟是中文说唱国际化的标志性组合。他们把四川方言说唱嫁接在国际水准的 trap 制作上——Migos、A$AP Rocky 等美国 rapper 都曾公开称赞《Made In China》的 MV，被《纽约时报》称为"席卷全球的 Hip-Hop 超级新星"。2018 年与 Joji、Rich Brian 合作的《Midsummer Madness》在美国拿下 [RIAA 白金认证](https://zh.wikipedia.org/wiki/RIAA%E8%AE%A4%E8%AF%81)（美国唱片业协会颁发，单曲销量/流媒体折算破百万）。
+更高兄弟是中文说唱国际化的标志性组合。他们把四川方言说唱嫁接在国际水准的 trap 制作上——Migos、A$AP Rocky 等美国 rapper 都曾公开称赞《Made In China》的 MV，被《纽约时报》称为"席卷全球的 Hip-Hop 超级新星"。2018 年与 Joji、Rich Brian 合作的《Midsummer Madness》在美国拿下 [RIAA 白金认证](/glossary/#riaa)（美国唱片业协会颁发，单曲销量/流媒体折算破百万）。
 
 ## 代表作品
 
@@ -30,9 +30,22 @@ image_caption: "更高兄弟做客亚特兰大 Icebox 珠宝店（2019）。图�
 - 《Five Stars》专辑（2019）
 - 《Midsummer Madness》（与 Joji、Rich Brian、August 08 合作）—— RIAA 白金认证
 
-## 成员个人发展
+{{< bilibili bv="BV1ZH4y1i746" caption="《Made In China》：风靡全球的现象级说唱歌曲回顾" >}}
 
-2019 年底起，四位成员陆续发布个人专辑：KnowKnow《Mr. Enjoy Da Money》（2019）、马思唯《黑马王子》（2020）、Melo《Old Master》（2020）、Psy.P《PSYLIFE.25》（2020）。2020 年，他们与 Ty.、王以太等人组建新的说唱组织"成都集团"。
+## 成员个人发展：2020—2026
+
+2020 年单曲《Empire》之后，组合层面暂无新作，四人各自专注个人发展：
+
+- **马思唯**：最高产的一位。《黑马王子》（2020）→《黑马》（2021）→《Humble Swag》（2021）；2021 年登上漫威电影《尚气》原声带，与 Rich Brian、Warren Hue、21 Savage 合作 "Lazy Susan"；2025 年连发《乐透人生》（3 月）与《乐透人生GT：即刻入戏》（10 月），并开启同名巡回演唱会。
+- **KnowKnow（丁震）**：2019 年底《Mr. Enjoy Da Money》打响单飞第一枪，2023 年推出第四张个人专辑《街头贝多芬》，凭《R&B All Night》破圈；2024 年 2 月"STREET BEETHOVEN"世界巡演登陆香港、台北。
+- **Psy.P（杨俊逸）**：2020 年《PSYLIFE.25》之后，2025 年在 RYCE 旗下发布新专辑《光明离不开黑暗》，并在台北 Legacy 举办新专辑首唱会。
+- **Melo（谢宇杰）**：2020 年 4 月发布首张个人专辑《Old Master》（12 首，向老派说唱致敬，集结 AUGUST 08、KnowKnow、马思唯、Psy.P 客串）。
+
+2020 年，他们还与 Ty.、王以太等人组建了新的说唱组织"成都集团"。
+
+*本节持续更新——成员有新动作，档案就跟着更新。*
+
+{{< bilibili bv="BV17v411J7Ey" caption="Higher Brothers《恭喜发财》MV" >}}
 
 ## 给新听众的建议
 
