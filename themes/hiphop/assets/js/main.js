@@ -52,6 +52,28 @@
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
+  /* 光标跟随微光（仅精确指针设备） */
+  var glow = document.getElementById("cursorGlow");
+  var finePointer = window.matchMedia("(pointer: fine)").matches;
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (glow && finePointer && !reduceMotion) {
+    var gx = -600, gy = -600, tx = gx, ty = gy, raf = null;
+    function tick() {
+      gx += (tx - gx) * 0.09; gy += (ty - gy) * 0.09;
+      glow.style.transform = "translate(" + gx + "px," + gy + "px)";
+      if (Math.abs(tx - gx) > 0.4 || Math.abs(ty - gy) > 0.4) { raf = requestAnimationFrame(tick); }
+      else { raf = null; }
+    }
+    document.addEventListener("mousemove", function (e) {
+      tx = e.clientX; ty = e.clientY;
+      document.body.classList.add("glow-on");
+      if (!raf) raf = requestAnimationFrame(tick);
+    }, { passive: true });
+    document.documentElement.addEventListener("mouseleave", function () {
+      document.body.classList.remove("glow-on");
+    });
+  }
+
   /* 演出日历：城市筛选 */
   var filter = document.getElementById("cityFilter");
   var list = document.getElementById("eventList");
