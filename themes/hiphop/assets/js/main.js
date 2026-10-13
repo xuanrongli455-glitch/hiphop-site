@@ -74,6 +74,43 @@
     });
   }
 
+  /* 专属鼠标：金点 + 光环 + 点击涟漪（仅精确指针设备） */
+  (function () {
+    var fine = window.matchMedia("(pointer: fine)").matches;
+    var rm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!fine || rm) return;
+    var dot = document.getElementById("cursorDot");
+    var ring = document.getElementById("cursorRing");
+    if (!dot || !ring) return;
+    document.body.classList.add("custom-cursor");
+    var mx = -100, my = -100, rx = -100, ry = -100, raf = null;
+    function loop() {
+      rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
+      dot.style.transform = "translate(" + mx + "px," + my + "px)";
+      ring.style.transform = "translate(" + rx + "px," + ry + "px)";
+      raf = requestAnimationFrame(loop);
+    }
+    document.addEventListener("mousemove", function (e) {
+      mx = e.clientX; my = e.clientY;
+      if (!raf) raf = requestAnimationFrame(loop);
+    }, { passive: true });
+    document.addEventListener("mouseover", function (e) {
+      var t = e.target;
+      if (!t.closest) return;
+      ring.classList.toggle("hovering", !!t.closest("a, button, .fchip, [role=button]"));
+      document.body.classList.toggle("cursor-text", !!t.closest("input, textarea, select"));
+    }, { passive: true });
+    document.addEventListener("mousedown", function (e) {
+      var s = document.createElement("span");
+      s.className = "click-ripple";
+      var d = 44;
+      s.style.width = d + "px"; s.style.height = d + "px";
+      s.style.left = (e.clientX - d / 2) + "px"; s.style.top = (e.clientY - d / 2) + "px";
+      document.body.appendChild(s);
+      setTimeout(function () { s.remove(); }, 550);
+    }, { passive: true });
+  })();
+
   /* 演出日历：城市筛选 */
   var filter = document.getElementById("cityFilter");
   var list = document.getElementById("eventList");
