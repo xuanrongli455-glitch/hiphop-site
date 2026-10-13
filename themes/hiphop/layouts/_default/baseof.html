@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  {{ partial "header.html" . }}
+  <main>
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "footer.html" . }}
+  <button class="to-top" id="toTop" aria-label="回到顶部">↑</button>
+  {{ with .Site.Params.knocketWidgetID }}
+  <script async src="https://knocket.trtc.io/widget.js" data-knocket-id="{{ . }}"></script>
+  {{ end }}
+  {{ $js := resources.Get "js/main.js" | minify | fingerprint }}
+  <script src="{{ $js.RelPermalink }}" defer></script>
+</body>
+</html>
