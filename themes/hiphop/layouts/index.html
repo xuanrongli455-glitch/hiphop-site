@@ -1,0 +1,137 @@
+{{ define "main" }}
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow reveal">说唱 / 街舞 / 潮流文化 · 中文资讯站</p>
+    <h1 class="hero-title reveal">
+      <span class="line">HIPHOP</span>
+      <span class="line outline">中文站</span>
+    </h1>
+    <p class="hero-lede reveal">资讯速递、新歌盘点、艺人档案、演出日历——<br>一个为中文说唱爱好者做的街区电台。</p>
+    <div class="hero-cta reveal">
+      <a class="btn btn-gold" href="/news/">开始探索</a>
+      <a class="btn btn-ghost" href="/music/">本周新歌 →</a>
+    </div>
+  </div>
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>说唱 RAP — 街舞 BREAKING — 潮流 STREETWEAR — DJ — 涂鸦 GRAFFITI — BATTLE —&nbsp;</span>
+      <span>说唱 RAP — 街舞 BREAKING — 潮流 STREETWEAR — DJ — 涂鸦 GRAFFITI — BATTLE —&nbsp;</span>
+    </div>
+  </div>
+</section>
+
+<!-- 最新资讯 -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">最新<span>资讯</span></h2>
+      <a class="sec-more" href="/news/">全部资讯 →</a>
+    </div>
+    <div class="card-grid">
+      {{ range first 3 (where site.RegularPages "Section" "news") }}
+      <a class="card reveal" href="{{ .RelPermalink }}">
+        <div class="card-art art-{{ mod (len .Title) 4 }}">
+          <span class="card-initial">{{ substr .Title 0 1 }}</span>
+        </div>
+        <div class="card-body">
+          {{ with .Params.tags }}<span class="chip">{{ index . 0 }}</span>{{ end }}
+          <h3>{{ .Title }}</h3>
+          <p class="card-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟</p>
+        </div>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<!-- 新歌推荐 -->
+<section class="section section-alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">本周<span>新歌</span></h2>
+      <a class="sec-more" href="/music/">全部推荐 →</a>
+    </div>
+    <div class="track-list">
+      {{ range $i, $p := first 4 (where site.RegularPages "Section" "music") }}
+      <a class="track reveal" href="{{ $p.RelPermalink }}">
+        <span class="track-no">{{ printf "%02d" (add $i 1) }}</span>
+        <span class="track-play">▶</span>
+        <span class="track-info">
+          <strong>{{ $p.Title }}</strong>
+          <small>{{ $p.Date.Format "2006-01-02" }}{{ with $p.Params.tags }} · {{ delimit . " / " }}{{ end }}</small>
+        </span>
+        <span class="track-arrow">→</span>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<!-- 艺人 / 厂牌 -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">艺人<span>厂牌</span></h2>
+      <a class="sec-more" href="/artists/">全部档案 →</a>
+    </div>
+    <div class="card-grid">
+      {{ range first 3 (where site.RegularPages "Section" "artists") }}
+      <a class="card reveal" href="{{ .RelPermalink }}">
+        <div class="card-art art-{{ mod (len .Title) 4 }}">
+          <span class="card-initial">{{ substr .Title 0 1 }}</span>
+        </div>
+        <div class="card-body">
+          {{ with .Params.tags }}<span class="chip chip-red">{{ index . 0 }}</span>{{ end }}
+          <h3>{{ .Title }}</h3>
+          <p class="card-meta">{{ .Description | default (.Summary | plainify | truncate 60) }}</p>
+        </div>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<!-- 演出日历 -->
+<section class="section section-alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">演出<span>日历</span></h2>
+      <a class="sec-more" href="/events/">全部演出 →</a>
+    </div>
+    <div class="filter-chips reveal" id="cityFilter">
+      <button class="fchip active" data-city="all">全部</button>
+      <button class="fchip" data-city="北京">北京</button>
+      <button class="fchip" data-city="上海">上海</button>
+      <button class="fchip" data-city="成都">成都</button>
+      <button class="fchip" data-city="广州">广州</button>
+    </div>
+    <div class="event-list" id="eventList">
+      {{ range where site.RegularPages "Section" "events" }}
+      {{ if ne .File.BaseFileName "_index" }}
+      <a class="event-row reveal" href="{{ .RelPermalink }}" data-city="{{ .Params.city | default "" }}">
+        <span class="event-date"><strong>{{ .Date.Format "01-02" }}</strong><small>{{ .Date.Format "2006" }}</small></span>
+        <span class="event-info">
+          <strong>{{ .Title }}</strong>
+          <small>{{ with .Params.city }}{{ . }} · {{ end }}{{ with .Params.venue }}{{ . }}{{ end }}</small>
+        </span>
+        {{ with .Params.city }}<span class="chip">{{ . }}</span>{{ end }}
+        <span class="track-arrow">→</span>
+      </a>
+      {{ end }}
+      {{ end }}
+      <div class="event-empty" id="eventEmpty" hidden>该城市暂无演出收录，欢迎投稿。</div>
+    </div>
+    <p class="hint reveal">演出信息持续收集中——主办方 / 厂牌欢迎投稿：hi@hiphop.ccwu.cc</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band reveal">
+  <div class="wrap cta-inner">
+    <h2>有料？来投稿。</h2>
+    <p>新歌、演出、艺人故事——好内容值得被更多人看到。</p>
+    <a class="btn btn-gold" href="/about/">了解本站</a>
+  </div>
+</section>
+{{ end }}
