@@ -1,0 +1,35 @@
+{{ define "main" }}
+<section class="page-head">
+  <div class="wrap">
+    <p class="eyebrow reveal">{{ .Site.Title }}</p>
+    <h1 class="page-title reveal">{{ .Title }}</h1>
+    {{ with .Description }}<p class="page-desc reveal">{{ . }}</p>{{ end }}
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <div class="card-grid">
+      {{ range .Pages }}
+      {{ $isIndex := false }}{{ with .File }}{{ if eq .BaseFileName "_index" }}{{ $isIndex = true }}{{ end }}{{ end }}
+      {{ if not $isIndex }}
+      <a class="card reveal" href="{{ .RelPermalink }}">
+        <div class="card-art art-{{ mod (len .Title) 4 }}">
+          <span class="card-initial">{{ substr .Title 0 1 }}</span>
+        </div>
+        <div class="card-body">
+          {{ with .Params.tags }}<span class="chip">{{ index . 0 }}</span>{{ end }}
+          <h3>{{ .Title }}</h3>
+          <p class="card-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟阅读</p>
+          {{ with .Description }}<p class="card-desc">{{ . }}</p>{{ end }}
+        </div>
+      </a>
+      {{ end }}
+      {{ end }}
+    </div>
+    {{ $shown := 0 }}{{ range .Pages }}{{ $isIdx := false }}{{ with .File }}{{ if eq .BaseFileName "_index" }}{{ $isIdx = true }}{{ end }}{{ end }}{{ if not $isIdx }}{{ $shown = add $shown 1 }}{{ end }}{{ end }}
+    {{ if eq $shown 0 }}
+    <p class="hint">内容筹备中，敬请期待。</p>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
