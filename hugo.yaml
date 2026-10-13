@@ -12,8 +12,8 @@ params:
   showPostNavLinks: true
   showBreadCrumbs: true
   showToc: true
-  # Knocket 在线客服：在 knocket.trtc.io 注册后把小部件 ID 填到这里
-  # knocketWidgetID: "你的小部件ID"
+  # Knocket 在线客服小部件
+  knocketScriptSrc: "https://trtc.io/knocket-sdk/sdk.js?identifier=8ba51de844ce21492c8&v=1791905861075"
 
 menu:
   main:
