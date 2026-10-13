@@ -1,0 +1,20 @@
+{{ define "main" }}
+<article class="article">
+  <div class="wrap article-wrap">
+    <p class="eyebrow reveal"><a href="{{ .Parent.RelPermalink }}">← {{ .Parent.Title }}</a></p>
+    <h1 class="article-title reveal">{{ .Title }}</h1>
+    <div class="article-meta reveal">
+      <span>{{ .Date.Format "2006-01-02" }}</span>
+      <span>·</span><span>{{ .ReadingTime }} 分钟阅读</span>
+      {{ with .Params.tags }}<span>·</span>{{ range . }}<span class="chip">{{ . }}</span>{{ end }}{{ end }}
+    </div>
+    <div class="article-body reveal">
+      {{ .Content }}
+    </div>
+    <nav class="article-nav">
+      {{ with .PrevInSection }}<a class="anav prev" href="{{ .RelPermalink }}"><small>← 上一篇</small><strong>{{ .Title }}</strong></a>{{ end }}
+      {{ with .NextInSection }}<a class="anav next" href="{{ .RelPermalink }}"><small>下一篇 →</small><strong>{{ .Title }}</strong></a>{{ end }}
+    </nav>
+  </div>
+</article>
+{{ end }}
