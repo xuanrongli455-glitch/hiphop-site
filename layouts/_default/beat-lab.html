@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Beat 拆解实验室 | HipHop 中文站</title>
+<meta name="description" content="交互式 trap beat 分轨播放器：Web Audio 实时合成，逐轨拆解 808、hi-hat、snare 与旋律。">
+<style>
+  .blab-wrap{box-sizing:border-box;max-width:760px;margin:0 auto;padding:20px 16px 64px;color:#e8e8ea;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:#0a0a0c;min-height:100vh}
+  .blab-wrap a{color:#f2b234}
+  .blab-top{display:flex;align-items:center;gap:12px;margin:6px 0 18px}
+  .blab-back{font-size:14px;text-decoration:none;border:1px solid #2a2a2e;border-radius:999px;padding:8px 14px;color:#e8e8ea;background:#131316}
+  .blab-back:active{background:#1d1d21}
+  .blab-kicker{font-size:12px;letter-spacing:.35em;color:#f2b234;font-weight:700;margin:0 0 8px}
+  .blab-h1{font-size:clamp(30px,7vw,46px);font-weight:900;letter-spacing:.02em;margin:0 0 10px;color:#fff;line-height:1.15}
+  .blab-h1 .gold{color:#f2b234}
+  .blab-lede{font-size:15px;line-height:1.8;color:#a7a7ad;margin:0 0 22px}
+  .blab-panel{background:#111114;border:1px solid #232327;border-radius:16px;padding:18px 16px;margin:0 0 18px}
+  .blab-viz{width:100%;height:132px;display:block;background:#0a0a0c;border:1px solid #232327;border-radius:10px;margin-bottom:16px}
+  .blab-transport{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  .blab-play{width:64px;height:64px;min-width:64px;border-radius:50%;border:none;cursor:pointer;
+    background:#f2b234;color:#0a0a0c;font-size:22px;font-weight:900;line-height:1;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(242,178,52,.35)}
+  .blab-play:active{transform:scale(.95)}
+  .blab-tempo{display:flex;align-items:center;gap:10px;flex:1;min-width:200px}
+  .blab-tempo label{font-size:13px;color:#a7a7ad;white-space:nowrap}
+  .blab-bpm{font-size:15px;font-weight:800;color:#f2b234;min-width:76px;text-align:right;font-variant-numeric:tabular-nums}
+  .blab-bars{display:flex;gap:8px;margin-left:auto}
+  .blab-bar{font-size:12px;font-weight:700;letter-spacing:.15em;padding:6px 12px;border-radius:999px;
+    border:1px solid #2a2a2e;color:#6d6d74}
+  .blab-bar.on{background:#f2b234;border-color:#f2b234;color:#0a0a0c}
+  .blab-track{border-top:1px solid #1e1e22;padding:14px 2px}
+  .blab-track:first-of-type{border-top:none}
+  .blab-track-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .blab-dot{width:10px;height:10px;border-radius:50%;background:#f2b234;flex:none;box-shadow:0 0 8px rgba(242,178,52,.6)}
+  .blab-track[data-track="hat"] .blab-dot{background:#cfd2d6;box-shadow:0 0 8px rgba(207,210,214,.5)}
+  .blab-track[data-track="snare"] .blab-dot{background:#ff8a5c;box-shadow:0 0 8px rgba(255,138,92,.5)}
+  .blab-track[data-track="melody"] .blab-dot{background:#9d7bff;box-shadow:0 0 8px rgba(157,123,255,.5)}
+  .blab-track-names{flex:1;min-width:0}
+  .blab-track-names strong{display:block;font-size:15px;color:#fff;letter-spacing:.03em}
+  .blab-track-names span{display:block;font-size:12px;color:#8a8a91;margin-top:2px}
+  .blab-btn{min-width:46px;min-height:40px;border-radius:10px;border:1px solid #2e2e33;background:#17171b;color:#a7a7ad;
+    font-size:14px;font-weight:800;cursor:pointer;letter-spacing:.05em}
+  .blab-btn:active{background:#222228}
+  .blab-btn.m-on{background:#f2b234;border-color:#f2b234;color:#0a0a0c}
+  .blab-btn.s-on{background:#0a0a0c;border-color:#f2b234;color:#f2b234;box-shadow:inset 0 0 0 1px #f2b234}
+  .blab-vol{-webkit-appearance:none;appearance:none;width:100%;height:34px;background:transparent;cursor:pointer;margin:0}
+  .blab-vol::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:#26262b}
+  .blab-vol::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;
+    background:#f2b234;margin-top:-8px;border:none;box-shadow:0 0 10px rgba(242,178,52,.5)}
+  .blab-vol::-moz-range-track{height:6px;border-radius:3px;background:#26262b}
+  .blab-vol::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#f2b234;border:none}
+  .blab-hint{font-size:13px;line-height:1.8;color:#8a8a91;margin:12px 2px 0}
+  .blab-sec-h{font-size:13px;letter-spacing:.3em;color:#f2b234;font-weight:700;margin:30px 0 14px}
+  .blab-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .blab-card{background:#111114;border:1px solid #232327;border-radius:14px;padding:16px 14px}
+  .blab-card h3{margin:0 0 8px;font-size:15px;color:#fff;display:flex;align-items:center;gap:8px}
+  .blab-card h3 .blab-dot{width:8px;height:8px}
+  .blab-card p{margin:0;font-size:13.5px;line-height:1.85;color:#b9b9bf}
+  .blab-foot{margin-top:26px;font-size:12.5px;line-height:1.8;color:#6d6d74;text-align:center}
+  @media (max-width:560px){
+    .blab-cards{grid-template-columns:1fr}
+    .blab-viz{height:108px}
+    .blab-bars{margin-left:0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .blab-play{box-shadow:none}
+  }
+</style>
+</head>
+<body style="margin:0;background:#0a0a0c">
+<div class="blab-wrap">
+  <div class="blab-top">
+    <a class="blab-back" href="/">← HipHop 中文站</a>
+  </div>
+
+  <p class="blab-kicker">INTERACTIVE DEMO</p>
+  <h1 class="blab-h1">Beat 拆解<span class="gold">实验室</span></h1>
+  <p class="blab-lede">下面这段 trap beat 没有用任何音频文件——全部由你浏览器里的 Web Audio API 实时合成。点播放，然后逐轨静音 / 独奏，亲手拆开一首 beat 看看它由什么组成。</p>
+
+  <section class="blab-panel" aria-label="分轨播放器">
+    <canvas id="blab-viz" class="blab-viz" aria-hidden="true"></canvas>
+    <div class="blab-transport">
+      <button id="blab-play" class="blab-play" aria-label="播放">▶</button>
+      <div class="blab-tempo">
+        <label for="blab-bpm-range">速度</label>
+        <input id="blab-bpm-range" type="range" min="120" max="160" value="140" step="1" class="blab-vol" style="flex:1" aria-label="速度 BPM">
+        <span class="blab-bpm"><span id="blab-bpm-num">140</span> BPM</span>
+      </div>
+      <div class="blab-bars" aria-hidden="true">
+        <span class="blab-bar on" id="blab-bar1">BAR 1</span>
+        <span class="blab-bar" id="blab-bar2">BAR 2</span>
+      </div>
+    </div>
+
+    <div class="blab-track" data-track="bass">
+      <div class="blab-track-head">
+        <span class="blab-dot"></span>
+        <div class="blab-track-names"><strong>808 Bass</strong><span>低音 · 胸口的震动</span></div>
+        <button class="blab-btn blab-mute" aria-label="静音 808 Bass">M</button>
+        <button class="blab-btn blab-solo" aria-label="独奏 808 Bass">S</button>
+      </div>
+      <input type="range" class="blab-vol" min="0" max="100" value="90" aria-label="808 Bass 音量">
+    </div>
+
+    <div class="blab-track" data-track="hat">
+      <div class="blab-track-head">
+        <span class="blab-dot"></span>
+        <div class="blab-track-names"><strong>Hi-Hat</strong><span>踩镲 · 含滚奏，节奏的密度</span></div>
+        <button class="blab-btn blab-mute" aria-label="静音 Hi-Hat">M</button>
+        <button class="blab-btn blab-solo" aria-label="独奏 Hi-Hat">S</button>
+      </div>
+      <input type="range" class="blab-vol" min="0" max="100" value="65" aria-label="Hi-Hat 音量">
+    </div>
+
+    <div class="blab-track" data-track="snare">
+      <div class="blab-track-head">
+        <span class="blab-dot"></span>
+        <div class="blab-track-names"><strong>Snare / Clap</strong><span>军鼓 · 每小节的那声"啪"</span></div>
+        <button class="blab-btn blab-mute" aria-label="静音 Snare">M</button>
+        <button class="blab-btn blab-solo" aria-label="独奏 Snare">S</button>
+      </div>
+      <input type="range" class="blab-vol" min="0" max="100" value="80" aria-label="Snare 音量">
+    </div>
+
+    <div class="blab-track" data-track="melody">
+      <div class="blab-track-head">
+        <span class="blab-dot"></span>
+        <div class="blab-track-names"><strong>Melody</strong><span>旋律 · 决定情绪的那句动机</span></div>
+        <button class="blab-btn blab-mute" aria-label="静音 Melody">M</button>
+        <button class="blab-btn blab-solo" aria-label="独奏 Melody">S</button>
+      </div>
+      <input type="range" class="blab-vol" min="0" max="100" value="70" aria-label="Melody 音量">
+    </div>
+
+    <p class="blab-hint">玩法：先独奏（S）808 只听低频，再单独听 hi-hat 注意每小节结尾的滚奏；也可以静音（M）掉旋律，感受一首 beat 没了主心骨是什么样。</p>
+  </section>
+
+  <h2 class="blab-sec-h">这四轨分别是干嘛的</h2>
+  <div class="blab-cards">
+    <div class="blab-card" data-track="bass">
+      <h3><span class="blab-dot"></span>808 Bass</h3>
+      <p>低频的"轰鸣"，你胸口感受到的那股震动就是它。它同时负责律动和和声根音——现代 trap 里 808 常常代替了传统鼓组里的底鼓，是整首歌的"地基"。</p>
+    </div>
+    <div class="blab-card" data-track="hat">
+      <h3><span class="blab-dot"></span>Hi-Hat</h3>
+      <p>像镲片一样细碎的高频"嚓嚓"声，管的是节奏的密度和能量。结尾处突然加速的"机关枪"就是滚奏（roll），制作人常用它来推高情绪、迎接下一个重拍。</p>
+    </div>
+    <div class="blab-card" data-track="snare">
+      <h3><span class="blab-dot"></span>Snare / Clap</h3>
+      <p>每小节固定位置那声清脆的"啪"，像拍手一样。它是整首 beat 的骨架和重音——rapper 的 flow 基本都是踩着它的点来组织的。</p>
+    </div>
+    <div class="blab-card" data-track="melody">
+      <h3><span class="blab-dot"></span>Melody</h3>
+      <p>不断循环的那句旋律动机，决定了这首歌的情绪和氛围，也是你最容易记住、最容易哼出来的部分。换一段旋律，同一套鼓听起来就是另一首歌。</p>
+    </div>
+  </div>
+
+  <p class="blab-foot">所有声音由 Web Audio API 实时合成，无任何音频文件 · 建议佩戴耳机体验<br>HipHop 中文站 · Beat 拆解实验室 demo</p>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var $ = function(s){ return document.querySelector(s); };
+  var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+
+  var ctx = null, master = null, analyser = null, delaySend = null, noiseBuf = null;
+  var isPlaying = false, step = 0, nextTime = 0, timerID = null, bpm = 140;
+  var STEPS = 32, lastBar = -1;
+
+  var tracks = [
+    {id:'bass',   vol:0.90, mute:false, solo:false, gain:null},
+    {id:'hat',    vol:0.65, mute:false, solo:false, gain:null},
+    {id:'snare',  vol:0.80, mute:false, solo:false, gain:null},
+    {id:'melody', vol:0.70, mute:false, solo:false, gain:null}
+  ];
+  function trackById(id){ for(var i=0;i<tracks.length;i++) if(tracks[i].id===id) return tracks[i]; return null; }
+
+  /* 2 小节 × 16 步进。808 音高(Hz)与音符长度(步数)；旋律为暗黑小调拨弦 */
+  var bassLine = [
+    {s:0, f:65.41, l:5}, {s:7, f:65.41, l:2}, {s:10, f:77.78, l:3}, {s:14, f:87.31, l:2},
+    {s:16, f:65.41, l:5}, {s:23, f:49.00, l:2}, {s:26, f:51.91, l:2}, {s:28, f:49.00, l:4}
+  ];
+  var melodyLine = [
+    {s:0, f:261.63}, {s:3, f:311.13}, {s:6, f:293.66}, {s:10, f:261.63}, {s:12, f:196.00},
+    {s:16, f:261.63}, {s:19, f:311.13}, {s:22, f:349.23}, {s:26, f:311.13}, {s:28, f:293.66}
+  ];
+
+  function initAudio(){
+    var AC = window.AudioContext || window.webkitAudioContext;
+    ctx = new AC();
+    master = ctx.createGain(); master.gain.value = 0.9;
+    var comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -18; comp.knee.value = 12; comp.ratio.value = 4;
+    analyser = ctx.createAnalyser(); analyser.fftSize = 256; analyser.smoothingTimeConstant = 0.82;
+    master.connect(comp); comp.connect(analyser); analyser.connect(ctx.destination);
+
+    /* 旋律的回声： dotted-8th 延迟 */
+    var delay = ctx.createDelay(1.0); delay.delayTime.value = 0.32;
+    var fb = ctx.createGain(); fb.gain.value = 0.35;
+    var wet = ctx.createGain(); wet.gain.value = 0.30;
+    delaySend = ctx.createGain();
+    delaySend.connect(delay); delay.connect(fb); fb.connect(delay);
+    delay.connect(wet); wet.connect(master);
+
+    /* 1 秒白噪声，供 hi-hat / snare 复用 */
+    noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+    var d = noiseBuf.getChannelData(0);
+    for(var i=0;i<d.length;i++) d[i] = Math.random()*2-1;
+
+    /* 每轨独立增益 → master；808 额外过一点饱和，更有颗粒感 */
+    var shaper = ctx.createWaveShaper();
+    var curve = new Float32Array(256);
+    for(var k=0;k<256;k++){ var x = k/255*2-1; curve[k] = Math.tanh(2.2*x); }
+    shaper.curve = curve;
+    tracks.forEach(function(t){
+      t.gain = ctx.createGain(); t.gain.gain.value = t.vol;
+      if(t.id==='bass'){ t.gain.connect(shaper); shaper.connect(master); }
+      else { t.gain.connect(master); }
+    });
+    updateMix();
+  }
+
+  function play808(time, freq, dur){
+    var o = ctx.createOscillator(); o.type = 'sine';
+    o.frequency.setValueAtTime(freq*2.4, time);            /* 起音的 punch */
+    o.frequency.exponentialRampToValueAtTime(freq, time+0.025);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.95, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time+dur);
+    o.connect(g); g.connect(trackById('bass').gain);
+    o.start(time); o.stop(time+dur+0.05);
+  }
+  function playHat(time, vol){
+    var src = ctx.createBufferSource(); src.buffer = noiseBuf;
+    var f = ctx.createBiquadFilter(); f.type='highpass'; f.frequency.value=7200;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(vol, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time+0.05);
+    src.connect(f); f.connect(g); g.connect(trackById('hat').gain);
+    src.start(time); src.stop(time+0.09);
+  }
+  function playSnare(time){
+    var t = trackById('snare').gain;
+    var src = ctx.createBufferSource(); src.buffer = noiseBuf;
+    var f = ctx.createBiquadFilter(); f.type='bandpass'; f.frequency.value=1900; f.Q.value=0.8;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.75, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time+0.18);
+    src.connect(f); f.connect(g); g.connect(t);
+    src.start(time); src.stop(time+0.25);
+    var o = ctx.createOscillator(); o.type='triangle'; o.frequency.value=190;
+    var g2 = ctx.createGain();
+    g2.gain.setValueAtTime(0.5, time);
+    g2.gain.exponentialRampToValueAtTime(0.001, time+0.11);
+    o.connect(g2); g2.connect(t);
+    o.start(time); o.stop(time+0.15);
+  }
+  function playPluck(time, freq){
+    var t = trackById('melody').gain;
+    var o = ctx.createOscillator(); o.type='sawtooth'; o.frequency.value=freq;
+    var f = ctx.createBiquadFilter(); f.type='lowpass'; f.Q.value=2;
+    f.frequency.setValueAtTime(3200, time);
+    f.frequency.exponentialRampToValueAtTime(550, time+0.35);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.32, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time+0.5);
+    o.connect(f); f.connect(g);
+    g.connect(t); g.connect(delaySend);
+    o.start(time); o.stop(time+0.6);
+  }
+
+  function scheduleStep(s, t){
+    var spb = 60/bpm/4;
+    var i;
+    for(i=0;i<bassLine.length;i++) if(bassLine[i].s===s) play808(t, bassLine[i].f, bassLine[i].l*spb);
+    for(i=0;i<melodyLine.length;i++) if(melodyLine[i].s===s) playPluck(t, melodyLine[i].f);
+    if(s===8 || s===24) playSnare(t);
+    if(s===6 || s===22){
+      for(var r=0;r<4;r++) playHat(t + r*(spb/2), 0.20 + r*0.11);  /* 32 分音符滚奏，渐强迎接军鼓 */
+    } else if(s%2===0){
+      playHat(t, s%4===2 ? 0.48 : 0.30);
+    }
+    var bar = s<16 ? 0 : 1;
+    if(bar!==lastBar){ lastBar=bar; updateBars(bar); }
+  }
+  function scheduler(){
+    while(nextTime < ctx.currentTime + 0.12){
+      scheduleStep(step, nextTime);
+      nextTime += 60/bpm/4;
+      step = (step+1)%STEPS;
+    }
+  }
+
+  function updateMix(){
+    if(!ctx) return;
+    var anySolo = tracks.some(function(t){ return t.solo; });
+    var now = ctx.currentTime;
+    tracks.forEach(function(t){
+      var g = t.vol;
+      if(t.mute) g = 0;
+      else if(anySolo && !t.solo) g = 0;
+      t.gain.gain.setTargetAtTime(g, now, 0.02);
+    });
+  }
+  function updateBars(bar){
+    $('#blab-bar1').classList.toggle('on', bar===0);
+    $('#blab-bar2').classList.toggle('on', bar===1);
+  }
+
+  var playBtn = $('#blab-play');
+  function start(){
+    if(!ctx) initAudio();
+    if(ctx.state==='suspended') ctx.resume();
+    isPlaying = true; step = 0; lastBar = -1;
+    nextTime = ctx.currentTime + 0.08;
+    timerID = setInterval(scheduler, 25);
+    playBtn.textContent = '⏸'; playBtn.setAttribute('aria-label','暂停');
+  }
+  function stop(){
+    isPlaying = false; clearInterval(timerID);
+    playBtn.textContent = '▶'; playBtn.setAttribute('aria-label','播放');
+    updateBars(-1);
+    $('#blab-bar1').classList.add('on');
+  }
+  playBtn.addEventListener('click', function(){ isPlaying ? stop() : start(); });
+  document.addEventListener('keydown', function(e){
+    if(e.code==='Space' && !/INPUT|TEXTAREA|BUTTON/.test(document.activeElement.tagName)){
+      e.preventDefault(); isPlaying ? stop() : start();
+    }
+  });
+
+  $$('.blab-track').forEach(function(el){
+    var id = el.getAttribute('data-track');
+    var t = trackById(id);
+    var muteBtn = el.querySelector('.blab-mute');
+    var soloBtn = el.querySelector('.blab-solo');
+    var vol = el.querySelector('.blab-vol');
+    muteBtn.addEventListener('click', function(){
+      t.mute = !t.mute; muteBtn.classList.toggle('m-on', t.mute); updateMix();
+    });
+    soloBtn.addEventListener('click', function(){
+      t.solo = !t.solo; soloBtn.classList.toggle('s-on', t.solo); updateMix();
+    });
+    vol.addEventListener('input', function(){
+      t.vol = vol.value/100; updateMix();
+    });
+  });
+
+  var bpmRange = $('#blab-bpm-range'), bpmNum = $('#blab-bpm-num');
+  bpmRange.addEventListener('input', function(){
+    bpm = parseInt(bpmRange.value, 10); bpmNum.textContent = bpm;
+  });
+
+  /* 频谱可视化 */
+  var canvas = $('#blab-viz'), vctx = canvas.getContext('2d'), vizData = null;
+  function sizeCanvas(){
+    var r = canvas.getBoundingClientRect();
+    var dpr = Math.min(window.devicePixelRatio||1, 2);
+    canvas.width = Math.max(1, r.width*dpr); canvas.height = Math.max(1, r.height*dpr);
+    vctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  sizeCanvas();
+  window.addEventListener('resize', sizeCanvas);
+  function draw(){
+    requestAnimationFrame(draw);
+    var w = canvas.clientWidth, h = canvas.clientHeight;
+    if(!w || !h) return;
+    vctx.clearRect(0,0,w,h);
+    if(!analyser || !isPlaying){
+      vctx.fillStyle = 'rgba(242,178,52,.25)';
+      vctx.fillRect(0, h-2, w, 2);
+      return;
+    }
+    if(!vizData || vizData.length!==analyser.frequencyBinCount) vizData = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(vizData);
+    var bars = 56, bw = w/bars, i, v, bh;
+    for(i=0;i<bars;i++){
+      v = vizData[Math.floor(i/bars*vizData.length*0.72)]/255;
+      bh = Math.max(2, v*h*0.94);
+      var g = vctx.createLinearGradient(0,h-bh,0,h);
+      g.addColorStop(0,'#f2b234'); g.addColorStop(1,'rgba(242,178,52,.12)');
+      vctx.fillStyle = g;
+      vctx.fillRect(i*bw+1, h-bh, Math.max(1,bw-2), bh);
+    }
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
