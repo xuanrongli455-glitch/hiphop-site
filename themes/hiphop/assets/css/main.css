@@ -241,7 +241,17 @@ a { color: inherit; }
 }
 
 /* ============ Article pages ============ */
-.page-head { padding: 150px 0 8px; }
+.page-head { padding: 120px 0 36px; position: relative; overflow: hidden; }
+.page-head::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(640px 320px at 18% 0%, rgba(242,178,52,.09), transparent 70%);
+}
+.page-watermark {
+  position: absolute; right: -12px; top: 78px; pointer-events: none; user-select: none;
+  font-family: var(--font-display); font-size: clamp(84px, 15vw, 210px); line-height: 1;
+  letter-spacing: .04em; white-space: nowrap; color: transparent;
+  -webkit-text-stroke: 1.5px rgba(242,178,52,.16);
+}
 .page-title { font-family: var(--font-display); font-size: clamp(40px, 7vw, 84px); margin: 0 0 12px; letter-spacing: 0.02em; }
 .page-desc { color: var(--muted); font-size: 17px; margin: 0; max-width: 640px; }
 .article { padding: 150px 0 96px; }
