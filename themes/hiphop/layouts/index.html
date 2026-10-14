@@ -33,7 +33,7 @@
         {{ $pp := index $pos $i }}
         <a class="design-layer" href="{{ $p.RelPermalink }}" data-depth="{{ $pp.d }}" style="left:{{ $pp.x }}px;top:{{ $pp.y }}px;width:{{ $pp.w }}px;--r:{{ $pp.r }}deg">
           {{ if $p.Params.image }}<img src="{{ $p.Params.image }}" alt="{{ $p.Title }}" loading="eager">{{ else }}<span class="layer-ph"></span>{{ end }}
-          <span class="layer-cap"><b>{{ index $label $p.Section }}</b>{{ $p.Title }}</span>
+          <span class="layer-cap"><b>{{ index $label $p.Section }}</b><span class="layer-title">{{ $p.Title }}</span></span>
           <span class="sel" aria-hidden="true"><i class="h tl"></i><i class="h tr"></i><i class="h bl"></i><i class="h br"></i><em class="xy">x: {{ $pp.x }} y: {{ $pp.y }}</em><em class="wh">w: {{ $pp.w }} h: {{ add (int (mul $pp.w 0.66)) 28 }}</em></span>
         </a>
         {{ end }}
