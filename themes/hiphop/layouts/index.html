@@ -6,85 +6,53 @@
 {{ $feed := where site.RegularPages "Section" "in" (slice "news" "music" "underground" "lyrics" "artists" "samples" "events") }}
 {{ $label := dict "news" "资讯" "music" "新歌推荐" "underground" "地下新声" "lyrics" "歌词解析" "artists" "艺人厂牌" "samples" "采样考古" "events" "演出日历" }}
 
-<!-- HERO · Shouted headline + 设计稿取景器：照片底 + 图层 + 测量标注 -->
+<!-- HERO · Shouted headline + 密集黑胶场：原版式 3D 取景器 -->
 <section class="loud-hero">
   <div class="wrap">
     <h1 class="loud-title"><span class="loud-mask"><span class="loud-line">中文说唱</span></span><span class="loud-mask"><span class="loud-line">正在发生</span></span></h1>
-    {{ $pos := slice
-      (dict "x" 60 "y" 96 "w" 260 "r" -2 "d" 0.6)
-      (dict "x" 360 "y" 64 "w" 220 "r" 1.5 "d" 1.0)
-      (dict "x" 620 "y" 104 "w" 280 "r" -1 "d" 1.4)
-      (dict "x" 920 "y" 72 "w" 230 "r" 2 "d" 0.8)
-      (dict "x" 140 "y" 368 "w" 240 "r" 1 "d" 1.2)
-      (dict "x" 440 "y" 396 "w" 260 "r" -2.5 "d" 0.7)
-      (dict "x" 740 "y" 364 "w" 220 "r" 1 "d" 1.3)
-      (dict "x" 980 "y" 384 "w" 200 "r" -1.5 "d" 0.9)
-    }}
-    {{ $sw := slice "#ffe600" "#ff4d00" "#3cffd0" "#ff2e88" "#a06bff" "#00aaff" }}
-    <div class="design-hero" id="designHero">
-      {{ range first 1 $news }}{{ if .Params.image }}<img class="design-bg" src="{{ .Params.image }}" alt="" aria-hidden="true">{{ end }}{{ end }}
-      <div class="design-scrim" aria-hidden="true"></div>
-      <div class="design-frame" aria-hidden="true"><span class="design-frame-tag">ARTBOARD — HIPHOPNOTE · w: 1200 h: 640</span></div>
-      <div class="design-swatches" aria-hidden="true">
-        {{ range $i, $c := $sw }}<span class="design-sw" style="background:{{ $c }}"><i>×</i></span>{{ end }}
-      </div>
-      <div class="design-layers">
-        {{ range $i, $p := first 8 $feed }}
-        {{ $pp := index $pos $i }}
-        <a class="design-layer" href="{{ $p.RelPermalink }}" data-depth="{{ $pp.d }}" style="left:{{ $pp.x }}px;top:{{ $pp.y }}px;width:{{ $pp.w }}px;--r:{{ $pp.r }}deg">
-          {{ if $p.Params.image }}<img src="{{ $p.Params.image }}" alt="{{ $p.Title }}" loading="eager"><span class="layer-ph layer-ph-fb"></span>{{ else }}<span class="layer-ph"></span>{{ end }}
-          <span class="layer-cap"><b>{{ index $label $p.Section }}</b><span class="layer-title">{{ $p.Title }}</span></span>
-          <span class="sel" aria-hidden="true"><i class="h tl"></i><i class="h tr"></i><i class="h bl"></i><i class="h br"></i><em class="xy">x: {{ $pp.x }} y: {{ $pp.y }}</em><em class="wh">w: {{ $pp.w }} h: {{ add (int (mul $pp.w 0.66)) 28 }}</em></span>
-        </a>
+    {{ $tapes := slice }}
+    {{ range first 8 $feed }}{{ $tapes = $tapes | append (dict "title" .Title "col" (index $label .Section) "url" .RelPermalink "image" (.Params.image | default "")) }}{{ end }}
+    <div class="vinyl-stage" id="vinylStage">
+      <div class="vinyl-frame" aria-hidden="true"><span class="vinyl-frame-tag">ARTBOARD — HIPHOPNOTE · VINYL FIELD</span><i class="vx tl">×</i><i class="vx tr">×</i><i class="vx bl">×</i><i class="vx br">×</i></div>
+      <span class="vinyl-guide-v" id="vinylGuideX" aria-hidden="true"></span>
+      <span class="vinyl-guide-h" id="vinylGuideY" aria-hidden="true"></span>
+      <span class="vinyl-coord" id="vinylCoord">x: 000 y: 000</span>
+      <span class="vinyl-tape" id="vinylTape">VINYL — / —</span>
+      <p class="vinyl-hint" id="vinylHint" hidden>拖动旋转 · 悬停看图 · 点击进入文章</p>
+      <div class="vinyl-fallback" id="vinylFallback">
+        {{ range first 8 $feed }}
+        <a href="{{ .RelPermalink }}">{{ with .Params.image }}<img src="{{ . }}" alt="" loading="lazy">{{ end }}<span>{{ .Title }}</span></a>
         {{ end }}
       </div>
-      <span class="design-guide-v" id="designGuideX" aria-hidden="true"></span>
-      <span class="design-guide-h" id="designGuideY" aria-hidden="true"></span>
-      <span class="design-coord" id="designCoord">x: 000 y: 000</span>
-      <span class="design-tape">LAYERS — 08 / CLICK TO OPEN</span>
+      <script type="application/json" id="tapeData">{{ $tapes | jsonify | safeJS }}</script>
     </div>
     <p class="loud-standfirst">说唱 / 街舞 / 潮流文化中文资讯小站。不装老炮，只做认真整理内容的搬运工。</p>
   </div>
 </section>
+{{ $herojs := resources.Get "js/hero-webgl.js" | fingerprint }}
+<script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<script type="module" src="{{ $herojs.RelPermalink }}"></script>
 <script>
+/* 取景器语言贯穿全页：每个章节头显示该章节的真实纵坐标 */
 (function () {
-  var hero = document.getElementById("designHero");
-  if (!hero) return;
-  var coord = document.getElementById("designCoord");
-  var gx = document.getElementById("designGuideX");
-  var gy = document.getElementById("designGuideY");
-  var layers = hero.querySelectorAll(".design-layer");
-  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function pad3(n) { n = Math.max(0, Math.round(n)); return ("000" + n).slice(-3); }
-  hero.addEventListener("pointermove", function (e) {    var r = hero.getBoundingClientRect();
-    var mx = e.clientX - r.left, my = e.clientY - r.top;
-    if (coord) coord.textContent = "x: " + pad3(mx) + " y: " + pad3(my);
-    if (gx) gx.style.left = mx + "px";
-    if (gy) gy.style.top = my + "px";
-    if (reduce) return;
-    var cx = mx / r.width - 0.5, cy = my / r.height - 0.5;
-    layers.forEach(function (l) {
-      var d = parseFloat(l.getAttribute("data-depth") || "1");
-      l.style.setProperty("--px", (cx * d * 12).toFixed(1) + "px");
-      l.style.setProperty("--py", (cy * d * 12).toFixed(1) + "px");
+  function pad4(n) { n = Math.max(0, Math.round(n)); return ("0000" + n).slice(-4); }
+  function update() {
+    document.querySelectorAll(".sec-meta").forEach(function (m) {
+      var sec = m.closest("section");
+      var c = m.querySelector(".sec-coord");
+      if (sec && c) c.textContent = "y: " + pad4(sec.offsetTop);
     });
-  });
-  /* 图层图加载失败：先自动重试一次（Wikimedia 偶发慢/超时），仍失败则换干净色块，绝不显示破图图标 */
-  document.querySelectorAll(".design-layer img").forEach(function (im) {
-    im.addEventListener("error", function () {
-      if (im.dataset.retried) { im.classList.add("img-failed"); return; }
-      im.dataset.retried = "1";
-      var s = im.src;
-      setTimeout(function () { im.src = s + (s.indexOf("?") >= 0 ? "&" : "?") + "retry=1"; }, 800);
-    });
-  });
+  }
+  window.addEventListener("load", update);
+  window.addEventListener("resize", update);
+  update();
 })();
 </script>
 
 <!-- 最新 · Line-up table -->
 <section class="lineup">
   <div class="wrap">
-    <p class="sec-meta"><span>01 / LATEST</span><span class="sec-meta-line"></span></p>
+    <p class="sec-meta"><span>01 / LATEST</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
     <h2 class="loud-sec-title">最新</h2>
     <div class="lineup-filter" id="lineupFilter">
       <button class="lchip active" data-col="all">全部</button>
@@ -112,7 +80,7 @@
 <!-- 栏目 · Wall of word tiles -->
 <section class="tiles">
   <div class="wrap">
-    <p class="sec-meta"><span>02 / SECTIONS</span><span class="sec-meta-line"></span></p>
+    <p class="sec-meta"><span>02 / SECTIONS</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
     <h2 class="loud-sec-title">栏目</h2>
     <div class="tile-grid">
       <a class="tile reveal" href="/news/"><span class="tile-word">资讯</span><span class="tile-cap">最新动态</span></a>
@@ -136,7 +104,7 @@
 <!-- 宣言 · Staircase statement -->
 <section class="staircase">
   <div class="wrap stair-wrap">
-    <p class="sec-meta"><span>03 / MANIFESTO</span><span class="sec-meta-line"></span></p>
+    <p class="sec-meta"><span>03 / MANIFESTO</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
     <div class="stair-text">
     <p class="stair">
       <span>我们不装老炮</span>
@@ -156,7 +124,7 @@
 <section class="flat">
   <div class="wrap flat-split">
     <div class="flat-chart">
-      <p class="sec-meta"><span>04 / CHARTS</span><span class="sec-meta-line"></span></p>
+      <p class="sec-meta"><span>04 / CHARTS</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
       <h2 class="loud-sec-title">热歌榜</h2>
       <div class="chart-list">
         {{ range $i, $p := first 5 (where site.RegularPages "Section" "music") }}
@@ -170,7 +138,7 @@
       <p class="flat-note">首期真实 Top 10 即将上线，敬请期待。<a href="/charts/">完整榜单 →</a></p>
     </div>
     <div class="flat-sub">
-      <p class="sec-meta"><span>05 / SUBMIT</span><span class="sec-meta-line"></span></p>
+      <p class="sec-meta"><span>05 / SUBMIT</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
       <h2 class="loud-sec-title">来投稿</h2>
       <p class="flat-note">新歌 / 演出 / 线索 / 合作，都可以投。公众号「嘻哈笔记」筹备中。</p>
       <div class="sub-btns">
@@ -183,7 +151,7 @@
 <!-- 演出日历 · 平铺列表 -->
 <section class="flat">
   <div class="wrap">
-    <p class="sec-meta"><span>06 / EVENTS</span><span class="sec-meta-line"></span></p>
+    <p class="sec-meta"><span>06 / EVENTS</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
     <h2 class="loud-sec-title">演出日历</h2>
     <div class="tour-list">
       {{ range first 3 (where site.RegularPages "Section" "events") }}

@@ -1,11 +1,32 @@
-/* WebGL 画廊 HUD：设计工具取景器感（十字对位 + 坐标读数 + 虚线圈），不拦截操作 */
-.webgl-stage { position: relative; }
-.webgl-hud { position: absolute; inset: 0; pointer-events: none; z-index: 2; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
-.hud-corner { position: absolute; width: 22px; height: 22px; border: 1px solid rgba(255,255,255,.55); }
-.hud-tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
-.hud-tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
-.hud-bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
-.hud-br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
-.hud-coords { position: absolute; top: 14px; right: 14px; font-size: 11px; letter-spacing: .1em; color: var(--acc); }
-.hud-tape { position: absolute; left: 14px; bottom: 14px; font-size: 11px; letter-spacing: .08em; color: rgba(255,255,255,.8); max-width: 72%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.hud-ring { position: absolute; width: 340px; height: 340px; border: 1px dashed rgba(255,255,255,.18); border-radius: 50%; left: 50%; top: 55%; transform: translate(-50%, -50%); }
+/* HERO · 密集黑胶场：3D 画布 + 取景器覆盖层（画板框 / 十字标记 / 参考线 / 坐标读数） */
+.vinyl-stage { position: relative; height: 640px; margin: 24px 0 0; overflow: hidden; background: #000; cursor: grab; }
+.vinyl-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; }
+.vinyl-frame { position: absolute; inset: 16px; border: 1px dashed rgba(255,255,255,.25); pointer-events: none; z-index: 2; }
+.vinyl-frame-tag { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); background: #000; padding: 0 8px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 10px; letter-spacing: .14em; color: rgba(255,255,255,.65); white-space: nowrap; }
+.vx { position: absolute; font-style: normal; font-size: 14px; line-height: 1; color: rgba(255,255,255,.7); }
+.vx.tl { top: -8px; left: -5px; }
+.vx.tr { top: -8px; right: -5px; }
+.vx.bl { bottom: -8px; left: -5px; }
+.vx.br { bottom: -8px; right: -5px; }
+.vinyl-guide-v, .vinyl-guide-h { position: absolute; z-index: 3; pointer-events: none; display: none; }
+.vinyl-guide-v { top: 0; bottom: 0; border-left: 1px dashed rgba(255,255,255,.3); }
+.vinyl-guide-h { left: 0; right: 0; border-top: 1px dashed rgba(255,255,255,.3); }
+.vinyl-coord { position: absolute; right: 28px; bottom: 24px; z-index: 4; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .1em; color: var(--acc); pointer-events: none; }
+.vinyl-tape { position: absolute; left: 28px; bottom: 24px; z-index: 4; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .08em; color: rgba(255,255,255,.85); max-width: 55%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; pointer-events: none; }
+.vinyl-hint { position: absolute; left: 50%; top: 24px; transform: translateX(-50%); z-index: 4; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .08em; color: rgba(255,255,255,.55); pointer-events: none; white-space: nowrap; }
+/* 回退：WebGL / CDN 失败时显示的静态封面网格 */
+.vinyl-fallback { position: absolute; inset: 0; z-index: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 40px; align-content: center; background: #000; }
+.vinyl-fallback a { display: block; color: #fff; text-decoration: none; }
+.vinyl-fallback img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+.vinyl-fallback span { display: block; margin-top: 8px; font-size: 13px; line-height: 1.4; }
+/* 取景器语言贯穿全页：每个章节头显示真实纵坐标 */
+.sec-coord { margin-left: 8px; font-size: 11px; letter-spacing: .1em; white-space: nowrap; }
+@media (max-width: 760px) {
+  .vinyl-stage { height: 460px; }
+  .vinyl-frame { inset: 8px; }
+  .vinyl-coord { right: 16px; bottom: 14px; }
+  .vinyl-tape { left: 16px; bottom: 14px; max-width: 52%; }
+  .vinyl-hint { display: none; }
+  .vinyl-fallback { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 24px; }
+  .vinyl-guide-v, .vinyl-guide-h { display: none !important; }
+}

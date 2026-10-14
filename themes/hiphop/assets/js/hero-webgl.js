@@ -1,12 +1,16 @@
-/* 首页 hero：黑胶唱片画廊 — 真实黑胶照片贴图 + 散落漂浮 + 自转 + HUD */
+/* 首页 hero：密集黑胶场 — 原版式 3D 取景器：黑胶挤满画面 + 悬停出图 + 取景器标注贯穿 */
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 (function () {
   var dataEl = document.getElementById("tapeData");
-  var stage = document.getElementById("webglStage");
-  var fallback = document.getElementById("webglFallback");
-  var hint = document.getElementById("webglHint");
+  var stage = document.getElementById("vinylStage");
+  var fallback = document.getElementById("vinylFallback");
+  var hint = document.getElementById("vinylHint");
+  var coordEl = document.getElementById("vinylCoord");
+  var tapeEl = document.getElementById("vinylTape");
+  var guideX = document.getElementById("vinylGuideX");
+  var guideY = document.getElementById("vinylGuideY");
   if (!dataEl || !stage) return;
   var items;
   try { items = JSON.parse(dataEl.textContent); } catch (e) { return; }
@@ -18,32 +22,34 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   } catch (e) { return; }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setClearColor(0x000000, 1);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.1;
+  renderer.toneMappingExposure = 1.15;
   stage.appendChild(renderer.domElement);
+  var el = renderer.domElement;
 
   var scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x1a1a1a, 9, 17);
-  var camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
-  camera.position.set(0, 0.7, 8.4);
+  scene.background = new THREE.Color(0x000000);
+  var camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+  camera.position.set(0, 0.3, 6.8);
   camera.lookAt(0, 0, 0);
 
-  /* 环境反射：黑胶面才有真实反光 */
+  /* 环境反射：清漆面才有真实反光 */
   var pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 
-  /* 灯光：环境 + 暖主光 + 冷轮廓光 */
-  scene.add(new THREE.AmbientLight(0xffffff, 0.35));
-  var key = new THREE.DirectionalLight(0xfff2dd, 1.8);
-  key.position.set(4, 6, 7);
+  /* 灯光：弱环境 + 亮主光（边缘高光）+ 正面补光 + 冷轮廓光 */
+  scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+  var key = new THREE.DirectionalLight(0xffffff, 2.4);
+  key.position.set(5, 6, 7);
   scene.add(key);
-  var rim = new THREE.DirectionalLight(0x88aaff, 0.9);
-  rim.position.set(-6, 3, -5);
+  var fill = new THREE.DirectionalLight(0xffffff, 0.7);
+  fill.position.set(0, 0, 8);
+  scene.add(fill);
+  var rim = new THREE.DirectionalLight(0x88aaff, 1.5);
+  rim.position.set(-6, 2, -6);
   scene.add(rim);
 
-  /* 真实黑胶照片（Public Domain，无品牌字，空白黄标）作盘面底 */
-  var VINYL_PHOTO = "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/12in-Vinyl-LP-Record-Angle.jpg/1024px-12in-Vinyl-LP-Record-Angle.jpg";
-  /* 每盘唱片的标签配色（站内色 + 黑胶常见色），文字与底色保证对比 */
   var LABELS = [
     { bg: "#ffe600", fg: "#111111" },
     { bg: "#f5f0e6", fg: "#111111" },
@@ -71,58 +77,50 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     return lines;
   }
 
-  /* 盘面贴图：真实黑胶照片 + 覆盖中标（栏目 + 标题 + SIDE A），像一张真实唱片 */
+  /* 盘面贴图：纯 Canvas 绘制（黑胶纹路 + 彩色中标），无外部图片依赖 */
   function makeVinylTexture(item, label) {
     var c = document.createElement("canvas");
     c.width = 1024; c.height = 1024;
     var x = c.getContext("2d");
-    var img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = function () {
-      x.drawImage(img, 0, 0, 1024, 1024);
-      /* 中标：盖住原图的空白黄标 */
-      x.fillStyle = label.bg;
-      x.beginPath(); x.arc(512, 512, 152, 0, Math.PI * 2); x.fill();
-      x.strokeStyle = "rgba(0,0,0,0.25)"; x.lineWidth = 2;
-      x.beginPath(); x.arc(512, 512, 152, 0, Math.PI * 2); x.stroke();
-      /* 栏目 */
-      x.fillStyle = label.fg;
-      x.font = "600 30px sans-serif";
-      x.textAlign = "center";
-      x.fillText(item.col, 512, 430);
-      /* 标题（最多 2 行） */
-      x.font = "700 46px 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif";
-      var lines = wrapTitle(x, item.title, 250, 2);
-      lines.forEach(function (ln, i) { x.fillText(ln, 512, 500 + i * 52); });
-      /* SIDE A */
-      x.font = "600 24px sans-serif";
-      x.fillText("SIDE A · HIPHOPNOTE", 512, 610);
-      /* 中轴孔 */
-      x.fillStyle = "#111111";
-      x.beginPath(); x.arc(512, 512, 7, 0, Math.PI * 2); x.fill();
-      tex.needsUpdate = true;
-    };
-    img.onerror = function () { /* 照片加载失败：用纯黑盘面兜底 */ };
-    img.src = VINYL_PHOTO;
-    /* 先画纯黑底，照片到后再覆盖，避免未加载时透明 */
     x.fillStyle = "#0a0a0a";
     x.fillRect(0, 0, 1024, 1024);
+    for (var r = 195; r <= 505; r += 3) {
+      x.strokeStyle = "rgba(255,255,255," + (0.04 + (r % 15 === 0 ? 0.05 : 0)) + ")";
+      x.lineWidth = 1;
+      x.beginPath(); x.arc(512, 512, r, 0, Math.PI * 2); x.stroke();
+    }
+    x.fillStyle = label.bg;
+    x.beginPath(); x.arc(512, 512, 185, 0, Math.PI * 2); x.fill();
+    x.strokeStyle = "rgba(0,0,0,0.3)"; x.lineWidth = 2;
+    x.beginPath(); x.arc(512, 512, 185, 0, Math.PI * 2); x.stroke();
+    x.fillStyle = label.fg;
+    x.textAlign = "center";
+    x.font = "600 28px sans-serif";
+    x.fillText(item.col, 512, 395);
+    x.font = "700 44px 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif";
+    var lines = wrapTitle(x, item.title, 300, 2);
+    lines.forEach(function (ln, i) { x.fillText(ln, 512, 495 + i * 52); });
+    x.font = "600 22px sans-serif";
+    x.fillText("SIDE A · HIPHOPNOTE", 512, 630);
+    x.fillStyle = "#111111";
+    x.beginPath(); x.arc(512, 512, 7, 0, Math.PI * 2); x.fill();
     var tex = new THREE.CanvasTexture(c);
     tex.colorSpace = THREE.SRGBColorSpace;
     tex.anisotropy = 4;
     return tex;
   }
 
-  /* 确定性随机：每次打开布局一致，不闪烁跳变 */
-  function rng(seed) {
-    return function () {
-      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
-      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  }
-  var rnd = rng(20261014);
+  /* 密集排布：手调固定位置，挤满画面、互相遮挡、每张都带倾斜，没有正对镜头的盘子 */
+  var LAYOUT = [
+    { x: -3.3, y: 1.35, z: 0.2, rx: 0.35, ry: 0.4, rz: -0.25, s: 1.05 },
+    { x: -1.15, y: 1.55, z: -0.6, rx: -0.3, ry: 1.1, rz: 0.3, s: 0.95 },
+    { x: 1.15, y: 1.35, z: 0.6, rx: 0.45, ry: -0.5, rz: 0.2, s: 1.05 },
+    { x: 3.3, y: 1.05, z: -0.3, rx: -0.4, ry: 0.9, rz: -0.35, s: 0.95 },
+    { x: -3.5, y: -1.15, z: -0.4, rx: 0.3, ry: -0.8, rz: 0.35, s: 1.0 },
+    { x: -1.0, y: -1.35, z: 0.9, rx: -0.45, ry: 0.3, rz: -0.2, s: 1.1 },
+    { x: 1.35, y: -1.25, z: -0.7, rx: 0.4, ry: 1.4, rz: 0.25, s: 0.95 },
+    { x: 3.5, y: -1.45, z: 0.3, rx: -0.35, ry: -0.6, rz: -0.3, s: 1.0 }
+  ];
 
   var group = new THREE.Group();
   scene.add(group);
@@ -131,90 +129,83 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   texLoader.setCrossOrigin("anonymous");
 
   items.forEach(function (item, i) {
+    var L = LAYOUT[i % LAYOUT.length];
     var rec = new THREE.Group();
-    /* 唱片本体：薄圆柱，盘面朝 +Z，自转绕盘面法线 */
     var tex = makeVinylTexture(item, LABELS[i % LABELS.length]);
-    var sideMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.5 });
-    var topMat = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.32, metalness: 0.15 });
-    var botMat = new THREE.MeshStandardMaterial({ color: 0x141414, roughness: 0.6 });
-    var disc = new THREE.Mesh(new THREE.CylinderGeometry(1.35, 1.35, 0.06, 64), [sideMat, topMat, botMat]);
+    var faceMat = new THREE.MeshPhysicalMaterial({ map: tex, roughness: 0.32, metalness: 0.05, clearcoat: 1, clearcoatRoughness: 0.28, envMapIntensity: 1 });
+    var sideMat = new THREE.MeshPhysicalMaterial({ color: 0x111111, roughness: 0.35, clearcoat: 0.8, clearcoatRoughness: 0.35 });
+    var botMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.6 });
+    var disc = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 0.1, 64), [sideMat, faceMat, botMat]);
     disc.rotation.x = Math.PI / 2;
     rec.add(disc);
-    /* 浮动预览图：文章封面，加载失败时隐藏 */
+    /* 悬停选中圈（黄） */
+    var ring = new THREE.Mesh(
+      new THREE.TorusGeometry(1.4, 0.018, 8, 72),
+      new THREE.MeshBasicMaterial({ color: 0xffe600, transparent: true, opacity: 0 })
+    );
+    ring.position.z = 0.06;
+    rec.add(ring);
+    /* 悬停预览图：默认隐藏，悬停才出现（原版的交互） */
+    var preview = null;
     if (item.image) {
-      var thumbGroup = new THREE.Group();
-      var backMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.6 });
-      var back = new THREE.Mesh(new THREE.PlaneGeometry(1.26, 0.81), backMat);
-      thumbGroup.add(back);
-      var thumbMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 });
-      var thumb = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 0.75), thumbMat);
-      thumb.position.z = 0.01;
-      thumbGroup.add(thumb);
+      var pg = new THREE.Group();
+      var backMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0 });
+      var back = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 1.07), backMat);
+      pg.add(back);
+      var pm = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 });
+      var pim = new THREE.Mesh(new THREE.PlaneGeometry(1.52, 0.99), pm);
+      pim.position.z = 0.01;
+      pg.add(pim);
+      pg.position.set(1.05, 0.8, 1.3);
+      pg.rotation.set(0, -0.15, 0.05);
+      pg.visible = false;
+      rec.add(pg);
       texLoader.load(item.image, function (t) {
         t.colorSpace = THREE.SRGBColorSpace;
-        thumbMat.map = t;
-        thumbMat.needsUpdate = true;
-      }, undefined, function () { thumbGroup.visible = false; });
-      thumbGroup.position.set(0, -0.35, 0.95);
-      thumbGroup.rotation.set(0, -0.08, 0.02);
-      rec.add(thumbGroup);
+        pm.map = t;
+        pm.needsUpdate = true;
+      }, undefined, function () { pg.userData.failed = true; });
+      preview = { group: pg, mats: [backMat, pm] };
     }
-    /* 散落布局：位置、角度、大小都错开，像漂浮的一堆实物 */
-    var angle = (i / items.length) * Math.PI * 2;
-    var rr = 3.6 + rnd() * 2.0;
-    var ang = angle + (rnd() - 0.5) * 0.5;
-    var baseY = (rnd() - 0.5) * 2.4;
-    rec.position.set(Math.sin(ang) * rr, baseY, Math.cos(ang) * rr);
-    rec.rotation.y = ang + (rnd() - 0.5) * 0.8;
-    rec.rotation.x = (rnd() - 0.5) * 0.9;
-    rec.rotation.z = (rnd() - 0.5) * 0.8;
-    rec.scale.setScalar(0.85 + rnd() * 0.35);
-    rec.userData.url = item.url;
-    rec.userData.baseY = baseY;
-    rec.userData.phase = i * 1.3;
-    rec.userData.index = i;
-    rec.userData.title = item.title;
-    rec.userData.disc = disc;
-    rec.userData.spinSpeed = (0.2 + rnd() * 0.3) * (rnd() > 0.5 ? 1 : -1);
+    rec.position.set(L.x, L.y, L.z);
+    rec.rotation.set(L.rx, L.ry, L.rz);
+    rec.scale.setScalar(L.s);
+    rec.userData = {
+      url: item.url, title: item.title, index: i,
+      baseY: L.y, phase: i * 1.3,
+      spin: (0.15 + (i % 3) * 0.08) * (i % 2 ? 1 : -1),
+      disc: disc, ring: ring, preview: preview,
+      ringOp: 0, prevOp: 0
+    };
     group.add(rec);
     records.push(rec);
   });
 
-  /* 尺寸 */
   function resize() {
     var w = stage.clientWidth || 1;
     var h = stage.clientHeight || 1;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
+    camera.position.z = (w / h < 1) ? 10 : 6.8;
     camera.updateProjectionMatrix();
   }
   resize();
   new ResizeObserver(resize).observe(stage);
 
-  /* 拖动旋转（带惯性）+ 点击进入文章 */
-  var dragging = false, moved = 0, lastX = 0, lastY = 0, velX = 0, velY = 0;
-  var downX = 0, downY = 0, downT = 0, hovering = false, hoverCheck = false;
-  var el = renderer.domElement;
-  el.addEventListener("pointerdown", function (e) {
-    dragging = true; moved = 0; lastX = e.clientX; lastY = e.clientY;
-    downX = e.clientX; downY = e.clientY; downT = Date.now();
-    velX = 0; velY = 0;
-    el.setPointerCapture(e.pointerId);
-    el.style.cursor = "grabbing";
-  });
-  el.addEventListener("pointermove", function (e) {
-    if (dragging) {
-      var dx = e.clientX - lastX, dy = e.clientY - lastY;
-      group.rotation.y += dx * 0.008;
-      group.rotation.x += dy * 0.004;
-      group.rotation.x = Math.max(-0.5, Math.min(0.5, group.rotation.x));
-      velX = dx * 0.008; velY = dy * 0.004;
-      moved += Math.abs(dx) + Math.abs(dy);
-      lastX = e.clientX; lastY = e.clientY;
-    } else {
-      hoverCheck = true;
+  function pad3(n) { n = Math.max(0, Math.round(n)); return ("000" + n).slice(-3); }
+
+  var selected = null;
+  function setSelected(rec) {
+    if (selected === rec) return;
+    selected = rec;
+    if (tapeEl) {
+      tapeEl.textContent = rec
+        ? "VINYL 0" + (rec.userData.index + 1) + " — " + rec.userData.title
+        : "VINYL — / —";
     }
-  });
+    el.style.cursor = rec ? "pointer" : "grab";
+  }
+
   function pick(cx, cy) {
     var r = el.getBoundingClientRect();
     var nx = ((cx - r.left) / r.width) * 2 - 1;
@@ -227,72 +218,82 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     while (o && !o.userData.url) o = o.parent;
     return o;
   }
+
+  function updateHud(e) {
+    var r = el.getBoundingClientRect();
+    var mx = e.clientX - r.left, my = e.clientY - r.top;
+    if (coordEl) coordEl.textContent = "x: " + pad3(mx) + " y: " + pad3(my);
+    if (guideX) { guideX.style.display = "block"; guideX.style.left = mx + "px"; }
+    if (guideY) { guideY.style.display = "block"; guideY.style.top = my + "px"; }
+  }
+
+  var canHover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+  var dragging = false, moved = 0, lastX = 0, velX = 0;
+  var downX = 0, downY = 0, downT = 0;
+  var lastInteract = Date.now();
+
+  el.addEventListener("pointerdown", function (e) {
+    dragging = true; moved = 0; lastX = e.clientX;
+    downX = e.clientX; downY = e.clientY; downT = Date.now(); velX = 0;
+    try { el.setPointerCapture(e.pointerId); } catch (err) {}
+    el.style.cursor = "grabbing";
+  });
+  el.addEventListener("pointermove", function (e) {
+    lastInteract = Date.now();
+    if (dragging) {
+      var dx = e.clientX - lastX;
+      group.rotation.y += dx * 0.008;
+      velX = dx * 0.008;
+      moved += Math.abs(dx);
+      lastX = e.clientX;
+    } else if (canHover) {
+      setSelected(pick(e.clientX, e.clientY));
+      updateHud(e);
+    }
+  });
   el.addEventListener("pointerup", function (e) {
     dragging = false;
     el.style.cursor = "grab";
     if (moved < 8 && Date.now() - downT < 400) {
       var hit = pick(e.clientX, e.clientY);
-      if (hit && hit.userData.url) window.location.href = hit.userData.url;
+      if (hit && hit.userData.url) {
+        if (canHover) { window.location.href = hit.userData.url; }
+        else if (selected === hit) { window.location.href = hit.userData.url; }
+        else { setSelected(hit); }
+      } else if (!canHover) { setSelected(null); }
     }
   });
-  el.addEventListener("pointerenter", function () { hovering = true; });
-  el.addEventListener("pointerleave", function () { hovering = false; });
+  el.addEventListener("pointerleave", function () { if (canHover) setSelected(null); });
+  el.addEventListener("wheel", function () { lastInteract = Date.now(); }, { passive: true });
 
-  /* HUD：坐标读数 + 悬停唱片信息 */
-  var hudCoords = document.getElementById("hudCoords");
-  var hudTape = document.getElementById("hudTape");
-  function pad3(n) { n = Math.max(0, Math.round(n)); return ("000" + n).slice(-3); }
-  el.addEventListener("pointermove", function (e) {
-    if (hudCoords) {
-      var r = el.getBoundingClientRect();
-      hudCoords.textContent = "x: " + pad3(e.clientX - r.left) + " y: " + pad3(e.clientY - r.top);
-    }
-  });
-
-  /* 渲染循环：自转 + 缓浮动 + 镜头漂移 + 无人操作 3 秒后恢复自转 */
   var clock = new THREE.Clock();
-  var lastInteract = Date.now();
-  var lastMove = 0;
-  var running = true;
-  var lastVisible = true;
+  var running = true, lastVisible = true;
   function frame() {
     if (!running) return;
     requestAnimationFrame(frame);
     var now = Date.now();
     var dt = Math.min(clock.getDelta(), 0.05);
-    if (now - lastInteract > 3000 && !dragging && !hovering) {
-      group.rotation.y += 0.0012;
-    }
-    if (Math.abs(velX) > 0.0001 || Math.abs(velY) > 0.0001) {
-      group.rotation.y += velX;
-      group.rotation.x += velY;
-      velX *= 0.94; velY *= 0.94;
-    }
+    if (now - lastInteract > 3000 && !dragging && !selected) group.rotation.y += 0.0009;
+    if (Math.abs(velX) > 0.0001) { group.rotation.y += velX; velX *= 0.94; }
     records.forEach(function (rec) {
-      rec.position.y = rec.userData.baseY + Math.sin(now * 0.0006 + rec.userData.phase) * 0.08;
-      if (rec.userData.disc) rec.userData.disc.rotation.y += rec.userData.spinSpeed * dt;
-    });
-    camera.position.x = Math.sin(now * 0.00008) * 0.35;
-    camera.position.y = 0.7 + Math.sin(now * 0.00011 + 1) * 0.18;
-    camera.lookAt(0, 0, 0);
-    if (hoverCheck && !dragging) {
-      hoverCheck = false;
-      var hit = pick(lastMoveX, lastMoveY);
-      el.style.cursor = hit ? "pointer" : "grab";
-      if (hudTape) {
-        hudTape.textContent = hit && hit.userData.title
-          ? "VINYL 0" + (hit.userData.index + 1) + " — " + hit.userData.title
-          : "VINYL — / —";
+      var u = rec.userData;
+      var target = (rec === selected) ? 1 : 0;
+      u.ringOp += (target - u.ringOp) * 0.15;
+      u.ring.material.opacity = u.ringOp * 0.95;
+      if (u.preview && !u.preview.group.userData.failed) {
+        u.prevOp += (target - u.prevOp) * 0.12;
+        u.preview.mats.forEach(function (m) { m.opacity = u.prevOp; });
+        u.preview.group.visible = u.prevOp > 0.02;
       }
-    }
+      rec.position.y = u.baseY + Math.sin(now * 0.0005 + u.phase) * 0.06;
+      u.disc.rotation.y += u.spin * dt;
+    });
+    camera.position.x = Math.sin(now * 0.00008) * 0.25;
+    camera.position.y = 0.3 + Math.sin(now * 0.00011 + 1) * 0.12;
+    camera.lookAt(0, 0, 0);
     renderer.render(scene, camera);
   }
-  var lastMoveX = 0, lastMoveY = 0;
-  el.addEventListener("pointermove", function (e) { lastMoveX = e.clientX; lastMoveY = e.clientY; lastInteract = Date.now(); });
-  el.addEventListener("pointerdown", function () { lastInteract = Date.now(); });
-  el.addEventListener("wheel", function () { lastInteract = Date.now(); }, { passive: true });
 
-  /* 离屏暂停 */
   new IntersectionObserver(function (entries) {
     var vis = entries[0].isIntersecting;
     if (vis && !lastVisible) { lastVisible = true; clock.getDelta(); }
@@ -301,8 +302,6 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     if (vis) frame();
   }).observe(stage);
 
-  /* 成功初始化后显示画布，隐藏回退图 */
-  stage.hidden = false;
   if (fallback) fallback.hidden = true;
   if (hint) hint.hidden = false;
   frame();
