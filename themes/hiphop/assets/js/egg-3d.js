@@ -126,15 +126,17 @@
       var hand = new THREE.Mesh(new THREE.SphereGeometry(0.11, 8, 8), skin);
       hand.position.set(0, -0.42, 0);
       el.add(hand);
-      /* VVS 首饰 3：右手冰戒指（举起打招呼的那只手） */
+      /* VVS 首饰 3：右手指虎（举起打招呼的那只手）——横跨四指的满钻指虎，上嵌 4 颗大主石 */
       if (side === 1) {
-        var ring = new THREE.Mesh(new THREE.TorusGeometry(0.09, 0.022, 8, 20), diamond);
-        ring.position.set(0, -0.42, 0);
-        ring.rotation.x = Math.PI / 2;
-        el.add(ring);
-        var ringGem = new THREE.Mesh(new THREE.OctahedronGeometry(0.04), diamond);
-        ringGem.position.set(0, -0.42, 0.09);
-        el.add(ringGem);
+        var knuckle = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.09, 0.13), diamond);
+        knuckle.position.set(0, -0.42, 0.03);
+        el.add(knuckle);
+        [-0.125, -0.042, 0.042, 0.125].forEach(function (gx) {
+          var kg = new THREE.Mesh(new THREE.OctahedronGeometry(0.048), diamond);
+          kg.position.set(gx, -0.42, 0.11);
+          kg.scale.set(1, 1, 0.7);
+          el.add(kg);
+        });
       }
       sh.add(el);
       g.add(sh);
