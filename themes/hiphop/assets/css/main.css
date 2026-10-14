@@ -415,6 +415,98 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
   .article-nav { grid-template-columns: 1fr; }
 }
 
+/* ============ 杂志结构 · 非对称布局 ============ */
+.hero-mag { padding-bottom: 0; }
+.masthead { display: flex; align-items: baseline; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+.masthead-name { font-family: var(--font-display); font-size: clamp(34px, 5vw, 54px); letter-spacing: 0.03em; }
+.masthead-name span { color: var(--acc); font-size: 0.55em; margin-left: 10px; letter-spacing: 0.2em; }
+.masthead-tag { color: var(--muted); font-size: 13px; font-family: var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; }
+.hero-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 22px; margin-bottom: 56px; }
+.hero-main {
+  display: grid; grid-template-columns: 1fr 1fr; text-decoration: none;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; transition: border-color 0.2s; min-height: 380px;
+}
+.hero-main:hover { border-color: var(--acc); }
+.hero-main-art { display: grid; place-items: center; min-height: 100%; }
+.hero-main-art .card-initial { font-family: var(--font-display); font-size: clamp(100px, 10vw, 160px); color: rgba(0, 0, 0, 0.5); }
+.hero-main-body { padding: 36px 32px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+.hero-main-body h2 { margin: 0; font-size: clamp(26px, 3vw, 38px); line-height: 1.25; font-weight: 900; }
+.hero-main-body p { margin: 0; color: var(--muted); font-size: 15px; }
+.hero-side { display: flex; flex-direction: column; gap: 22px; }
+.side-card {
+  flex: 1; display: grid; grid-template-columns: 120px 1fr; text-decoration: none;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; transition: border-color 0.2s, transform 0.25s; min-height: 0;
+}
+.side-card:hover { border-color: var(--acc); transform: translateX(6px); }
+.side-art { display: grid; place-items: center; }
+.side-art .card-initial { font-family: var(--font-display); font-size: 56px; color: rgba(0, 0, 0, 0.5); }
+.side-body { padding: 20px; display: flex; flex-direction: column; justify-content: center; }
+.side-body h3 { margin: 8px 0 6px; font-size: 17px; line-height: 1.4; }
+
+/* 主体双栏 */
+.content-grid { display: grid; grid-template-columns: 1fr 320px; gap: 48px; align-items: start; }
+.feed { min-width: 0; }
+.rail { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 22px; padding-top: 64px; }
+.rail-box { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+
+/* 横排信息流 */
+.feed-list { display: flex; flex-direction: column; }
+.feed-row {
+  display: grid; grid-template-columns: 200px 1fr; gap: 22px; text-decoration: none;
+  padding: 22px 0; border-bottom: 1px solid var(--line);
+  transition: transform 0.25s;
+}
+.feed-row:first-child { padding-top: 0; }
+.feed-row:hover { transform: translateX(8px); }
+.feed-row:hover h3 { color: var(--acc); }
+.feed-thumb { border-radius: 10px; display: grid; place-items: center; aspect-ratio: 16/10; overflow: hidden; }
+.feed-thumb .card-initial { font-family: var(--font-display); font-size: 56px; color: rgba(0, 0, 0, 0.5); }
+.feed-body h3 { margin: 8px 0 6px; font-size: 20px; line-height: 1.4; transition: color 0.2s; }
+.feed-body p { margin: 0 0 8px; color: var(--muted); font-size: 14px; }
+
+/* 榜单行 */
+.chart-list { display: flex; flex-direction: column; }
+.chart-row {
+  display: flex; align-items: center; gap: 12px; text-decoration: none;
+  padding: 10px 0; border-bottom: 1px solid var(--line);
+}
+.chart-row:last-child { border-bottom: 0; }
+.chart-row:hover .chart-info strong { color: var(--acc); }
+.chart-no { font-family: var(--font-display); font-size: 20px; color: var(--muted); min-width: 28px; }
+.chart-row:nth-child(-n+3) .chart-no { color: var(--acc); }
+.chart-info { flex: 1; min-width: 0; }
+.chart-info strong { display: block; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.2s; }
+.chart-info small { color: var(--muted); font-size: 12px; font-family: var(--font-mono); }
+.score-sm { min-width: 36px; height: 36px; font-size: 14px; }
+
+/* Freshman 四宫格 */
+.fresh-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.fresh-card { text-decoration: none; transition: transform 0.25s; }
+.fresh-card:hover { transform: translateY(-6px); }
+.fresh-no { font-family: var(--font-display); font-size: 40px; color: transparent; -webkit-text-stroke: 1.5px var(--acc); display: block; margin-bottom: 10px; }
+.fresh-art { border-radius: 10px; aspect-ratio: 1; display: grid; place-items: center; border: 1px solid var(--line); margin-bottom: 12px; }
+.fresh-art .card-initial { font-family: var(--font-display); font-size: 64px; color: rgba(0, 0, 0, 0.5); }
+.fresh-card h3 { margin: 0 0 6px; font-size: 17px; }
+
+@media (max-width: 1024px) {
+  .content-grid { grid-template-columns: 1fr; }
+  .rail { position: static; padding-top: 0; display: grid; grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-main { grid-template-columns: 1fr; min-height: 0; }
+  .hero-main-art { min-height: 220px; }
+  .fresh-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .feed-row { grid-template-columns: 120px 1fr; gap: 14px; }
+  .feed-body h3 { font-size: 16px; }
+  .feed-body p:not(.card-meta) { display: none; }
+  .rail { grid-template-columns: 1fr; }
+}
+
 /* ============ Reduced motion ============ */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
