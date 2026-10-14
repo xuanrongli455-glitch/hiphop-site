@@ -1,102 +1,95 @@
 {{ define "main" }}
-<!-- 启动画面 · 像 X 的黑屏 Logo -->
+<!-- 启动画面 -->
 <div id="splash" aria-hidden="true"><span class="splash-logo">HIPHOP</span></div>
 
-{{ $label := dict "news" "资讯" "music" "新歌推荐" "underground" "地下新声" "lyrics" "歌词解析" "artists" "艺人厂牌" }}
 {{ $news := where site.RegularPages "Section" "news" }}
-{{ $underground := where site.RegularPages "Section" "underground" }}
-{{ $lyrics := where site.RegularPages "Section" "lyrics" }}
 {{ $feed := where site.RegularPages "Section" "in" (slice "news" "music" "underground" "lyrics" "artists") }}
+{{ $label := dict "news" "资讯" "music" "新歌推荐" "underground" "地下新声" "lyrics" "歌词解析" "artists" "艺人厂牌" }}
 
-<!-- HERO · Complex 式：大特稿 + 3 篇侧栏 -->
-<section class="hero-mag">
+<!-- HERO · Shouted headline, rising photograph -->
+<section class="loud-hero">
   <div class="wrap">
-    <div class="hero-grid">
-      {{ range first 1 $news }}
-      <a class="hero-main" href="{{ .RelPermalink }}">
-        <div class="hero-main-art">
-          {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" loading="eager">{{ else }}<span class="card-initial">{{ substr .Title 0 1 }}</span>{{ end }}
-        </div>
-        <div class="hero-main-body">
-          <span class="kicker">封面特稿 · {{ index $label .Section }}</span>
-          <h2>{{ .Title }}</h2>
-          <p>{{ .Description | default (.Summary | plainify | truncate 90) }}</p>
-          <span class="feature-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟阅读</span>
-        </div>
+    <h1 class="loud-title"><span class="loud-mask"><span class="loud-line">中文说唱</span></span><span class="loud-mask"><span class="loud-line">正在发生</span></span></h1>
+    {{ range first 1 $news }}
+    <a class="loud-photo" href="{{ .RelPermalink }}">
+      {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" loading="eager">{{ end }}
+    </a>
+    <p class="loud-caption"><a href="{{ .RelPermalink }}">{{ .Title }}</a> · {{ .Date.Format "2006-01-02" }}</p>
+    <p class="loud-standfirst">说唱 / 街舞 / 潮流文化中文资讯小站。不装老炮，只做认真整理内容的搬运工。</p>
+    <a class="btn-loud" href="{{ .RelPermalink }}">读封面特稿</a>
+    {{ end }}
+  </div>
+</section>
+
+<!-- 最新 · Line-up table -->
+<section class="lineup">
+  <div class="wrap">
+    <h2 class="loud-sec-title">最新</h2>
+    <div class="lineup-filter" id="lineupFilter">
+      <button class="lchip active" data-col="all">全部</button>
+      <button class="lchip" data-col="资讯">资讯</button>
+      <button class="lchip" data-col="新歌推荐">新歌推荐</button>
+      <button class="lchip" data-col="地下新声">地下新声</button>
+      <button class="lchip" data-col="歌词解析">歌词解析</button>
+      <button class="lchip" data-col="艺人厂牌">艺人厂牌</button>
+    </div>
+    <div class="lineup-rows" id="lineupRows">
+      {{ range $i, $p := first 12 $feed }}
+      <a class="lineup-row reveal" data-col="{{ index $label .Section }}" href="{{ .RelPermalink }}" style="--i:{{ $i }}">
+        <span class="lineup-title">{{ .Title }}</span>
+        <span class="lineup-col">{{ index $label .Section }}</span>
+        <span class="lineup-date">{{ .Date.Format "2006-01-02" }}</span>
       </a>
       {{ end }}
-      <div class="hero-side">
-        {{ range first 1 (after 1 $news) }}
-        <a class="side-card" href="{{ .RelPermalink }}">
-          <div class="side-art">
-            {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" loading="lazy">{{ else }}<span class="card-initial">{{ substr .Title 0 1 }}</span>{{ end }}
-          </div>
-          <div class="side-body">
-            <span class="kicker">{{ index $label .Section }}</span>
-            <h3>{{ .Title }}</h3>
-          </div>
-        </a>
-        {{ end }}
-        {{ range first 1 $underground }}
-        <a class="side-card" href="{{ .RelPermalink }}">
-          <div class="side-art">
-            {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" loading="lazy">{{ else }}<span class="card-initial">{{ substr .Title 0 1 }}</span>{{ end }}
-          </div>
-          <div class="side-body">
-            <span class="kicker">{{ index $label .Section }}</span>
-            <h3>{{ .Title }}</h3>
-          </div>
-        </a>
-        {{ end }}
-        {{ range first 1 $lyrics }}
-        <a class="side-card" href="{{ .RelPermalink }}">
-          <div class="side-art">
-            {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" loading="lazy">{{ else }}<span class="card-initial">{{ substr .Title 0 1 }}</span>{{ end }}
-          </div>
-          <div class="side-body">
-            <span class="kicker">{{ index $label .Section }}</span>
-            <h3>{{ .Title }}</h3>
-          </div>
-        </a>
-        {{ end }}
-      </div>
+    </div>
+    <p class="lineup-note">每周更新。点上面栏目名，只看那个栏目的文章。</p>
+  </div>
+</section>
+
+<!-- 栏目 · Wall of word tiles -->
+<section class="tiles">
+  <div class="wrap">
+    <h2 class="loud-sec-title">栏目</h2>
+    <div class="tile-grid">
+      <a class="tile reveal" href="/news/"><span class="tile-word">资讯</span><span class="tile-cap">最新动态</span></a>
+      <a class="tile reveal tile-yellow" href="/music/"><span class="tile-word">新歌推荐</span><span class="tile-cap">每周新歌</span></a>
+      <a class="tile reveal" href="/underground/"><span class="tile-word">地下新声</span><span class="tile-cap">新人 Vol.01</span></a>
+      <a class="tile reveal tile-red" href="/lyrics/"><span class="tile-word">歌词解析</span><span class="tile-cap">逐句批注</span></a>
+      <a class="tile reveal" href="/artists/"><span class="tile-word">艺人厂牌</span><span class="tile-cap">Higher Brothers</span></a>
+      <a class="tile reveal tile-photo" href="/samples/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Das_Vinyl_dreht_sich.jpg/1280px-Das_Vinyl_dreht_sich.jpg" alt="采样考古" loading="lazy"><span class="tile-cap">采样考古 · 一首歌的前世</span></a>
+      <a class="tile reveal tile-yellow" href="/charts/"><span class="tile-word">热歌榜</span><span class="tile-cap">Top 10 即将上线</span></a>
+      <a class="tile reveal" href="/events/"><span class="tile-word">演出日历</span><span class="tile-cap">演出信息收集中</span></a>
+      <a class="tile reveal tile-photo" href="/dialect-map/"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Shang_hai_street_night.jpg/960px-Shang_hai_street_night.jpg" alt="方言说唱地图" loading="lazy"><span class="tile-cap">方言地图 · 各地方言说唱</span></a>
+      <a class="tile reveal tile-red" href="/beat-lab/"><span class="tile-word">Beat 实验室</span><span class="tile-cap">拆开一首 trap beat</span></a>
+      <a class="tile reveal tile-photo" href="/timeline/"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Graffiti%2C_Podg%C3%B3rze%2C_Krak%C3%B3w%2C_20210321_0849_5964.jpg/1280px-Graffiti%2C_Podg%C3%B3rze%2C_Krak%C3%B3w%2C_20210321_0849_5964.jpg" alt="说唱编年史" loading="lazy"><span class="tile-cap">编年史 · 从 Old School 到现在</span></a>
+      <a class="tile reveal tile-yellow" href="/submit/"><span class="tile-word">投稿</span><span class="tile-cap">新歌 / 演出 / 线索</span></a>
     </div>
   </div>
 </section>
 
-<!-- 最新 · 横排信息流 -->
-<section class="sec">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2 class="sec-title">最新</h2>
-      <a class="sec-more" href="/news/">全部 →</a>
+<!-- 宣言 · Staircase statement -->
+<section class="staircase">
+  <div class="wrap stair-wrap">
+    <div class="stair-text">
+    <p class="stair">
+      <span>我们不装老炮</span>
+      <span>只做认真整理</span>
+      <span>中文说唱正在发生</span>
+    </p>
+    <p class="stair-note">HIPHOP 中文站 · 中文说唱的每一个现场，每一次发声。</p>
     </div>
-    <div class="feed-list">
-      {{ range first 6 $feed }}
-      <a class="feed-row" href="{{ .RelPermalink }}">
-        <div class="feed-thumb">
-          {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" loading="lazy">{{ else }}<span class="card-initial">{{ substr .Title 0 1 }}</span>{{ end }}
-        </div>
-        <div class="feed-body">
-          <span class="kicker">{{ index $label .Section }}</span>
-          <h3>{{ .Title }}</h3>
-          <p>{{ .Description | default (.Summary | plainify | truncate 80) }}</p>
-          <p class="card-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟</p>
-        </div>
-      </a>
-      {{ end }}
+    <div class="stair-photos">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Higher_Brothers_Icebox_2019.jpg/960px-Higher_Brothers_Icebox_2019.jpg" alt="Higher Brothers" loading="lazy">
+      <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/Oxxxymiron_RAW_Berlin_asv2022-04_img15.jpg/1280px-Oxxxymiron_RAW_Berlin_asv2022-04_img15.jpg" alt="现场演出" loading="lazy">
     </div>
   </div>
 </section>
 
-<!-- 热歌榜 + 订阅 · 双栏 -->
-<section class="sec sec-alt">
-  <div class="wrap split">
-    <div class="chart-box">
-      <div class="sec-head">
-        <h2 class="sec-title">热歌榜 <span class="kicker">Hot 100</span></h2>
-        <a class="sec-more" href="/charts/">完整榜单 →</a>
-      </div>
+<!-- 热歌榜 + 订阅 · 平铺 -->
+<section class="flat">
+  <div class="wrap flat-split">
+    <div class="flat-chart">
+      <h2 class="loud-sec-title">热歌榜</h2>
       <div class="chart-list">
         {{ range $i, $p := first 5 (where site.RegularPages "Section" "music") }}
         <a class="chart-row" href="{{ $p.RelPermalink }}">
@@ -106,12 +99,11 @@
         </a>
         {{ end }}
       </div>
-      <p class="hint">首期真实 Top 10 即将上线，敬请期待。</p>
+      <p class="flat-note">首期真实 Top 10 即将上线，敬请期待。<a href="/charts/">完整榜单 →</a></p>
     </div>
-    <div class="sub-box">
-      <span class="kicker">Stay Tuned</span>
-      <h3>订阅本站</h3>
-      <p class="hint">RSS 永远有效。公众号「嘻哈笔记」筹备中。</p>
+    <div class="flat-sub">
+      <h2 class="loud-sec-title">订阅本站</h2>
+      <p class="flat-note">RSS 永远有效。公众号「嘻哈笔记」筹备中。</p>
       <div class="sub-btns">
         <a class="btn btn-gold" href="/index.xml">RSS</a>
         <a class="btn btn-ghost" href="/submit/">投稿</a>
@@ -120,13 +112,10 @@
   </div>
 </section>
 
-<!-- 演出日历 -->
-<section class="sec">
+<!-- 演出日历 · 平铺列表 -->
+<section class="flat">
   <div class="wrap">
-    <div class="sec-head">
-      <h2 class="sec-title">演出日历 <span class="kicker">On Tour</span></h2>
-      <a class="sec-more" href="/events/">全部 →</a>
-    </div>
+    <h2 class="loud-sec-title">演出日历</h2>
     <div class="tour-list">
       {{ range first 3 (where site.RegularPages "Section" "events") }}
       {{ if ne .File.BaseFileName "_index" }}
@@ -138,42 +127,7 @@
       {{ end }}
       {{ end }}
     </div>
-    <p class="hint">演出信息持续收集中——主办方 / 厂牌欢迎投稿：hi@hiphop.ccwu.cc</p>
-  </div>
-</section>
-
-<!-- 互动实验室 -->
-<section class="sec sec-alt">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2 class="sec-title">互动实验室 <span class="kicker">Lab</span></h2>
-    </div>
-    <div class="cols-3">
-      <a class="big-card" href="/dialect-map/">
-        <div class="big-img"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Shang_hai_street_night.jpg/960px-Shang_hai_street_night.jpg" alt="方言说唱地图" loading="lazy"></div>
-        <div class="big-body"><span class="chip">互动</span><h3>方言说唱地图</h3><p>点开省份，看各地的方言说唱代表人物</p></div>
-      </a>
-      <a class="big-card" href="/beat-lab/">
-        <div class="big-img"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/EMI_studio_mixer_%281940s%29%2C_Abbey_Road_Studios.jpg/960px-EMI_studio_mixer_%281940s%29%2C_Abbey_Road_Studios.jpg" alt="Beat 拆解实验室" loading="lazy"></div>
-        <div class="big-body"><span class="chip">互动</span><h3>Beat 拆解实验室</h3><p>亲手静音 / 独奏每轨，拆开一首 trap beat</p></div>
-      </a>
-      <a class="big-card" href="/timeline/">
-        <div class="big-img"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Graffiti%2C_Podg%C3%B3rze%2C_Krak%C3%B3w%2C_20210321_0849_5964.jpg/1280px-Graffiti%2C_Podg%C3%B3rze%2C_Krak%C3%B3w%2C_20210321_0849_5964.jpg" alt="说唱编年史" loading="lazy"></div>
-        <div class="big-body"><span class="chip">互动</span><h3>说唱编年史</h3><p>从 Old School 到如今的 Underground，一条时间线</p></div>
-      </a>
-      <a class="big-card" href="/samples/">
-        <div class="big-img"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Lang%27s_Recording_Studio_console.jpg/960px-Lang%27s_Recording_Studio_console.jpg" alt="采样考古" loading="lazy"></div>
-        <div class="big-body"><span class="kicker">考古</span><h3>采样考古</h3><p>一首歌的前世今生，顺着采样找回去</p></div>
-      </a>
-      <a class="big-card" href="/awards/">
-        <div class="big-img"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/WikiCup_Trophy_Gold.png" alt="年度榜单" loading="lazy"></div>
-        <div class="big-body"><span class="chip">年度</span><h3>年度榜单</h3><p>年度 10 大新人 + 10 大专辑，年底见</p></div>
-      </a>
-      <a class="big-card" href="/submit/">
-        <div class="big-img"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Shanghai-neon_%28279418574%29.jpg/960px-Shanghai-neon_%28279418574%29.jpg" alt="投稿入口" loading="lazy"></div>
-        <div class="big-body"><span class="kicker">投稿</span><h3>我要投稿</h3><p>新歌、演出、故事线索，好内容值得被更多人看到</p></div>
-      </a>
-    </div>
+    <p class="flat-note">演出信息持续收集中——主办方 / 厂牌欢迎投稿：hi@hiphop.ccwu.cc <a href="/events/">全部 →</a></p>
   </div>
 </section>
 {{ end }}

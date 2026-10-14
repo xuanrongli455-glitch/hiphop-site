@@ -134,3 +134,23 @@
     });
   }
 })();
+
+/* 首页 Line-up 栏目筛选 */
+(function () {
+  var filter = document.getElementById("lineupFilter");
+  var rows = document.getElementById("lineupRows");
+  if (!filter || !rows) return;
+  var chips = filter.querySelectorAll(".lchip");
+  var items = rows.querySelectorAll(".lineup-row");
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      chips.forEach(function (c) { c.classList.remove("active"); });
+      chip.classList.add("active");
+      var col = chip.getAttribute("data-col");
+      items.forEach(function (row) {
+        var match = col === "all" || row.getAttribute("data-col") === col;
+        row.classList.toggle("hide", !match);
+      });
+    });
+  });
+})();
