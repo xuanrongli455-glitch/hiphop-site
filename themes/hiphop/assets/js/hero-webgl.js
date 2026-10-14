@@ -143,6 +143,13 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     var x = c.getContext("2d");
     x.fillStyle = "#0a0a0a";
     x.fillRect(0, 0, 1024, 1024);
+    /* 盘面径向提亮：中心近黑、边缘深灰，整张盘在黑底上有体量，不只剩边环 */
+    var grad = x.createRadialGradient(512, 512, 180, 512, 512, 512);
+    grad.addColorStop(0, "#101010");
+    grad.addColorStop(0.6, "#1c1c1c");
+    grad.addColorStop(1, "#2e2e2e");
+    x.fillStyle = grad;
+    x.fillRect(0, 0, 1024, 1024);
     for (var r = 195; r <= 505; r += 3) {
       x.strokeStyle = "rgba(255,255,255," + (0.1 + (r % 15 === 0 ? 0.08 : 0)) + ")";
       x.lineWidth = 1;
