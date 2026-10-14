@@ -11,6 +11,7 @@
   {{ with .Get "title" }}<p class="stem-title">《{{ . }}》</p>{{ end }}
   <div class="stem-embed" hidden>
     <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="66" data-src="https://music.163.com/outchain/player?type=2&id={{ .Get "id" }}&auto=1&height=66"></iframe>
-    <p class="stem-note">在网易云音乐播放（官方嵌入播放器）</p>
+    <p class="stem-tip">点播放器里的 ▶ 开始播放，若没反应再点一次</p>
+    <p class="stem-link"><a href="https://music.163.com/#/song?id={{ .Get "id" }}" target="_blank" rel="noopener">在网易云音乐里听 →</a></p>
   </div>
 </div>

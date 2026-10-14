@@ -809,3 +809,6 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 @media (prefers-reduced-motion: reduce) {
   .egg .egg-figure { animation: none !important; }
 }
+.stem-tip { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+.stem-link { margin: 6px 0 0; font-size: 14px; }
+.stem-link a { color: var(--acc); font-weight: 600; }
