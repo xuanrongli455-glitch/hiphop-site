@@ -26,6 +26,9 @@ body.world-home .site-header { position: fixed; top: 0; left: 0; right: 0; backg
 .world-sound:hover { border-color: var(--acc); color: var(--acc); }
 /* 回退：WebGL / CDN 失败时显示的静态封面网格 */
 .world-fallback { position: absolute; inset: 0; z-index: 1; overflow-y: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 190px 24px 40px; align-content: start; background: #000; }
+/* 关键修复：上面的 display: grid 会覆盖 hidden 属性（作者样式优先于 UA 的 [hidden]{display:none}），
+   导致 JS 设 fallback.hidden = true 后兜底网格仍盖在 3D 画布上面。必须显式写死。 */
+.world-fallback[hidden] { display: none; }
 .world-fallback a { display: block; color: #fff; text-decoration: none; }
 .world-fallback img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
 .world-fallback span { display: block; margin-top: 8px; font-size: 13px; line-height: 1.4; }
