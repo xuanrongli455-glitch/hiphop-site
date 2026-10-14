@@ -1,4 +1,5 @@
 ---
+image: "https://upload.wikimedia.org/wikipedia/commons/7/71/Trav_Walls_in_concert_with_Young_Thug.png"
 title: "中文说唱入坑指南：从哪里开始听"
 date: 2026-10-13
 tags: ["入门", "指南"]
