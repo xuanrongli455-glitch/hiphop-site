@@ -1,133 +1,23 @@
-/* 首页 Hero · WebGL 磁带画廊：每盘磁带 = 一篇文章，拖动旋转，点击进入。
-   失败时（无 WebGL / CDN 失败 / 减动效偏好）自动回退到静态封面图，不阻断页面。 */
+/* 首页 hero：黑胶唱片画廊 — 真实黑胶照片贴图 + 散落漂浮 + 自转 + HUD */
 import * as THREE from "three";
-import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 (function () {
+  var dataEl = document.getElementById("tapeData");
   var stage = document.getElementById("webglStage");
   var fallback = document.getElementById("webglFallback");
   var hint = document.getElementById("webglHint");
-  var dataEl = document.getElementById("tapeData");
-  if (!stage || !dataEl) return;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!dataEl || !stage) return;
   var items;
   try { items = JSON.parse(dataEl.textContent); } catch (e) { return; }
   if (!items || !items.length) return;
-
-  var palette = ["#ffe600", "#ff4d00", "#3cffd0", "#5200ff", "#ff2e88", "#00aaff"];
-
-  function wrapTitle(x, title, maxWidthPx, maxLines) {
-    /* 按画布实测宽度换行，优先在空格处断开，英文单词不断半 */
-    var lines = [];
-    var cur = "";
-    var chars = Array.from(title);
-    var i = 0;
-    for (; i < chars.length; i++) {
-      var test = cur + chars[i];
-      if (x.measureText(test).width > maxWidthPx && cur) {
-        var sp = cur.lastIndexOf(" ");
-        if (sp > 0) {
-          lines.push(cur.slice(0, sp));
-          cur = cur.slice(sp + 1) + chars[i];
-        } else {
-          lines.push(cur);
-          cur = chars[i];
-        }
-        if (lines.length >= maxLines) { i++; break; }
-      } else {
-        cur = test;
-      }
-    }
-    if (lines.length < maxLines && cur) lines.push(cur);
-    if (i < chars.length) {
-      var last = lines[lines.length - 1] || "";
-      while (last && x.measureText(last + "…").width > maxWidthPx) last = last.slice(0, -1);
-      lines[lines.length - 1] = last + "…";
-    }
-    return lines.slice(0, maxLines);
-  }
-
-  function roundRect(x, px, py, w, h, r) {
-    x.beginPath();
-    x.moveTo(px + r, py);
-    x.arcTo(px + w, py, px + w, py + h, r);
-    x.arcTo(px + w, py + h, px, py + h, r);
-    x.arcTo(px, py + h, px, py, r);
-    x.arcTo(px, py, px + w, py, r);
-    x.closePath();
-  }
-
-  /* 真磁带质感：纸标签 + 螺丝 + 带盘窗（辐条轮 + 磁带条）+ 底部卡口 */
-  function makeFaceTexture(item, color) {
-    var c = document.createElement("canvas");
-    c.width = 1024; c.height = 640;
-    var x = c.getContext("2d");
-    /* 壳体 */
-    x.fillStyle = color;
-    x.fillRect(0, 0, 1024, 640);
-    x.strokeStyle = "rgba(0,0,0,0.25)";
-    x.lineWidth = 6;
-    x.strokeRect(10, 10, 1004, 620);
-    /* 四角螺丝 */
-    [[44, 44], [980, 44], [44, 596], [980, 596]].forEach(function (p) {
-      x.fillStyle = "rgba(0,0,0,0.35)";
-      x.beginPath(); x.arc(p[0], p[1], 16, 0, Math.PI * 2); x.fill();
-      x.strokeStyle = "rgba(255,255,255,0.35)"; x.lineWidth = 3;
-      x.beginPath(); x.moveTo(p[0] - 9, p[1]); x.lineTo(p[0] + 9, p[1]); x.stroke();
-    });
-    /* 纸标签：栏目 + 标题，标题不再撞进窗口 */
-    x.fillStyle = "#f5f0e6";
-    roundRect(x, 56, 56, 912, 210, 10); x.fill();
-    x.fillStyle = "#666666";
-    x.font = "600 34px sans-serif";
-    x.fillText(item.col, 88, 116);
-    x.fillStyle = "#111111";
-    x.font = "700 56px 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif";
-    var lines = wrapTitle(x, item.title, 848, 2);
-    lines.forEach(function (ln, i) { x.fillText(ln, 88, 180 + i * 62); });
-    /* 磁带窗口 */
-    x.fillStyle = "#141414";
-    roundRect(x, 64, 300, 896, 190, 16); x.fill();
-    /* 磁带条：连着两个轮 */
-    x.fillStyle = "#5a3a1a";
-    x.fillRect(230, 387, 564, 6);
-    /* 两个带盘：磁带卷 + 白色辐条轮 + 彩色轮毂 */
-    [230, 794].forEach(function (cx) {
-      x.fillStyle = "#7a4a1f";
-      x.beginPath(); x.arc(cx, 395, 60, 0, Math.PI * 2); x.fill();
-      x.fillStyle = "#f2f2f2";
-      x.beginPath(); x.arc(cx, 395, 46, 0, Math.PI * 2); x.fill();
-      x.strokeStyle = "#141414"; x.lineWidth = 5;
-      for (var k = 0; k < 3; k++) {
-        var a = k * Math.PI * 2 / 3 - Math.PI / 2;
-        x.beginPath();
-        x.moveTo(cx, 395);
-        x.lineTo(cx + Math.cos(a) * 44, 395 + Math.sin(a) * 44);
-        x.stroke();
-      }
-      x.fillStyle = color;
-      x.beginPath(); x.arc(cx, 395, 15, 0, Math.PI * 2); x.fill();
-      x.fillStyle = "#141414";
-      x.beginPath(); x.arc(cx, 395, 6, 0, Math.PI * 2); x.fill();
-    });
-    /* 底部卡口：中间磁头开口 + 两侧小切口 */
-    x.fillStyle = "#0a0a0a";
-    x.beginPath();
-    x.moveTo(412, 640); x.lineTo(452, 556); x.lineTo(572, 556); x.lineTo(612, 640); x.closePath(); x.fill();
-    x.fillRect(180, 600, 84, 40);
-    x.fillRect(760, 600, 84, 40);
-    var tex = new THREE.CanvasTexture(c);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    tex.anisotropy = 4;
-    return tex;
-  }
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   var renderer;
   try {
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
   } catch (e) { return; }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.setClearColor(0x000000, 0);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.1;
   stage.appendChild(renderer.domElement);
@@ -138,183 +28,282 @@ import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.j
   camera.position.set(0, 0.7, 8.4);
   camera.lookAt(0, 0, 0);
 
-  /* 灯光：环境 + 暖主光 + 冷轮廓光，塑料壳才有高光和明暗 */
-  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-  var key = new THREE.DirectionalLight(0xfff2dd, 1.6);
+  /* 环境反射：黑胶面才有真实反光 */
+  var pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+  /* 灯光：环境 + 暖主光 + 冷轮廓光 */
+  scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+  var key = new THREE.DirectionalLight(0xfff2dd, 1.8);
   key.position.set(4, 6, 7);
   scene.add(key);
-  var rim = new THREE.DirectionalLight(0x88aaff, 0.7);
+  var rim = new THREE.DirectionalLight(0x88aaff, 0.9);
   rim.position.set(-6, 3, -5);
   scene.add(rim);
 
+  /* 真实黑胶照片（Public Domain，无品牌字，空白黄标）作盘面底 */
+  var VINYL_PHOTO = "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/12in-Vinyl-LP-Record-Angle.jpg/1024px-12in-Vinyl-LP-Record-Angle.jpg";
+  /* 每盘唱片的标签配色（站内色 + 黑胶常见色），文字与底色保证对比 */
+  var LABELS = [
+    { bg: "#ffe600", fg: "#111111" },
+    { bg: "#f5f0e6", fg: "#111111" },
+    { bg: "#ff2e2e", fg: "#ffffff" },
+    { bg: "#3cffd0", fg: "#111111" },
+    { bg: "#ff7a1a", fg: "#111111" },
+    { bg: "#a06bff", fg: "#ffffff" },
+    { bg: "#00aaff", fg: "#ffffff" },
+    { bg: "#ff2e88", fg: "#ffffff" }
+  ];
+
+  function wrapTitle(ctx, text, maxW, maxLines) {
+    var chars = text.split("");
+    var lines = [""];
+    chars.forEach(function (ch) {
+      var cur = lines[lines.length - 1];
+      var next = cur + ch;
+      if (ctx.measureText(next).width > maxW && cur !== "") {
+        if (lines.length < maxLines) lines.push(ch);
+        else lines[lines.length - 1] = cur + "…";
+      } else {
+        lines[lines.length - 1] = next;
+      }
+    });
+    return lines;
+  }
+
+  /* 盘面贴图：真实黑胶照片 + 覆盖中标（栏目 + 标题 + SIDE A），像一张真实唱片 */
+  function makeVinylTexture(item, label) {
+    var c = document.createElement("canvas");
+    c.width = 1024; c.height = 1024;
+    var x = c.getContext("2d");
+    var img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = function () {
+      x.drawImage(img, 0, 0, 1024, 1024);
+      /* 中标：盖住原图的空白黄标 */
+      x.fillStyle = label.bg;
+      x.beginPath(); x.arc(512, 512, 152, 0, Math.PI * 2); x.fill();
+      x.strokeStyle = "rgba(0,0,0,0.25)"; x.lineWidth = 2;
+      x.beginPath(); x.arc(512, 512, 152, 0, Math.PI * 2); x.stroke();
+      /* 栏目 */
+      x.fillStyle = label.fg;
+      x.font = "600 30px sans-serif";
+      x.textAlign = "center";
+      x.fillText(item.col, 512, 430);
+      /* 标题（最多 2 行） */
+      x.font = "700 46px 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif";
+      var lines = wrapTitle(x, item.title, 250, 2);
+      lines.forEach(function (ln, i) { x.fillText(ln, 512, 500 + i * 52); });
+      /* SIDE A */
+      x.font = "600 24px sans-serif";
+      x.fillText("SIDE A · HIPHOPNOTE", 512, 610);
+      /* 中轴孔 */
+      x.fillStyle = "#111111";
+      x.beginPath(); x.arc(512, 512, 7, 0, Math.PI * 2); x.fill();
+      tex.needsUpdate = true;
+    };
+    img.onerror = function () { /* 照片加载失败：用纯黑盘面兜底 */ };
+    img.src = VINYL_PHOTO;
+    /* 先画纯黑底，照片到后再覆盖，避免未加载时透明 */
+    x.fillStyle = "#0a0a0a";
+    x.fillRect(0, 0, 1024, 1024);
+    var tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = 4;
+    return tex;
+  }
+
+  /* 确定性随机：每次打开布局一致，不闪烁跳变 */
+  function rng(seed) {
+    return function () {
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  var rnd = rng(20261014);
+
   var group = new THREE.Group();
   scene.add(group);
-  var tapes = [];
-  var radius = 4.6;
-  function shade(hex, f) {
-    var col = new THREE.Color(hex);
-    col.multiplyScalar(f);
-    return col;
-  }
+  var records = [];
+  var texLoader = new THREE.TextureLoader();
+  texLoader.setCrossOrigin("anonymous");
+
   items.forEach(function (item, i) {
-    var color = palette[i % palette.length];
-    /* 圆角壳 + 正面贴图 + 背面，圆角吃光才像实物 */
-    var tape = new THREE.Group();
-    var shell = new THREE.Mesh(
-      new RoundedBoxGeometry(2.4, 1.5, 0.28, 4, 0.06),
-      new THREE.MeshStandardMaterial({ color: shade(color, 0.55), roughness: 0.4, metalness: 0.05 })
-    );
-    var face = new THREE.Mesh(
-      new THREE.PlaneGeometry(2.36, 1.46),
-      new THREE.MeshStandardMaterial({ map: makeFaceTexture(item, color), roughness: 0.35, metalness: 0 })
-    );
-    face.position.z = 0.141;
-    var back = new THREE.Mesh(
-      new THREE.PlaneGeometry(2.36, 1.46),
-      new THREE.MeshStandardMaterial({ color: shade(color, 0.3), roughness: 0.5, metalness: 0 })
-    );
-    back.position.z = -0.141;
-    back.rotation.y = Math.PI;
-    tape.add(shell, face, back);
-    /* 原版式浮动预览图：文章封面卡悬在磁带前方，压住窗口区，标签标题仍可见 */
+    var rec = new THREE.Group();
+    /* 唱片本体：薄圆柱，盘面朝 +Z，自转绕盘面法线 */
+    var tex = makeVinylTexture(item, LABELS[i % LABELS.length]);
+    var sideMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.5 });
+    var topMat = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.32, metalness: 0.15 });
+    var botMat = new THREE.MeshStandardMaterial({ color: 0x141414, roughness: 0.6 });
+    var disc = new THREE.Mesh(new THREE.CylinderGeometry(1.35, 1.35, 0.06, 64), [sideMat, topMat, botMat]);
+    disc.rotation.x = Math.PI / 2;
+    rec.add(disc);
+    /* 浮动预览图：文章封面，加载失败时隐藏 */
     if (item.image) {
-      var thumb = new THREE.Group();
-      var backing = new THREE.Mesh(
-        new THREE.PlaneGeometry(1.26, 0.81),
-        new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.6 })
-      );
-      backing.position.z = -0.005;
-      /* 注意：材质 color 会与贴图相乘，必须用白色，否则照片会被压成黑块 */
-      var thumbMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5, metalness: 0 });
-      var thumbMesh = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 0.75), thumbMat);
-      thumb.add(backing, thumbMesh);
-      thumb.position.set(0, -0.35, 0.95);
-      thumb.rotation.set(0, -0.08, 0.02);
-      tape.add(thumb);
-      new THREE.TextureLoader().load(item.image, function (tex) {
-        tex.colorSpace = THREE.SRGBColorSpace;
-        thumbMat.map = tex;
+      var thumbGroup = new THREE.Group();
+      var backMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.6 });
+      var back = new THREE.Mesh(new THREE.PlaneGeometry(1.26, 0.81), backMat);
+      thumbGroup.add(back);
+      var thumbMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 });
+      var thumb = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 0.75), thumbMat);
+      thumb.position.z = 0.01;
+      thumbGroup.add(thumb);
+      texLoader.load(item.image, function (t) {
+        t.colorSpace = THREE.SRGBColorSpace;
+        thumbMat.map = t;
         thumbMat.needsUpdate = true;
-      }, undefined, function () { thumb.visible = false; });
+      }, undefined, function () { thumbGroup.visible = false; });
+      thumbGroup.position.set(0, -0.35, 0.95);
+      thumbGroup.rotation.set(0, -0.08, 0.02);
+      rec.add(thumbGroup);
     }
+    /* 散落布局：位置、角度、大小都错开，像漂浮的一堆实物 */
     var angle = (i / items.length) * Math.PI * 2;
-    /* 打破完美圆环：每盘高低、倾斜、大小都略有不同，像漂浮的实物 */
-    var baseY = Math.sin(i * 2.3) * 0.45;
-    tape.position.set(Math.sin(angle) * radius, baseY, Math.cos(angle) * radius);
-    tape.rotation.y = angle;
-    tape.rotation.x = -0.06 + Math.sin(i * 1.3) * 0.05;
-    tape.rotation.z = Math.sin(i * 1.7) * 0.1;
-    tape.scale.setScalar(0.95 + (i % 3) * 0.05);
-    tape.userData.url = item.url;
-    tape.userData.baseY = baseY;
-    tape.userData.phase = i * 1.3;
-    group.add(tape);
-    tapes.push(tape);
+    var rr = 3.6 + rnd() * 2.0;
+    var ang = angle + (rnd() - 0.5) * 0.5;
+    var baseY = (rnd() - 0.5) * 2.4;
+    rec.position.set(Math.sin(ang) * rr, baseY, Math.cos(ang) * rr);
+    rec.rotation.y = ang + (rnd() - 0.5) * 0.8;
+    rec.rotation.x = (rnd() - 0.5) * 0.9;
+    rec.rotation.z = (rnd() - 0.5) * 0.8;
+    rec.scale.setScalar(0.85 + rnd() * 0.35);
+    rec.userData.url = item.url;
+    rec.userData.baseY = baseY;
+    rec.userData.phase = i * 1.3;
+    rec.userData.index = i;
+    rec.userData.title = item.title;
+    rec.userData.disc = disc;
+    rec.userData.spinSpeed = (0.2 + rnd() * 0.3) * (rnd() > 0.5 ? 1 : -1);
+    group.add(rec);
+    records.push(rec);
   });
 
+  /* 尺寸 */
   function resize() {
-    var w = stage.clientWidth || 800;
-    var h = stage.clientHeight || 520;
-    renderer.setSize(w, h);
+    var w = stage.clientWidth || 1;
+    var h = stage.clientHeight || 1;
+    renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
   }
   resize();
   new ResizeObserver(resize).observe(stage);
 
-  /* 交互：拖动旋转（带惯性），点按进入文章 */
-  var targetRot = 0;
-  var velocity = 0;
-  var dragging = false;
-  var lastX = 0;
-  var downX = 0, downY = 0, downTime = 0;
-  var lastInteract = 0;
-  var hovering = false;
-  var raycaster = new THREE.Raycaster();
-  var pointer = new THREE.Vector2();
-  var hoverCheck = false;
-
-  function pick(cx, cy) {
-    var rect = renderer.domElement.getBoundingClientRect();
-    pointer.x = ((cx - rect.left) / rect.width) * 2 - 1;
-    pointer.y = -((cy - rect.top) / rect.height) * 2 + 1;
-    raycaster.setFromCamera(pointer, camera);
-    var hits = raycaster.intersectObjects(tapes, true);
-    if (!hits.length) return null;
-    var obj = hits[0].object;
-    while (obj && !obj.userData.url) obj = obj.parent;
-    return obj;
-  }
-
+  /* 拖动旋转（带惯性）+ 点击进入文章 */
+  var dragging = false, moved = 0, lastX = 0, lastY = 0, velX = 0, velY = 0;
+  var downX = 0, downY = 0, downT = 0, hovering = false, hoverCheck = false;
   var el = renderer.domElement;
   el.addEventListener("pointerdown", function (e) {
-    dragging = true;
-    lastX = e.clientX;
-    downX = e.clientX; downY = e.clientY;
-    downTime = Date.now();
-    velocity = 0;
+    dragging = true; moved = 0; lastX = e.clientX; lastY = e.clientY;
+    downX = e.clientX; downY = e.clientY; downT = Date.now();
+    velX = 0; velY = 0;
     el.setPointerCapture(e.pointerId);
+    el.style.cursor = "grabbing";
   });
   el.addEventListener("pointermove", function (e) {
     if (dragging) {
-      var dx = e.clientX - lastX;
-      lastX = e.clientX;
-      targetRot += dx * 0.005;
-      velocity = dx * 0.005;
-      lastInteract = Date.now();
+      var dx = e.clientX - lastX, dy = e.clientY - lastY;
+      group.rotation.y += dx * 0.008;
+      group.rotation.x += dy * 0.004;
+      group.rotation.x = Math.max(-0.5, Math.min(0.5, group.rotation.x));
+      velX = dx * 0.008; velY = dy * 0.004;
+      moved += Math.abs(dx) + Math.abs(dy);
+      lastX = e.clientX; lastY = e.clientY;
     } else {
       hoverCheck = true;
-      var hit = pick(e.clientX, e.clientY);
-      el.style.cursor = hit ? "pointer" : "grab";
     }
   });
-  function endDrag(e) {
-    if (!dragging) return;
+  function pick(cx, cy) {
+    var r = el.getBoundingClientRect();
+    var nx = ((cx - r.left) / r.width) * 2 - 1;
+    var ny = -((cy - r.top) / r.height) * 2 + 1;
+    var ray = new THREE.Raycaster();
+    ray.setFromCamera({ x: nx, y: ny }, camera);
+    var hits = ray.intersectObjects(records, true);
+    if (!hits.length) return null;
+    var o = hits[0].object;
+    while (o && !o.userData.url) o = o.parent;
+    return o;
+  }
+  el.addEventListener("pointerup", function (e) {
     dragging = false;
-    lastInteract = Date.now();
-    var moved = Math.hypot(e.clientX - downX, e.clientY - downY);
-    if (moved < 8 && Date.now() - downTime < 400) {
+    el.style.cursor = "grab";
+    if (moved < 8 && Date.now() - downT < 400) {
       var hit = pick(e.clientX, e.clientY);
       if (hit && hit.userData.url) window.location.href = hit.userData.url;
     }
-  }
-  el.addEventListener("pointerup", endDrag);
-  el.addEventListener("pointercancel", function () { dragging = false; });
+  });
   el.addEventListener("pointerenter", function () { hovering = true; });
-  el.addEventListener("pointerleave", function () { hovering = false; lastInteract = Date.now(); });
+  el.addEventListener("pointerleave", function () { hovering = false; });
 
-  /* 可见时才渲染，省电 */
-  var visible = true;
-  new IntersectionObserver(function (entries) {
-    visible = entries[0].isIntersecting;
-  }).observe(stage);
-
-  var last = performance.now();
-  function loop(now) {
-    requestAnimationFrame(loop);
-    if (!visible) return;
-    var dt = Math.min((now - last) / 1000, 0.05);
-    last = now;
-    if (!dragging) {
-      if (Date.now() - lastInteract > 3000 && !hovering) targetRot += dt * 0.12; /* 无人操作时缓慢自转，悬停时暂停方便点选 */
-      targetRot += velocity;
-      velocity *= 0.94;
+  /* HUD：坐标读数 + 悬停唱片信息 */
+  var hudCoords = document.getElementById("hudCoords");
+  var hudTape = document.getElementById("hudTape");
+  function pad3(n) { n = Math.max(0, Math.round(n)); return ("000" + n).slice(-3); }
+  el.addEventListener("pointermove", function (e) {
+    if (hudCoords) {
+      var r = el.getBoundingClientRect();
+      hudCoords.textContent = "x: " + pad3(e.clientX - r.left) + " y: " + pad3(e.clientY - r.top);
     }
-    group.rotation.y += (targetRot - group.rotation.y) * 0.08;
-    /* 磁带各自缓缓浮动 + 镜头轻微漂移，原版那种“活的”镜头感 */
-    tapes.forEach(function (t) {
-      t.position.y = t.userData.baseY + Math.sin(now * 0.0006 + t.userData.phase) * 0.08;
+  });
+
+  /* 渲染循环：自转 + 缓浮动 + 镜头漂移 + 无人操作 3 秒后恢复自转 */
+  var clock = new THREE.Clock();
+  var lastInteract = Date.now();
+  var lastMove = 0;
+  var running = true;
+  var lastVisible = true;
+  function frame() {
+    if (!running) return;
+    requestAnimationFrame(frame);
+    var now = Date.now();
+    var dt = Math.min(clock.getDelta(), 0.05);
+    if (now - lastInteract > 3000 && !dragging && !hovering) {
+      group.rotation.y += 0.0012;
+    }
+    if (Math.abs(velX) > 0.0001 || Math.abs(velY) > 0.0001) {
+      group.rotation.y += velX;
+      group.rotation.x += velY;
+      velX *= 0.94; velY *= 0.94;
+    }
+    records.forEach(function (rec) {
+      rec.position.y = rec.userData.baseY + Math.sin(now * 0.0006 + rec.userData.phase) * 0.08;
+      if (rec.userData.disc) rec.userData.disc.rotation.y += rec.userData.spinSpeed * dt;
     });
     camera.position.x = Math.sin(now * 0.00008) * 0.35;
     camera.position.y = 0.7 + Math.sin(now * 0.00011 + 1) * 0.18;
     camera.lookAt(0, 0, 0);
+    if (hoverCheck && !dragging) {
+      hoverCheck = false;
+      var hit = pick(lastMoveX, lastMoveY);
+      el.style.cursor = hit ? "pointer" : "grab";
+      if (hudTape) {
+        hudTape.textContent = hit && hit.userData.title
+          ? "VINYL 0" + (hit.userData.index + 1) + " — " + hit.userData.title
+          : "VINYL — / —";
+      }
+    }
     renderer.render(scene, camera);
   }
-  requestAnimationFrame(loop);
+  var lastMoveX = 0, lastMoveY = 0;
+  el.addEventListener("pointermove", function (e) { lastMoveX = e.clientX; lastMoveY = e.clientY; lastInteract = Date.now(); });
+  el.addEventListener("pointerdown", function () { lastInteract = Date.now(); });
+  el.addEventListener("wheel", function () { lastInteract = Date.now(); }, { passive: true });
 
-  /* 成功初始化：显示画布，隐藏回退图 */
+  /* 离屏暂停 */
+  new IntersectionObserver(function (entries) {
+    var vis = entries[0].isIntersecting;
+    if (vis && !lastVisible) { lastVisible = true; clock.getDelta(); }
+    lastVisible = vis;
+    running = vis;
+    if (vis) frame();
+  }).observe(stage);
+
+  /* 成功初始化后显示画布，隐藏回退图 */
   stage.hidden = false;
   if (fallback) fallback.hidden = true;
   if (hint) hint.hidden = false;
-  el.style.cursor = "grab";
+  frame();
 })();

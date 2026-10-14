@@ -10,7 +10,17 @@
 <section class="loud-hero">
   <div class="wrap">
     <h1 class="loud-title"><span class="loud-mask"><span class="loud-line">中文说唱</span></span><span class="loud-mask"><span class="loud-line">正在发生</span></span></h1>
-    <div class="webgl-stage" id="webglStage" hidden></div>
+    <div class="webgl-stage" id="webglStage" hidden>
+      <div class="webgl-hud" aria-hidden="true">
+        <span class="hud-corner hud-tl"></span>
+        <span class="hud-corner hud-tr"></span>
+        <span class="hud-corner hud-bl"></span>
+        <span class="hud-corner hud-br"></span>
+        <span class="hud-coords" id="hudCoords">x: 000 y: 000</span>
+        <span class="hud-tape" id="hudTape">TAPE — / —</span>
+        <span class="hud-ring"></span>
+      </div>
+    </div>
     <div class="webgl-fallback" id="webglFallback">
       {{ range first 1 $news }}
       <a class="loud-photo" href="{{ .RelPermalink }}">
@@ -20,7 +30,7 @@
       <a class="btn-loud" href="{{ .RelPermalink }}">读封面特稿</a>
       {{ end }}
     </div>
-    <p class="webgl-hint" id="webglHint" hidden>拖动旋转 · 点击磁带进入文章</p>
+    <p class="webgl-hint" id="webglHint" hidden>拖动旋转 · 点击黑胶进入文章</p>
     <p class="loud-standfirst">说唱 / 街舞 / 潮流文化中文资讯小站。不装老炮，只做认真整理内容的搬运工。</p>
   </div>
 </section>

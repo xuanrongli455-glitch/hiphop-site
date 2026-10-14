@@ -1,0 +1,11 @@
+/* WebGL 画廊 HUD：设计工具取景器感（十字对位 + 坐标读数 + 虚线圈），不拦截操作 */
+.webgl-stage { position: relative; }
+.webgl-hud { position: absolute; inset: 0; pointer-events: none; z-index: 2; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.hud-corner { position: absolute; width: 22px; height: 22px; border: 1px solid rgba(255,255,255,.55); }
+.hud-tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+.hud-tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+.hud-bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+.hud-br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+.hud-coords { position: absolute; top: 14px; right: 14px; font-size: 11px; letter-spacing: .1em; color: var(--acc); }
+.hud-tape { position: absolute; left: 14px; bottom: 14px; font-size: 11px; letter-spacing: .08em; color: rgba(255,255,255,.8); max-width: 72%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.hud-ring { position: absolute; width: 340px; height: 340px; border: 1px dashed rgba(255,255,255,.18); border-radius: 50%; left: 50%; top: 55%; transform: translate(-50%, -50%); }
