@@ -1,6 +1,7 @@
 /* 首页 Hero · WebGL 磁带画廊：每盘磁带 = 一篇文章，拖动旋转，点击进入。
    失败时（无 WebGL / CDN 失败 / 减动效偏好）自动回退到静态封面图，不阻断页面。 */
 import * as THREE from "three";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 
 (function () {
   var stage = document.getElementById("webglStage");
@@ -127,36 +128,61 @@ import * as THREE from "three";
   } catch (e) { return; }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.setClearColor(0x000000, 0);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.1;
   stage.appendChild(renderer.domElement);
 
   var scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x1a1a1a, 9, 17);
   var camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
   camera.position.set(0, 0.7, 8.4);
   camera.lookAt(0, 0, 0);
+
+  /* 灯光：环境 + 暖主光 + 冷轮廓光，塑料壳才有高光和明暗 */
+  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+  var key = new THREE.DirectionalLight(0xfff2dd, 1.6);
+  key.position.set(4, 6, 7);
+  scene.add(key);
+  var rim = new THREE.DirectionalLight(0x88aaff, 0.7);
+  rim.position.set(-6, 3, -5);
+  scene.add(rim);
 
   var group = new THREE.Group();
   scene.add(group);
   var tapes = [];
   var radius = 4.6;
-  function shadeMat(hex, f) {
+  function shade(hex, f) {
     var col = new THREE.Color(hex);
     col.multiplyScalar(f);
-    return new THREE.MeshBasicMaterial({ color: col });
+    return col;
   }
   items.forEach(function (item, i) {
     var color = palette[i % palette.length];
-    var face = new THREE.MeshBasicMaterial({ map: makeFaceTexture(item, color) });
-    var edge = shadeMat(color, 0.55);
-    var back = shadeMat(color, 0.3);
-    var geo = new THREE.BoxGeometry(2.4, 1.5, 0.28);
-    var mesh = new THREE.Mesh(geo, [edge, edge, edge, edge, face, back]);
+    /* 圆角壳 + 正面贴图 + 背面，圆角吃光才像实物 */
+    var tape = new THREE.Group();
+    var shell = new THREE.Mesh(
+      new RoundedBoxGeometry(2.4, 1.5, 0.28, 4, 0.06),
+      new THREE.MeshStandardMaterial({ color: shade(color, 0.55), roughness: 0.4, metalness: 0.05 })
+    );
+    var face = new THREE.Mesh(
+      new THREE.PlaneGeometry(2.36, 1.46),
+      new THREE.MeshStandardMaterial({ map: makeFaceTexture(item, color), roughness: 0.35, metalness: 0 })
+    );
+    face.position.z = 0.141;
+    var back = new THREE.Mesh(
+      new THREE.PlaneGeometry(2.36, 1.46),
+      new THREE.MeshStandardMaterial({ color: shade(color, 0.3), roughness: 0.5, metalness: 0 })
+    );
+    back.position.z = -0.141;
+    back.rotation.y = Math.PI;
+    tape.add(shell, face, back);
     var angle = (i / items.length) * Math.PI * 2;
-    mesh.position.set(Math.sin(angle) * radius, 0, Math.cos(angle) * radius);
-    mesh.rotation.y = angle;
-    mesh.rotation.x = -0.06;
-    mesh.userData.url = item.url;
-    group.add(mesh);
-    tapes.push(mesh);
+    tape.position.set(Math.sin(angle) * radius, 0, Math.cos(angle) * radius);
+    tape.rotation.y = angle;
+    tape.rotation.x = -0.06;
+    tape.userData.url = item.url;
+    group.add(tape);
+    tapes.push(tape);
   });
 
   function resize() {
@@ -186,8 +212,11 @@ import * as THREE from "three";
     pointer.x = ((cx - rect.left) / rect.width) * 2 - 1;
     pointer.y = -((cy - rect.top) / rect.height) * 2 + 1;
     raycaster.setFromCamera(pointer, camera);
-    var hits = raycaster.intersectObjects(tapes, false);
-    return hits.length ? hits[0].object : null;
+    var hits = raycaster.intersectObjects(tapes, true);
+    if (!hits.length) return null;
+    var obj = hits[0].object;
+    while (obj && !obj.userData.url) obj = obj.parent;
+    return obj;
   }
 
   var el = renderer.domElement;
