@@ -1,9 +1,9 @@
 /* ============ Tokens · 融合版：Complex 杂志骨架 + 五家优点 ============ */
 :root {
-  --bg0: #1e1e24;
-  --bg1: #0d0d10;
-  --panel: #17171c;
-  --panel-2: #202028;
+  --bg0: #222222;
+  --bg1: #1a1a1a;
+  --panel: #242424;
+  --panel-2: #2b2b2b;
   --ink: #f5f4f0;
   --muted: #9b9ba3;
   --acc: #ffe600;
@@ -46,7 +46,7 @@ a { color: inherit; }
 .site-header {
   position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 1000;
   width: auto; max-width: calc(100% - 24px);
-  background: rgba(22, 22, 26, 0.92);
+  background: rgba(26, 26, 26, 0.92);
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -215,12 +215,12 @@ a { color: inherit; }
   transition: transform 0.3s;
 }
 .card:hover .card-initial { transform: scale(1.12) rotate(-4deg); }
-.art-0 { background: #1a1a1e; }
+.art-0 { background: #262626; }
 .art-0 .card-initial { color: rgba(255, 230, 0, 0.85); }
-.art-1 { background: #1a1a1e; }
+.art-1 { background: #262626; }
 .art-1 .card-initial { color: rgba(245, 244, 240, 0.8); }
 .art-2 { background: var(--acc); }
-.art-3 { background: #1a1a1e; }
+.art-3 { background: #262626; }
 .art-3 .card-initial { color: rgba(255, 255, 255, 0.28); }
 .card-body { padding: 20px 20px 22px; }
 .card-body h3 { margin: 10px 0 8px; font-size: 18px; line-height: 1.45; font-weight: 800; }
@@ -592,7 +592,7 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 .cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
 .big-card { text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: transform .25s, border-color .25s; display: flex; flex-direction: column; }
 .big-card:hover { transform: translateY(-6px); border-color: rgba(255,230,0,.35); }
-.big-img { aspect-ratio: 16 / 10; overflow: hidden; position: relative; background: #1a1a1e; }
+.big-img { aspect-ratio: 16 / 10; overflow: hidden; position: relative; background: #262626; }
 .big-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
 .big-card:hover .big-img img { transform: scale(1.04); }
 .big-body { padding: 18px 18px 20px; }
