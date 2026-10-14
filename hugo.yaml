@@ -1,4 +1,4 @@
-baseURL: "https://hiphop.ccwu.cc/"
+baseURL: "https://hiphopnote.com/"
 languageCode: "zh-cn"
 defaultContentLanguage: "zh-cn"
 title: "HipHop 中文站"
@@ -23,6 +23,9 @@ menu:
     - name: 新歌推荐
       url: /music/
       weight: 20
+    - name: 地下新声
+      url: /underground/
+      weight: 25
     - name: 艺人/厂牌
       url: /artists/
       weight: 30
