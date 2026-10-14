@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc@latest/900.css">
 {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}">
-{{ $hud := resources.Get "css/webgl-hud.css" | minify | fingerprint }}
+{{ $hud := resources.Get "css/design-hero.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $hud.RelPermalink }}">
 <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230a0a0c'/><path d='M16 10 L28 10 L24 28 L36 28 L40 10 L52 10 L44 54 L32 54 L36 34 L24 34 L20 54 L8 54 Z' fill='%23ffe600'/></svg>">

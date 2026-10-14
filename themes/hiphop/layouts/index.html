@@ -6,38 +6,72 @@
 {{ $feed := where site.RegularPages "Section" "in" (slice "news" "music" "underground" "lyrics" "artists" "samples" "events") }}
 {{ $label := dict "news" "资讯" "music" "新歌推荐" "underground" "地下新声" "lyrics" "歌词解析" "artists" "艺人厂牌" "samples" "采样考古" "events" "演出日历" }}
 
-<!-- HERO · Shouted headline, WebGL tape gallery -->
+<!-- HERO · Shouted headline + 设计稿取景器：照片底 + 图层 + 测量标注 -->
 <section class="loud-hero">
   <div class="wrap">
     <h1 class="loud-title"><span class="loud-mask"><span class="loud-line">中文说唱</span></span><span class="loud-mask"><span class="loud-line">正在发生</span></span></h1>
-    <div class="webgl-stage" id="webglStage" hidden>
-      <div class="webgl-hud" aria-hidden="true">
-        <span class="hud-corner hud-tl"></span>
-        <span class="hud-corner hud-tr"></span>
-        <span class="hud-corner hud-bl"></span>
-        <span class="hud-corner hud-br"></span>
-        <span class="hud-coords" id="hudCoords">x: 000 y: 000</span>
-        <span class="hud-tape" id="hudTape">TAPE — / —</span>
-        <span class="hud-ring"></span>
+    {{ $pos := slice
+      (dict "x" 60 "y" 96 "w" 260 "r" -2 "d" 0.6)
+      (dict "x" 360 "y" 64 "w" 220 "r" 1.5 "d" 1.0)
+      (dict "x" 620 "y" 104 "w" 280 "r" -1 "d" 1.4)
+      (dict "x" 920 "y" 72 "w" 230 "r" 2 "d" 0.8)
+      (dict "x" 140 "y" 368 "w" 240 "r" 1 "d" 1.2)
+      (dict "x" 440 "y" 396 "w" 260 "r" -2.5 "d" 0.7)
+      (dict "x" 740 "y" 364 "w" 220 "r" 1 "d" 1.3)
+      (dict "x" 980 "y" 384 "w" 200 "r" -1.5 "d" 0.9)
+    }}
+    {{ $sw := slice "#ffe600" "#ff4d00" "#3cffd0" "#ff2e88" "#a06bff" "#00aaff" }}
+    <div class="design-hero" id="designHero">
+      {{ range first 1 $news }}{{ if .Params.image }}<img class="design-bg" src="{{ .Params.image }}" alt="" aria-hidden="true">{{ end }}{{ end }}
+      <div class="design-scrim" aria-hidden="true"></div>
+      <div class="design-frame" aria-hidden="true"><span class="design-frame-tag">ARTBOARD — HIPHOPNOTE · w: 1200 h: 640</span></div>
+      <div class="design-swatches" aria-hidden="true">
+        {{ range $i, $c := $sw }}<span class="design-sw" style="background:{{ $c }}"><i>×</i><b>x: {{ add 96 (mul $i 44) }} y: 064</b></span>{{ end }}
       </div>
+      <div class="design-layers">
+        {{ range $i, $p := first 8 $feed }}
+        {{ $pp := index $pos $i }}
+        <a class="design-layer" href="{{ $p.RelPermalink }}" data-depth="{{ $pp.d }}" style="left:{{ $pp.x }}px;top:{{ $pp.y }}px;width:{{ $pp.w }}px;--r:{{ $pp.r }}deg">
+          {{ if $p.Params.image }}<img src="{{ $p.Params.image }}" alt="{{ $p.Title }}" loading="lazy">{{ else }}<span class="layer-ph"></span>{{ end }}
+          <span class="layer-cap"><b>{{ index $label $p.Section }}</b>{{ $p.Title }}</span>
+          <span class="sel" aria-hidden="true"><i class="h tl"></i><i class="h tr"></i><i class="h bl"></i><i class="h br"></i><em class="xy">x: {{ $pp.x }} y: {{ $pp.y }}</em><em class="wh">w: {{ $pp.w }} h: {{ add (int (mul $pp.w 0.66)) 28 }}</em></span>
+        </a>
+        {{ end }}
+      </div>
+      <span class="design-guide-v" id="designGuideX" aria-hidden="true"></span>
+      <span class="design-guide-h" id="designGuideY" aria-hidden="true"></span>
+      <span class="design-coord" id="designCoord">x: 000 y: 000</span>
+      <span class="design-tape">LAYERS — 08 / CLICK TO OPEN</span>
     </div>
-    <div class="webgl-fallback" id="webglFallback">
-      {{ range first 1 $news }}
-      <a class="loud-photo" href="{{ .RelPermalink }}">
-        {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" loading="eager">{{ end }}
-      </a>
-      <p class="loud-caption"><a href="{{ .RelPermalink }}">{{ .Title }}</a> · {{ .Date.Format "2006-01-02" }}</p>
-      <a class="btn-loud" href="{{ .RelPermalink }}">读封面特稿</a>
-      {{ end }}
-    </div>
-    <p class="webgl-hint" id="webglHint" hidden>拖动旋转 · 点击黑胶进入文章</p>
     <p class="loud-standfirst">说唱 / 街舞 / 潮流文化中文资讯小站。不装老炮，只做认真整理内容的搬运工。</p>
   </div>
 </section>
-<script type="application/json" id="tapeData">{{ $tapes := slice }}{{ range $p := first 8 $feed }}{{ $tapes = $tapes | append (dict "title" $p.Title "col" (index $label $p.Section) "url" $p.RelPermalink "image" ($p.Params.image | default "")) }}{{ end }}{{ $tapes | jsonify | safeJS }}</script>
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
-{{ $hero := resources.Get "js/hero-webgl.js" | fingerprint }}
-<script type="module" src="{{ $hero.RelPermalink }}"></script>
+<script>
+(function () {
+  var hero = document.getElementById("designHero");
+  if (!hero) return;
+  var coord = document.getElementById("designCoord");
+  var gx = document.getElementById("designGuideX");
+  var gy = document.getElementById("designGuideY");
+  var layers = hero.querySelectorAll(".design-layer");
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function pad3(n) { n = Math.max(0, Math.round(n)); return ("000" + n).slice(-3); }
+  hero.addEventListener("pointermove", function (e) {
+    var r = hero.getBoundingClientRect();
+    var mx = e.clientX - r.left, my = e.clientY - r.top;
+    if (coord) coord.textContent = "x: " + pad3(mx) + " y: " + pad3(my);
+    if (gx) gx.style.left = mx + "px";
+    if (gy) gy.style.top = my + "px";
+    if (reduce) return;
+    var cx = mx / r.width - 0.5, cy = my / r.height - 0.5;
+    layers.forEach(function (l) {
+      var d = parseFloat(l.getAttribute("data-depth") || "1");
+      l.style.setProperty("--px", (cx * d * 12).toFixed(1) + "px");
+      l.style.setProperty("--py", (cy * d * 12).toFixed(1) + "px");
+    });
+  });
+})();
+</script>
 
 <!-- 最新 · Line-up table -->
 <section class="lineup">
