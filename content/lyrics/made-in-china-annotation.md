@@ -1,4 +1,5 @@
 ---
+image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Das_Vinyl_dreht_sich.jpg/1280px-Das_Vinyl_dreht_sich.jpg"
 title: "歌词解析 Vol.01｜《Made In China》：一句口号如何变成出海名片"
 date: 2026-10-14
 tags: ["歌词解析", "Higher Brothers"]
