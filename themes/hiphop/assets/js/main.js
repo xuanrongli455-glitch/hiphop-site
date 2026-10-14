@@ -246,3 +246,45 @@
   });
   egg.querySelector(".egg-figure").addEventListener("click", hideEgg);
 })();
+
+/* 说唱分支页：分支切换 + 紧凑播放行展开 */
+(function () {
+  var tabs = document.getElementById("genreTabs");
+  if (tabs) {
+    var tabBtns = tabs.querySelectorAll(".genre-tab");
+    var sections = document.querySelectorAll(".genre-section");
+    function show(branch) {
+      tabBtns.forEach(function (t) {
+        var on = t.getAttribute("data-branch") === branch;
+        t.classList.toggle("active", on);
+        t.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      sections.forEach(function (s) {
+        s.classList.toggle("active", s.id === "branch-" + branch);
+      });
+    }
+    tabBtns.forEach(function (t) {
+      t.addEventListener("click", function () {
+        var b = t.getAttribute("data-branch");
+        show(b);
+        history.replaceState(null, "", "#" + b);
+      });
+    });
+    var hash = (location.hash || "").replace("#", "");
+    if (hash && document.getElementById("branch-" + hash)) show(hash);
+  }
+  document.querySelectorAll(".track-play").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var row = btn.closest(".track-row");
+      var embed = row && row.querySelector(".track-embed");
+      if (!embed) return;
+      var open = embed.hidden;
+      if (open) {
+        var frame = embed.querySelector("iframe");
+        if (frame && !frame.getAttribute("src")) frame.setAttribute("src", frame.getAttribute("data-src"));
+      }
+      embed.hidden = !open;
+      btn.textContent = open ? "✕" : "▶";
+    });
+  });
+})();

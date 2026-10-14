@@ -1,0 +1,399 @@
+{{ define "main" }}
+<!-- 说唱分支 · 8 大分支，每个分支同一结构、换一个强调色 -->
+<section class="genres">
+  <div class="wrap">
+    <p class="genres-kicker">说唱 / HIP-HOP</p>
+    <h1 class="genres-title">说唱分支</h1>
+    <p class="genres-intro">说唱是一个大类目，下面分出很多支流。这一页把 8 个最常见的分支摊开：每个分支的定义、代表人物与代表作。点下面的分支名切换。</p>
+
+    <div class="genre-tabs" id="genreTabs" role="tablist">
+      <button class="genre-tab active" data-branch="oldschool" style="--accent:#ffe600" role="tab" aria-selected="true">老派</button>
+      <button class="genre-tab" data-branch="boombap" style="--accent:#ff4d00" role="tab" aria-selected="false">Boom Bap</button>
+      <button class="genre-tab" data-branch="trap" style="--accent:#3cffd0" role="tab" aria-selected="false">Trap</button>
+      <button class="genre-tab" data-branch="drill" style="--accent:#ff2e88" role="tab" aria-selected="false">Drill</button>
+      <button class="genre-tab" data-branch="melodic" style="--accent:#00aaff" role="tab" aria-selected="false">旋律 / 情绪</button>
+      <button class="genre-tab" data-branch="conscious" style="--accent:#a06bff" role="tab" aria-selected="false">意识</button>
+      <button class="genre-tab" data-branch="jazz" style="--accent:#ffffff" role="tab" aria-selected="false">爵士</button>
+      <button class="genre-tab" data-branch="dialect" style="--accent:#ff7a1a" role="tab" aria-selected="false">方言说唱</button>
+    </div>
+
+    <!-- 01 · 老派 -->
+    <section class="genre-section active" id="branch-oldschool" style="--accent:#ffe600">
+      <div class="genre-hero">
+        <div class="genre-copy">
+          <p class="genre-no">01</p>
+          <h2 class="genre-name">老派</h2>
+          <p class="genre-en">OLD SCHOOL</p>
+          <p class="genre-def">说唱的起点。</p>
+          <p class="genre-intro">1970 年代末到 80 年代，纽约布朗克斯的派对上，MC 拿着话筒、DJ 转着唱盘，flow 直接、歌词多是炫耀与派对，采样和鼓点都还很朴素。</p>
+          <p class="genre-artists">代表人物：<strong>Run-DMC</strong>、<strong>Grandmaster Flash and the Furious Five</strong>、<strong>LL Cool J</strong></p>
+        </div>
+        <div class="genre-photo-wrap">
+          <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Run-DMC_performing_in_Long_Beach%2C_1984.jpg/960px-Run-DMC_performing_in_Long_Beach%2C_1984.jpg" alt="老派说唱现场" loading="lazy">
+        
+          <p class="genre-photo-cap">配图：Run-DMC 1984 年在长滩竞技场的演出（Ian Dryden / Los Angeles Times，CC BY 4.0）</p></div>
+      </div>
+      <div class="genre-tracks">
+        <h3 class="tracks-head">代表作</h3>
+        <div class="track-row" data-song-id="567220495">
+          <div class="track-line">
+            <button class="track-play" type="button" aria-label="播放《The Message》">▶</button>
+            <span class="track-no">01</span>
+            <span class="track-name">The Message</span>
+            <span class="track-artist">Grandmaster Flash and the Furious Five</span>
+          </div>
+          <div class="track-embed" hidden>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="66" data-src="https://music.163.com/outchain/player?type=2&id=567220495&auto=1&height=66"></iframe>
+            <p class="stem-tip">点播放器里的 ▶ 开始播放，若没反应再点一次</p>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">02</span>
+            <span class="track-name">Walk This Way</span>
+            <span class="track-artist">Run-DMC</span>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">03</span>
+            <span class="track-name">Rock the Bells</span>
+            <span class="track-artist">LL Cool J</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · Boom Bap -->
+    <section class="genre-section" id="branch-boombap" style="--accent:#ff4d00">
+      <div class="genre-hero">
+        <div class="genre-copy">
+          <p class="genre-no">02</p>
+          <h2 class="genre-name">Boom Bap</h2>
+          <p class="genre-en">BOOM BAP</p>
+          <p class="genre-def">90 年代东海岸的黄金年代之声。</p>
+          <p class="genre-intro">名字来自鼓点：Boom 是底鼓，Bap 是军鼓，配上灵魂乐与爵士采样，歌词讲街头、讲技术，硬桥硬马。</p>
+          <p class="genre-artists">代表人物：<strong>Nas</strong>、<strong>Wu-Tang Clan</strong>、<strong>Gang Starr</strong></p>
+        </div>
+        <div class="genre-photo-wrap">
+          <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Wu-Tang_Clan_at_Budapest_Park_-_2015.07.07_%2815%29.JPG/960px-Wu-Tang_Clan_at_Budapest_Park_-_2015.07.07_%2815%29.JPG" alt="Boom Bap 现场" loading="lazy">
+        
+          <p class="genre-photo-cap">配图：Wu-Tang Clan 2015 年在布达佩斯公园的演出（Derzsi Elekes Andor，CC BY-SA 4.0）</p></div>
+      </div>
+      <div class="genre-tracks">
+        <h3 class="tracks-head">代表作</h3>
+        <div class="track-row" data-song-id="21268933">
+          <div class="track-line">
+            <button class="track-play" type="button" aria-label="播放《N.Y. State of Mind》">▶</button>
+            <span class="track-no">01</span>
+            <span class="track-name">N.Y. State of Mind</span>
+            <span class="track-artist">Nas</span>
+          </div>
+          <div class="track-embed" hidden>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="66" data-src="https://music.163.com/outchain/player?type=2&id=21268933&auto=1&height=66"></iframe>
+            <p class="stem-tip">点播放器里的 ▶ 开始播放，若没反应再点一次</p>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">02</span>
+            <span class="track-name">C.R.E.A.M.</span>
+            <span class="track-artist">Wu-Tang Clan</span>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">03</span>
+            <span class="track-name">Mass Appeal</span>
+            <span class="track-artist">Gang Starr</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 · Trap -->
+    <section class="genre-section" id="branch-trap" style="--accent:#3cffd0">
+      <div class="genre-hero">
+        <div class="genre-copy">
+          <p class="genre-no">03</p>
+          <h2 class="genre-name">Trap</h2>
+          <p class="genre-en">TRAP</p>
+          <p class="genre-def">从美国南方走出来的主流之声。</p>
+          <p class="genre-intro">808 低音炮、高速踩镲、阴暗合成器，flow 黏着 beat 走，2010 年代接管了全世界说唱电台。</p>
+          <p class="genre-artists">代表人物：<strong>Gucci Mane</strong>、<strong>Future</strong>、<strong>Migos</strong>、<strong>Travis Scott</strong></p>
+        </div>
+        <div class="genre-photo-wrap">
+          <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Travis_Scott_The_DAMN._Tour_%28cropped%29.jpg/960px-Travis_Scott_The_DAMN._Tour_%28cropped%29.jpg" alt="Trap 现场" loading="lazy">
+        
+          <p class="genre-photo-cap">配图：Travis Scott 2017 年在波士顿 TD 花园的演出（Kenny Sun，CC BY 2.0）</p></div>
+      </div>
+      <div class="genre-tracks">
+        <h3 class="tracks-head">代表作</h3>
+        <div class="track-row" data-song-id="460043667">
+          <div class="track-line">
+            <button class="track-play" type="button" aria-label="播放《Mask Off》">▶</button>
+            <span class="track-no">01</span>
+            <span class="track-name">Mask Off</span>
+            <span class="track-artist">Future</span>
+          </div>
+          <div class="track-embed" hidden>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="66" data-src="https://music.163.com/outchain/player?type=2&id=460043667&auto=1&height=66"></iframe>
+            <p class="stem-tip">点播放器里的 ▶ 开始播放，若没反应再点一次</p>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">02</span>
+            <span class="track-name">Bad and Boujee</span>
+            <span class="track-artist">Migos</span>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">03</span>
+            <span class="track-name">SICKO MODE</span>
+            <span class="track-artist">Travis Scott</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 · Drill -->
+    <section class="genre-section" id="branch-drill" style="--accent:#ff2e88">
+      <div class="genre-hero">
+        <div class="genre-copy">
+          <p class="genre-no">04</p>
+          <h2 class="genre-name">Drill</h2>
+          <p class="genre-en">DRILL</p>
+          <p class="genre-def">从芝加哥钻出来的冷峻之声。</p>
+          <p class="genre-intro">2010 年代初从芝加哥钻出来。Beat 阴暗压抑、鼓点沉重，flow 冷峻直接，歌词多写街头现实，后来在英国、纽约都长出自己的分支。</p>
+          <p class="genre-artists">代表人物：<strong>Chief Keef</strong>、<strong>Pop Smoke</strong>、<strong>Central Cee</strong></p>
+        </div>
+        <div class="genre-photo-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Skyzoo_Performing_Live_June_22%2C_2011.jpg" alt="Drill 现场" loading="lazy">
+        
+          <p class="genre-photo-cap">配图：说唱歌手 Skyzoo 2011 年在纽约布鲁克林的演出，非 Drill 专属演出，通用配图（Joseph Amandola，CC BY-SA 3.0）</p></div>
+      </div>
+      <div class="genre-tracks">
+        <h3 class="tracks-head">代表作</h3>
+        <div class="track-row" data-song-id="1464110284">
+          <div class="track-line">
+            <button class="track-play" type="button" aria-label="播放《Dior》">▶</button>
+            <span class="track-no">01</span>
+            <span class="track-name">Dior</span>
+            <span class="track-artist">Pop Smoke</span>
+          </div>
+          <div class="track-embed" hidden>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="66" data-src="https://music.163.com/outchain/player?type=2&id=1464110284&auto=1&height=66"></iframe>
+            <p class="stem-tip">点播放器里的 ▶ 开始播放，若没反应再点一次</p>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">02</span>
+            <span class="track-name">I Don't Like</span>
+            <span class="track-artist">Chief Keef</span>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">03</span>
+            <span class="track-name">Doja</span>
+            <span class="track-artist">Central Cee</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 · 旋律 / 情绪 -->
+    <section class="genre-section" id="branch-melodic" style="--accent:#00aaff">
+      <div class="genre-hero">
+        <div class="genre-copy">
+          <p class="genre-no">05</p>
+          <h2 class="genre-name">旋律 / 情绪</h2>
+          <p class="genre-en">MELODIC &amp; EMO RAP</p>
+          <p class="genre-def">旋律当主角的一支。</p>
+          <p class="genre-intro">Auto-Tune 唱腔、情绪化歌词，心碎、焦虑、药物与名声是常写主题，2010 年代末成为流媒体时代的主流声音之一。</p>
+          <p class="genre-artists">代表人物：<strong>Juice WRLD</strong>、<strong>Lil Uzi Vert</strong>、<strong>Lil Peep</strong></p>
+        </div>
+        <div class="genre-photo-wrap">
+          <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/3/35/Juice_WRLD_-_Les_Ardentes_2019_%28cropped%29.jpg/960px-Juice_WRLD_-_Les_Ardentes_2019_%28cropped%29.jpg" alt="旋律说唱现场" loading="lazy">
+        
+          <p class="genre-photo-cap">配图：Juice WRLD 2019 年在 Les Ardentes 音乐节的演出（Lexiou WesCudi，CC BY-SA 2.0）</p></div>
+      </div>
+      <div class="genre-tracks">
+        <h3 class="tracks-head">代表作</h3>
+        <div class="track-row" data-song-id="566254173">
+          <div class="track-line">
+            <button class="track-play" type="button" aria-label="播放《Lucid Dreams》">▶</button>
+            <span class="track-no">01</span>
+            <span class="track-name">Lucid Dreams</span>
+            <span class="track-artist">Juice WRLD</span>
+          </div>
+          <div class="track-embed" hidden>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="66" data-src="https://music.163.com/outchain/player?type=2&id=566254173&auto=1&height=66"></iframe>
+            <p class="stem-tip">点播放器里的 ▶ 开始播放，若没反应再点一次</p>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">02</span>
+            <span class="track-name">XO Tour Llif3</span>
+            <span class="track-artist">Lil Uzi Vert</span>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">03</span>
+            <span class="track-name">Awful Things</span>
+            <span class="track-artist">Lil Peep</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · 意识 -->
+    <section class="genre-section" id="branch-conscious" style="--accent:#a06bff">
+      <div class="genre-hero">
+        <div class="genre-copy">
+          <p class="genre-no">06</p>
+          <h2 class="genre-name">意识</h2>
+          <p class="genre-en">CONSCIOUS RAP</p>
+          <p class="genre-def">用说唱讲道理的一支。</p>
+          <p class="genre-intro">歌词关注社会、种族、政治与自我，技术密度高，代表人物往往被当成时代的发言人。</p>
+          <p class="genre-artists">代表人物：<strong>Kendrick Lamar</strong>、<strong>J. Cole</strong>、<strong>Common</strong></p>
+        </div>
+        <div class="genre-photo-wrap">
+          <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fb/Kendrick_Lamar-_The_DAMN._Tour_%40_TD_Garden_%28Boston%2C_MA%29_%2836059988466%29.jpg/960px-Kendrick_Lamar-_The_DAMN._Tour_%40_TD_Garden_%28Boston%2C_MA%29_%2836059988466%29.jpg" alt="意识说唱现场" loading="lazy">
+        
+          <p class="genre-photo-cap">配图：Kendrick Lamar 2017 年在波士顿 TD 花园的演出（Kenny Sun，CC BY 2.0）</p></div>
+      </div>
+      <div class="genre-tracks">
+        <h3 class="tracks-head">代表作</h3>
+        <div class="track-row" data-song-id="31010336">
+          <div class="track-line">
+            <button class="track-play" type="button" aria-label="播放《Alright》">▶</button>
+            <span class="track-no">01</span>
+            <span class="track-name">Alright</span>
+            <span class="track-artist">Kendrick Lamar</span>
+          </div>
+          <div class="track-embed" hidden>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="66" data-src="https://music.163.com/outchain/player?type=2&id=31010336&auto=1&height=66"></iframe>
+            <p class="stem-tip">点播放器里的 ▶ 开始播放，若没反应再点一次</p>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">02</span>
+            <span class="track-name">No Role Modelz</span>
+            <span class="track-artist">J. Cole</span>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">03</span>
+            <span class="track-name">The Light</span>
+            <span class="track-artist">Common</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 · 爵士 -->
+    <section class="genre-section" id="branch-jazz" style="--accent:#ffffff">
+      <div class="genre-hero">
+        <div class="genre-copy">
+          <p class="genre-no">07</p>
+          <h2 class="genre-name">爵士</h2>
+          <p class="genre-en">JAZZ RAP</p>
+          <p class="genre-def">爵士乐与说唱的混血。</p>
+          <p class="genre-intro">采样爵士和弦与鼓点，flow 松弛、歌词偏思考与生活，90 年代东海岸另类说唱的重要一支。</p>
+          <p class="genre-artists">代表人物：<strong>A Tribe Called Quest</strong>、<strong>De La Soul</strong>、<strong>Guru</strong></p>
+        </div>
+        <div class="genre-photo-wrap">
+          <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/A_Tribe_Called_Quest_in_Berkeley.jpg/960px-A_Tribe_Called_Quest_in_Berkeley.jpg" alt="爵士说唱现场" loading="lazy">
+        
+          <p class="genre-photo-cap">配图：A Tribe Called Quest 2006 年在加州伯克利的演出（man pikin，CC BY 2.0）</p></div>
+      </div>
+      <div class="genre-tracks">
+        <h3 class="tracks-head">代表作</h3>
+        <div class="track-row" data-song-id="16330798">
+          <div class="track-line">
+            <button class="track-play" type="button" aria-label="播放《Can I Kick It?》">▶</button>
+            <span class="track-no">01</span>
+            <span class="track-name">Can I Kick It?</span>
+            <span class="track-artist">A Tribe Called Quest</span>
+          </div>
+          <div class="track-embed" hidden>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="66" data-src="https://music.163.com/outchain/player?type=2&id=16330798&auto=1&height=66"></iframe>
+            <p class="stem-tip">点播放器里的 ▶ 开始播放，若没反应再点一次</p>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">02</span>
+            <span class="track-name">Me Myself and I</span>
+            <span class="track-artist">De La Soul</span>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">03</span>
+            <span class="track-name">Jazzmatazz</span>
+            <span class="track-artist">Guru</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 · 方言说唱 -->
+    <section class="genre-section" id="branch-dialect" style="--accent:#ff7a1a">
+      <div class="genre-hero">
+        <div class="genre-copy">
+          <p class="genre-no">08</p>
+          <h2 class="genre-name">方言说唱</h2>
+          <p class="genre-en">DIALECT RAP</p>
+          <p class="genre-def">用家乡话说唱。</p>
+          <p class="genre-intro">成都话、重庆话、东北话、粤语、上海话……方言自带 flow 与幽默，中文说唱最有本土味的一块。</p>
+          <p class="genre-artists">代表人物：<strong>Higher Brothers</strong>（成都）、<strong>GAI</strong>（重庆）、<strong>宝石Gem</strong>（东北）</p>
+        </div>
+        <div class="genre-photo-wrap">
+          <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/HigherBrothers_Concert.jpg/960px-HigherBrothers_Concert.jpg" alt="方言说唱现场" loading="lazy">
+        
+          <p class="genre-photo-cap">配图：Higher Brothers 2018 年演出现场，摄影 Josh Jaffe（Jjipop，CC BY-SA 4.0）</p></div>
+      </div>
+      <div class="genre-tracks">
+        <h3 class="tracks-head">代表作</h3>
+        <div class="track-row" data-song-id="2729227782">
+          <div class="track-line">
+            <button class="track-play" type="button" aria-label="播放《Made In China (Special Edition)》">▶</button>
+            <span class="track-no">01</span>
+            <span class="track-name">Made In China (Special Edition)</span>
+            <span class="track-artist">Higher Brothers, DJ Snake</span>
+          </div>
+          <div class="track-embed" hidden>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="66" data-src="https://music.163.com/outchain/player?type=2&id=2729227782&auto=1&height=66"></iframe>
+            <p class="stem-tip">点播放器里的 ▶ 开始播放，若没反应再点一次</p>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">02</span>
+            <span class="track-name">野狼Disco</span>
+            <span class="track-artist">宝石Gem</span>
+          </div>
+        </div>
+        <div class="track-row no-play">
+          <div class="track-line">
+            <span class="track-no">03</span>
+            <span class="track-name">虎山行</span>
+            <span class="track-artist">GAI</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="genres-footnote">分支介绍为入门梳理；代表作只列歌名与歌手，播放按钮的歌曲 ID 逐首核实后接入。想补充分支或纠错，欢迎<a href="/submit/">投稿</a>。</p>
+  </div>
+</section>
+{{ end }}

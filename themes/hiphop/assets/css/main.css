@@ -821,3 +821,48 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 @media (max-width: 640px) {
   .webgl-stage { height: 420px; }
 }
+
+/* 说唱分支页 · 深色底 + 每分支一个强调色，同一结构 */
+.genres { padding: 48px 0 64px; }
+.genres-kicker { margin: 0 0 8px; font-size: 14px; letter-spacing: .2em; color: var(--acc); font-weight: 600; }
+.genres-title { margin: 0; font-family: var(--font-display); font-size: clamp(56px, 9vw, 120px); line-height: .95; }
+.genres-intro { max-width: 640px; margin: 20px 0 0; font-size: 17px; line-height: 1.8; color: var(--muted); }
+.genre-tabs { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 40px 0 0; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+.genre-tab { background: none; border: 0; padding: 10px 2px; font-size: 17px; font-weight: 600; color: var(--muted); cursor: pointer; }
+.genre-tab.active { color: #fff; box-shadow: inset 0 -3px 0 var(--accent); }
+.genre-section { display: none; margin-top: 48px; border-left: 3px solid var(--accent); padding-left: 24px; }
+.genre-section.active { display: block; }
+.genre-hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 32px; align-items: start; }
+.genre-no { margin: 0; font-family: var(--font-display); font-size: clamp(64px, 8vw, 96px); line-height: 1; color: var(--accent); }
+.genre-name { margin: 8px 0 0; font-family: var(--font-display); font-size: clamp(48px, 7vw, 96px); line-height: .95; }
+.genre-en { margin: 10px 0 0; font-size: 15px; letter-spacing: .18em; color: var(--muted); }
+.genre-def { margin: 20px 0 0; font-size: 20px; font-weight: 600; }
+.genre-intro { margin: 12px 0 0; font-size: 16px; line-height: 1.85; color: var(--muted); }
+.genre-artists { margin: 16px 0 0; font-size: 14px; line-height: 1.8; color: var(--muted); }
+.genre-artists strong { color: #fff; }
+.genre-photo-wrap { position: relative; }
+.genre-photo-wrap::after { content: ""; position: absolute; width: 90px; height: 90px; background: var(--accent); bottom: -14px; left: -14px; z-index: 0; }
+.genre-photo-wrap img { position: relative; z-index: 1; display: block; width: 100%; border-radius: 6px; filter: grayscale(1) contrast(1.05); }
+.genre-tracks { margin-top: 44px; }
+.tracks-head { margin: 0 0 8px; font-family: var(--font-display); font-size: 28px; }
+.track-row { border-top: 1px solid var(--line); padding: 14px 0; }
+.track-row:last-child { border-bottom: 1px solid var(--line); }
+.track-line { display: flex; align-items: center; gap: 12px; }
+.track-play { flex: 0 0 auto; width: 32px; height: 32px; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: #000; color: #fff; font-size: 12px; line-height: 1; cursor: pointer; }
+.track-play:hover { background: var(--accent); color: #111; border-color: var(--accent); }
+.track-row.no-play .track-line { padding-left: 44px; }
+.track-no { width: 28px; flex: 0 0 auto; font-size: 14px; color: var(--muted); }
+.track-name { flex: 1; font-size: 17px; font-weight: 600; }
+.track-artist { font-size: 14px; color: var(--muted); text-align: right; }
+.track-embed { margin-top: 12px; }
+.track-embed iframe { display: block; width: 100%; border: 1px solid var(--line); border-radius: 6px; background: #1a1a1a; }
+.genres-footnote { margin: 48px 0 0; font-size: 14px; line-height: 1.8; color: var(--muted); }
+@media (max-width: 640px) {
+  .genre-hero { grid-template-columns: 1fr; }
+  .genre-section { padding-left: 16px; }
+  .genre-tabs { gap: 4px 18px; }
+  .genre-tab { font-size: 15px; }
+  .track-artist { display: none; }
+}
+
+.genre-photo-cap { margin: 10px 0 0; font-size: 12px; line-height: 1.6; color: var(--muted); }
