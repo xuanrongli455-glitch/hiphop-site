@@ -1,4 +1,4 @@
-/* 彩蛋 3D 化身：低多边形小人（脏辫 + 黑夹克 + 黄 T + 宽松裤 + 白鞋），先线框幽灵再变实体，像原版一样。
+/* 彩蛋 3D 化身：低多边形小人（脏辫 + 黑夹克 + 黄 T + 宽松裤 + 登山靴），先线框幽灵再变实体，像原版一样。
    懒加载：只在第一次触发时才动态 import three，不拖首页。 */
 (function () {
   var wrap = null, renderer = null, scene = null, camera = null;
@@ -19,7 +19,9 @@
     var diamond = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.12, metalness: 1, flatShading: true, transparent: true, emissive: 0x666666, emissiveIntensity: 0.25 });
     var blackDiamond = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.2, metalness: 0.9, flatShading: true, transparent: true, emissive: 0x111111, emissiveIntensity: 0.3 });
     var purpleGem = new THREE.MeshStandardMaterial({ color: 0x7b1fa2, roughness: 0.15, metalness: 0.4, flatShading: true, transparent: true, emissive: 0x3a0a5a, emissiveIntensity: 0.5 });
-    var mats = [skin, black, yellow, pants, white, sole, diamond, blackDiamond, purpleGem];
+    /* 登山靴：深棕黑靴面 + 加厚黑底，参考 HE HIKING BOOTS（Opium 风） */
+    var boot = mat(0x241c14), bootSole = mat(0x0f0f0f), bootLace = mat(0x8a8a8a);
+    var mats = [skin, black, yellow, pants, white, sole, diamond, blackDiamond, purpleGem, boot, bootSole, bootLace];
     var g = new THREE.Group();
     function box(m, w, h, d, x, y, z, parent, r) {
       var geo = (RBG && r) ? new RBG(w, h, d, 3, r) : new THREE.BoxGeometry(w, h, d);
@@ -34,13 +36,25 @@
       (parent || g).add(ms);
       return ms;
     }
-    /* 腿 + 鞋（宽松裤 + 白鞋 + 灰厚底） */
+    /* 腿 + 鞋（宽松裤 + 登山靴：高帮 + 加厚底 + 鞋带，参考 HE HIKING BOOTS） */
     box(pants, 0.3, 0.72, 0.32, -0.18, -0.72, 0, null, 0.04);
     box(pants, 0.3, 0.72, 0.32, 0.18, -0.72, 0, null, 0.04);
-    box(white, 0.32, 0.14, 0.58, -0.18, -1.12, 0.06, null, 0.03);
-    box(white, 0.32, 0.14, 0.58, 0.18, -1.12, 0.06, null, 0.03);
-    box(sole, 0.34, 0.05, 0.62, -0.18, -1.21, 0.06);
-    box(sole, 0.34, 0.05, 0.62, 0.18, -1.21, 0.06);
+    /* 靴筒（高帮，包住脚踝） */
+    box(boot, 0.32, 0.28, 0.34, -0.18, -1.02, 0, null, 0.04);
+    box(boot, 0.32, 0.28, 0.34, 0.18, -1.02, 0, null, 0.04);
+    /* 靴身 + 靴头 */
+    box(boot, 0.32, 0.18, 0.6, -0.18, -1.16, 0.06, null, 0.03);
+    box(boot, 0.32, 0.18, 0.6, 0.18, -1.16, 0.06, null, 0.03);
+    /* 鞋带（靴面三道横条） */
+    box(bootLace, 0.2, 0.03, 0.02, -0.18, -1.08, 0.3);
+    box(bootLace, 0.2, 0.03, 0.02, -0.18, -1.16, 0.31);
+    box(bootLace, 0.2, 0.03, 0.02, -0.18, -1.24, 0.31);
+    box(bootLace, 0.2, 0.03, 0.02, 0.18, -1.08, 0.3);
+    box(bootLace, 0.2, 0.03, 0.02, 0.18, -1.16, 0.31);
+    box(bootLace, 0.2, 0.03, 0.02, 0.18, -1.24, 0.31);
+    /* 加厚大底 */
+    box(bootSole, 0.36, 0.1, 0.66, -0.18, -1.28, 0.06);
+    box(bootSole, 0.36, 0.1, 0.66, 0.18, -1.28, 0.06);
     /* 夹克 + 黄 T + 领口 */
     box(black, 0.86, 0.78, 0.5, 0, 0.08, 0, null, 0.06);
     box(yellow, 0.4, 0.44, 0.06, 0, 0.08, 0.26);
