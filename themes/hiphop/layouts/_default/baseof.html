@@ -3,18 +3,24 @@
 <head>
   {{ partial "head.html" . }}
 </head>
-<body>
+<body{{ if .IsHome }} class="world-home"{{ end }}>
   {{ partial "header.html" . }}
   <main>
     {{ block "main" . }}{{ end }}
   </main>
+  {{ if not .IsHome }}
   {{ partial "footer.html" . }}
+  {{ end }}
   {{ partial "easter-egg.html" . }}
+  {{ if not .IsHome }}
   <button class="to-top" id="toTop" aria-label="回到顶部">↑</button>
+  {{ end }}
   {{ with .Site.Params.knocketScriptSrc }}
   <script async src="{{ . }}"></script>
   {{ end }}
   {{ $js := resources.Get "js/main.js" | minify | fingerprint }}
   <script src="{{ $js.RelPermalink }}" defer></script>
+  {{ $egg := resources.Get "js/egg-3d.js" | fingerprint }}
+  <script src="{{ $egg.RelPermalink }}" defer></script>
 </body>
 </html>

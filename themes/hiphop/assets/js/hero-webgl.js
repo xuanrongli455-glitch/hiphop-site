@@ -1,16 +1,16 @@
-/* 首页 hero：密集黑胶场 — 原版式 3D 取景器：黑胶挤满画面 + 悬停出图 + 落针飞入 + 声音 */
+/* 首页 = 全屏 3D 世界：整页就是唱片箱。拖动旋转、滚轮推进、悬停出图、点击落针 */
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 (function () {
   var dataEl = document.getElementById("tapeData");
-  var stage = document.getElementById("vinylStage");
-  var fallback = document.getElementById("vinylFallback");
-  var hint = document.getElementById("vinylHint");
-  var coordEl = document.getElementById("vinylCoord");
-  var tapeEl = document.getElementById("vinylTape");
-  var guideX = document.getElementById("vinylGuideX");
-  var guideY = document.getElementById("vinylGuideY");
+  var stage = document.getElementById("worldStage");
+  var fallback = document.getElementById("worldFallback");
+  var hint = document.getElementById("worldHint");
+  var coordEl = document.getElementById("worldCoord");
+  var tapeEl = document.getElementById("worldTape");
+  var guideX = document.getElementById("worldGuideX");
+  var guideY = document.getElementById("worldGuideY");
   if (!dataEl || !stage) return;
   var items;
   try { items = JSON.parse(dataEl.textContent); } catch (e) { return; }
@@ -18,7 +18,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   /* 声音：Web Audio 实时合成，无音频文件。落针“嗒” + 悬停底噪，可关 */
-  var soundBtn = document.getElementById("vinylSound");
+  var soundBtn = document.getElementById("worldSound");
   var soundOn = true;
   try { soundOn = localStorage.getItem("hiphop-vinyl-sound") !== "off"; } catch (e) {}
   var audioCtx = null;
@@ -166,16 +166,27 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     return tex;
   }
 
-  /* 密集排布：手调固定位置，挤满画面、互相遮挡、每张都带倾斜，没有正对镜头的盘子 */
-  var LAYOUT = [
+  /* 横屏排布：挤满画面、互相遮挡；倾斜收敛到 ±40°，盘面保持可读，不转成薄片 */
+  var LAYOUT_LANDSCAPE = [
     { x: -3.3, y: 1.35, z: 0.2, rx: 0.35, ry: 0.4, rz: -0.25, s: 1.05 },
-    { x: -1.15, y: 1.55, z: -0.6, rx: -0.3, ry: 1.1, rz: 0.3, s: 0.95 },
+    { x: -1.15, y: 1.55, z: -0.6, rx: -0.3, ry: 0.6, rz: 0.3, s: 0.95 },
     { x: 1.15, y: 1.35, z: 0.6, rx: 0.45, ry: -0.5, rz: 0.2, s: 1.05 },
-    { x: 3.3, y: 1.05, z: -0.3, rx: -0.4, ry: 0.9, rz: -0.35, s: 0.95 },
-    { x: -3.5, y: -1.15, z: -0.4, rx: 0.3, ry: -0.8, rz: 0.35, s: 1.0 },
+    { x: 3.3, y: 1.05, z: -0.3, rx: -0.4, ry: 0.6, rz: -0.35, s: 0.95 },
+    { x: -3.5, y: -1.15, z: -0.4, rx: 0.3, ry: -0.6, rz: 0.35, s: 1.0 },
     { x: -1.0, y: -1.35, z: 0.9, rx: -0.45, ry: 0.3, rz: -0.2, s: 1.1 },
-    { x: 1.35, y: -1.25, z: -0.7, rx: 0.4, ry: 1.4, rz: 0.25, s: 0.95 },
+    { x: 1.35, y: -1.25, z: -0.7, rx: 0.4, ry: 0.7, rz: 0.25, s: 0.95 },
     { x: 3.5, y: -1.45, z: 0.3, rx: -0.35, ry: -0.6, rz: -0.3, s: 1.0 }
+  ];
+  /* 竖屏排布：竖直一摞唱片，像伸手进箱子翻找；上下拖动平移 */
+  var LAYOUT_PORTRAIT = [
+    { x: 0.3, y: 3.8, z: 0.3, rx: 0.25, ry: 0.4, rz: -0.15, s: 1.0 },
+    { x: -0.4, y: 2.7, z: -0.4, rx: -0.2, ry: -0.5, rz: 0.2, s: 0.95 },
+    { x: 0.35, y: 1.6, z: 0.5, rx: 0.3, ry: 0.5, rz: -0.1, s: 1.0 },
+    { x: -0.3, y: 0.5, z: -0.3, rx: -0.25, ry: -0.4, rz: 0.15, s: 1.05 },
+    { x: 0.4, y: -0.6, z: 0.4, rx: 0.2, ry: 0.45, rz: -0.2, s: 0.95 },
+    { x: -0.35, y: -1.7, z: -0.5, rx: -0.3, ry: -0.5, rz: 0.1, s: 1.0 },
+    { x: 0.3, y: -2.8, z: 0.2, rx: 0.25, ry: 0.4, rz: -0.15, s: 1.0 },
+    { x: -0.3, y: -3.9, z: -0.2, rx: -0.2, ry: -0.45, rz: 0.2, s: 0.95 }
   ];
 
   var group = new THREE.Group();
@@ -185,7 +196,6 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   texLoader.setCrossOrigin("anonymous");
 
   items.forEach(function (item, i) {
-    var L = LAYOUT[i % LAYOUT.length];
     var rec = new THREE.Group();
     var tex = makeVinylTexture(item, LABELS[i % LABELS.length]);
     var faceMat = new THREE.MeshPhysicalMaterial({ map: tex, roughness: 0.32, metalness: 0.05, clearcoat: 1, clearcoatRoughness: 0.28, envMapIntensity: 1 });
@@ -223,12 +233,9 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
       }, undefined, function () { pg.userData.failed = true; });
       preview = { group: pg, mats: [backMat, pm] };
     }
-    rec.position.set(L.x, L.y, L.z);
-    rec.rotation.set(L.rx, L.ry, L.rz);
-    rec.scale.setScalar(L.s);
     rec.userData = {
       url: item.url, title: item.title, index: i,
-      baseY: L.y, phase: i * 1.3,
+      baseY: 0, phase: i * 1.3,
       spin: (0.15 + (i % 3) * 0.08) * (i % 2 ? 1 : -1),
       disc: disc, ring: ring, preview: preview,
       ringOp: 0, prevOp: 0
@@ -237,16 +244,38 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     records.push(rec);
   });
 
+  var isPortrait = false;
+  function applyLayout() {
+    var w = stage.clientWidth || 1;
+    var h = stage.clientHeight || 1;
+    isPortrait = (w / h) < 1;
+    var L = isPortrait ? LAYOUT_PORTRAIT : LAYOUT_LANDSCAPE;
+    records.forEach(function (rec, i) {
+      var p = L[i % L.length];
+      rec.position.set(p.x, p.y, p.z);
+      rec.rotation.set(p.rx, p.ry, p.rz);
+      rec.scale.setScalar(p.s);
+      rec.userData.baseY = p.y;
+    });
+    group.position.y = 0;
+    group.rotation.x = 0;
+  }
+
   function resize() {
     var w = stage.clientWidth || 1;
     var h = stage.clientHeight || 1;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    camera.position.z = (w / h < 1) ? 10 : 6.8;
+    camera.position.z = isPortrait ? 8.5 : 6.8;
     camera.updateProjectionMatrix();
   }
+  applyLayout();
   resize();
-  new ResizeObserver(resize).observe(stage);
+  var resizeTimer = null;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { applyLayout(); resize(); }, 150);
+  });
 
   function pad3(n) { n = Math.max(0, Math.round(n)); return ("000" + n).slice(-3); }
 
@@ -300,12 +329,21 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   }
 
   var canHover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
-  var dragging = false, moved = 0, lastX = 0, velX = 0;
+  /* 菜单 3D：顶栏跟随鼠标轻微倾斜，像浮在世界里的面板 */
+  var headerEl = document.getElementById("siteHeader");
+  var tiltTX = 8, tiltTY = 0, tiltCX = 8, tiltCY = 0;
+  window.addEventListener("pointermove", function (e) {
+    var nx = e.clientX / window.innerWidth - 0.5;
+    var ny = e.clientY / window.innerHeight - 0.5;
+    tiltTX = 8 + ny * 4;
+    tiltTY = nx * 6;
+  });
+  var dragging = false, moved = 0, lastX = 0, lastY = 0, velX = 0;
   var downX = 0, downY = 0, downT = 0;
   var lastInteract = Date.now();
 
   el.addEventListener("pointerdown", function (e) {
-    dragging = true; moved = 0; lastX = e.clientX;
+    dragging = true; moved = 0; lastX = e.clientX; lastY = e.clientY;
     downX = e.clientX; downY = e.clientY; downT = Date.now(); velX = 0;
     try { el.setPointerCapture(e.pointerId); } catch (err) {}
     el.style.cursor = "grabbing";
@@ -314,10 +352,17 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     lastInteract = Date.now();
     if (dragging) {
       var dx = e.clientX - lastX;
-      group.rotation.y += dx * 0.008;
-      velX = dx * 0.008;
-      moved += Math.abs(dx);
-      lastX = e.clientX;
+      var dy = e.clientY - lastY;
+      if (isPortrait && Math.abs(dy) > Math.abs(dx)) {
+        /* 竖屏上下拖 = 在箱子里翻找 */
+        group.position.y = Math.max(-3.5, Math.min(3.5, group.position.y + dy * 0.012));
+      } else {
+        group.rotation.y += dx * 0.008;
+        group.rotation.x = Math.max(-0.5, Math.min(0.5, group.rotation.x + dy * 0.005));
+        velX = dx * 0.008;
+      }
+      moved += Math.abs(dx) + Math.abs(dy);
+      lastX = e.clientX; lastY = e.clientY;
     } else if (canHover) {
       setSelected(pick(e.clientX, e.clientY));
       updateHud(e);
@@ -336,12 +381,15 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     }
   });
   el.addEventListener("pointerleave", function () { if (canHover) setSelected(null); });
-  el.addEventListener("wheel", function () { lastInteract = Date.now(); }, { passive: true });
+  /* 滚轮 = 镜头在世界里推进/拉远 */
+  el.addEventListener("wheel", function (e) {
+    lastInteract = Date.now();
+    e.preventDefault();
+    camera.position.z = Math.max(3.5, Math.min(12, camera.position.z + e.deltaY * 0.005));
+  }, { passive: false });
 
   var clock = new THREE.Clock();
-  var running = true, lastVisible = true;
   function frame() {
-    if (!running) return;
     requestAnimationFrame(frame);
     var now = Date.now();
     var dt = Math.min(clock.getDelta(), 0.05);
@@ -372,16 +420,13 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
       camera.position.y = 0.3 + Math.sin(now * 0.00011 + 1) * 0.12;
       camera.lookAt(0, 0, 0);
     }
+    if (headerEl) {
+      tiltCX += (tiltTX - tiltCX) * 0.08;
+      tiltCY += (tiltTY - tiltCY) * 0.08;
+      headerEl.style.transform = "perspective(1200px) rotateX(" + tiltCX.toFixed(2) + "deg) rotateY(" + tiltCY.toFixed(2) + "deg)";
+    }
     renderer.render(scene, camera);
   }
-
-  new IntersectionObserver(function (entries) {
-    var vis = entries[0].isIntersecting;
-    if (vis && !lastVisible) { lastVisible = true; clock.getDelta(); }
-    lastVisible = vis;
-    running = vis;
-    if (vis) frame();
-  }).observe(stage);
 
   if (fallback) fallback.hidden = true;
   if (hint) hint.hidden = false;

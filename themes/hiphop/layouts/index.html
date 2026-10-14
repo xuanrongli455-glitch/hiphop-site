@@ -6,166 +6,25 @@
 {{ $feed := where site.RegularPages "Section" "in" (slice "news" "music" "underground" "lyrics" "artists" "samples" "events") }}
 {{ $label := dict "news" "资讯" "music" "新歌推荐" "underground" "地下新声" "lyrics" "歌词解析" "artists" "艺人厂牌" "samples" "采样考古" "events" "演出日历" }}
 
-<!-- HERO · Shouted headline + 密集黑胶场：原版式 3D 取景器 -->
-<section class="loud-hero">
-  <div class="wrap">
-    <h1 class="loud-title"><span class="loud-mask"><span class="loud-line">中文说唱</span></span><span class="loud-mask"><span class="loud-line">正在发生</span></span></h1>
-    {{ $tapes := slice }}
-    {{ range first 8 $feed }}{{ $tapes = $tapes | append (dict "title" .Title "col" (index $label .Section) "url" .RelPermalink "image" (.Params.image | default "")) }}{{ end }}
-    <div class="vinyl-stage" id="vinylStage">
-      <div class="vinyl-frame" aria-hidden="true"><span class="vinyl-frame-tag">ARTBOARD — HIPHOPNOTE · VINYL FIELD</span><i class="vx tl">×</i><i class="vx tr">×</i><i class="vx bl">×</i><i class="vx br">×</i></div>
-      <span class="vinyl-guide-v" id="vinylGuideX" aria-hidden="true"></span>
-      <span class="vinyl-guide-h" id="vinylGuideY" aria-hidden="true"></span>
-      <span class="vinyl-coord" id="vinylCoord">x: 000 y: 000</span>
-      <span class="vinyl-tape" id="vinylTape">VINYL — / —</span>
-      <p class="vinyl-hint" id="vinylHint" hidden>拖动旋转 · 悬停看图 · 点击进入文章</p>
-      <button class="vinyl-sound" id="vinylSound" type="button">SOUND: ON</button>
-      <div class="vinyl-fallback" id="vinylFallback">
-        {{ range first 8 $feed }}
-        <a href="{{ .RelPermalink }}">{{ with .Params.image }}<img src="{{ . }}" alt="" loading="lazy">{{ end }}<span>{{ .Title }}</span></a>
-        {{ end }}
-      </div>
-      <script type="application/json" id="tapeData">{{ $tapes | jsonify | safeJS }}</script>
-    </div>
-    <p class="loud-standfirst">说唱 / 街舞 / 潮流文化中文资讯小站。不装老炮，只做认真整理内容的搬运工。</p>
+<!-- 首页 = 全屏 3D 世界：整页就是唱片箱，导航保留，内容在各栏目页 -->
+{{ $tapes := slice }}
+{{ range first 8 $feed }}{{ $tapes = $tapes | append (dict "title" .Title "col" (index $label .Section) "url" .RelPermalink "image" (.Params.image | default "")) }}{{ end }}
+<h1 class="world-title"><span class="world-line">中文说唱</span><span class="world-line">正在发生</span></h1>
+<div class="world-stage" id="worldStage">
+  <div class="world-frame" aria-hidden="true"><span class="world-frame-tag">ARTBOARD — HIPHOPNOTE · VINYL FIELD</span><i class="wx tl">×</i><i class="wx tr">×</i><i class="wx bl">×</i><i class="wx br">×</i></div>
+  <span class="world-guide-v" id="worldGuideX" aria-hidden="true"></span>
+  <span class="world-guide-h" id="worldGuideY" aria-hidden="true"></span>
+  <span class="world-coord" id="worldCoord">x: 000 y: 000</span>
+  <span class="world-tape" id="worldTape">VINYL — / —</span>
+  <p class="world-hint" id="worldHint" hidden>拖动旋转 · 滚轮推进 · 悬停看图 · 点击落针</p>
+  <button class="world-sound" id="worldSound" type="button">SOUND: ON</button>
+  <div class="world-fallback" id="worldFallback">
+    {{ range first 8 $feed }}
+    <a href="{{ .RelPermalink }}">{{ with .Params.image }}<img src="{{ . }}" alt="" loading="lazy">{{ end }}<span>{{ .Title }}</span></a>
+    {{ end }}
   </div>
-</section>
+  <script type="application/json" id="tapeData">{{ $tapes | jsonify | safeJS }}</script>
+</div>
 {{ $herojs := resources.Get "js/hero-webgl.js" | fingerprint }}
-<script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 <script type="module" src="{{ $herojs.RelPermalink }}"></script>
-<script>
-/* 取景器语言贯穿全页：每个章节头显示该章节的真实纵坐标 */
-(function () {
-  function pad4(n) { n = Math.max(0, Math.round(n)); return ("0000" + n).slice(-4); }
-  function update() {
-    document.querySelectorAll(".sec-meta").forEach(function (m) {
-      var sec = m.closest("section");
-      var c = m.querySelector(".sec-coord");
-      if (sec && c) c.textContent = "y: " + pad4(sec.offsetTop);
-    });
-  }
-  window.addEventListener("load", update);
-  window.addEventListener("resize", update);
-  update();
-})();
-</script>
-
-<!-- 最新 · Line-up table -->
-<section class="lineup">
-  <div class="wrap">
-    <p class="sec-meta"><span>CRATE 01 — LATEST · 箱口</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
-    <h2 class="loud-sec-title">最新</h2>
-    <div class="lineup-filter" id="lineupFilter">
-      <button class="lchip active" data-col="all">全部</button>
-      <button class="lchip" data-col="资讯">资讯</button>
-      <button class="lchip" data-col="新歌推荐">新歌推荐</button>
-      <button class="lchip" data-col="地下新声">地下新声</button>
-      <button class="lchip" data-col="歌词解析">歌词解析</button>
-      <button class="lchip" data-col="艺人厂牌">艺人厂牌</button>
-      <button class="lchip" data-col="采样考古">采样考古</button>
-      <button class="lchip" data-col="演出日历">演出日历</button>
-    </div>
-    <div class="lineup-rows" id="lineupRows">
-      {{ range $i, $p := first 12 $feed }}
-      <a class="lineup-row reveal" data-col="{{ index $label .Section }}" href="{{ .RelPermalink }}" style="--i:{{ $i }}">
-        <span class="lineup-title">{{ .Title }}</span>
-        <span class="lineup-col">{{ index $label .Section }}</span>
-        <span class="lineup-date">{{ .Date.Format "2006-01-02" }}</span>
-      </a>
-      {{ end }}
-    </div>
-    <p class="lineup-note">每周更新。点上面栏目名，只看那个栏目的文章。</p>
-  </div>
-</section>
-
-<!-- 栏目 · Wall of word tiles -->
-<section class="tiles">
-  <div class="wrap">
-    <p class="sec-meta"><span>CRATE 02 — SECTIONS · 分格</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
-    <h2 class="loud-sec-title">栏目</h2>
-    <div class="tile-grid">
-      <a class="tile reveal" href="/news/"><span class="tile-word">资讯</span><span class="tile-cap">最新动态</span></a>
-      <a class="tile reveal tile-yellow" href="/music/"><span class="tile-word">新歌推荐</span><span class="tile-cap">每周新歌</span></a>
-      <a class="tile reveal" href="/underground/"><span class="tile-word">地下新声</span><span class="tile-cap">新人 Vol.01</span></a>
-      <a class="tile reveal" href="/genres/"><span class="tile-word">说唱分支</span><span class="tile-cap">9 大分支 · 从 Old School 到 Opium</span></a>
-      <a class="tile reveal tile-red" href="/lyrics/"><span class="tile-word">歌词解析</span><span class="tile-cap">逐句批注</span></a>
-      <a class="tile reveal" href="/artists/"><span class="tile-word">艺人厂牌</span><span class="tile-cap">Higher Brothers</span></a>
-      <a class="tile reveal tile-photo" href="/samples/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Das_Vinyl_dreht_sich.jpg/1280px-Das_Vinyl_dreht_sich.jpg" alt="采样考古" loading="lazy"><span class="tile-cap">采样考古 · 一首歌的前世</span></a>
-      <a class="tile reveal tile-yellow" href="/charts/"><span class="tile-word">热歌榜</span><span class="tile-cap">Top 10 即将上线</span></a>
-      <a class="tile reveal" href="/events/"><span class="tile-word">演出日历</span><span class="tile-cap">演出信息收集中</span></a>
-      <a class="tile reveal tile-photo" href="/dialect-map/"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Shang_hai_street_night.jpg/960px-Shang_hai_street_night.jpg" alt="方言说唱地图" loading="lazy"><span class="tile-cap">方言地图 · 各地方言说唱</span></a>
-      <a class="tile reveal tile-red" href="/beat-lab/"><span class="tile-word">Beat 实验室</span><span class="tile-cap">拆开一首 trap beat</span></a>
-      <a class="tile reveal" href="/drum-pad/"><span class="tile-word">鼓机</span><span class="tile-cap">自己敲一段 beat</span></a>
-      <a class="tile reveal tile-photo" href="/timeline/"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Graffiti%2C_Podg%C3%B3rze%2C_Krak%C3%B3w%2C_20210321_0849_5964.jpg/1280px-Graffiti%2C_Podg%C3%B3rze%2C_Krak%C3%B3w%2C_20210321_0849_5964.jpg" alt="说唱编年史" loading="lazy"><span class="tile-cap">编年史 · 从 Old School 到现在</span></a>
-      <a class="tile reveal tile-yellow" href="/submit/"><span class="tile-word">投稿</span><span class="tile-cap">新歌 / 演出 / 线索</span></a>
-    </div>
-  </div>
-</section>
-
-<!-- 宣言 · Staircase statement -->
-<section class="staircase">
-  <div class="wrap stair-wrap">
-    <p class="sec-meta"><span>CRATE 03 — MANIFESTO · 箱标</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
-    <div class="stair-text">
-    <p class="stair">
-      <span>我们不装老炮</span>
-      <span>只做认真整理</span>
-      <span>中文说唱正在发生</span>
-    </p>
-    <p class="stair-note">HIPHOP 中文站 · 中文说唱的每一个现场，每一次发声。</p>
-    </div>
-    <div class="stair-photos">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Higher_Brothers_Icebox_2019.jpg/960px-Higher_Brothers_Icebox_2019.jpg" alt="Higher Brothers" loading="lazy">
-      <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/Oxxxymiron_RAW_Berlin_asv2022-04_img15.jpg/1280px-Oxxxymiron_RAW_Berlin_asv2022-04_img15.jpg" alt="现场演出" loading="lazy">
-    </div>
-  </div>
-</section>
-
-<!-- 热歌榜 + 订阅 · 平铺 -->
-<section class="flat">
-  <div class="wrap flat-split">
-    <div class="flat-chart">
-      <p class="sec-meta"><span>CRATE 04 — CHARTS · 榜单</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
-      <h2 class="loud-sec-title">热歌榜</h2>
-      <div class="chart-list">
-        {{ range $i, $p := first 5 (where site.RegularPages "Section" "music") }}
-        <a class="chart-row" href="{{ $p.RelPermalink }}">
-          <span class="chart-no">{{ add $i 1 }}</span>
-          {{ with $p.Params.score }}<span class="score score-sm">{{ . }}</span>{{ end }}
-          <span class="chart-info"><strong>{{ $p.Title }}</strong><small>{{ $p.Date.Format "01-02" }}</small></span>
-        </a>
-        {{ end }}
-      </div>
-      <p class="flat-note">首期真实 Top 10 即将上线，敬请期待。<a href="/charts/">完整榜单 →</a></p>
-    </div>
-    <div class="flat-sub">
-      <p class="sec-meta"><span>CRATE 05 — SUBMIT · 投递口</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
-      <h2 class="loud-sec-title">来投稿</h2>
-      <p class="flat-note">新歌 / 演出 / 线索 / 合作，都可以投。公众号「嘻哈笔记」筹备中。</p>
-      <div class="sub-btns">
-        <a class="btn btn-gold" href="/submit/">投稿</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 演出日历 · 平铺列表 -->
-<section class="flat">
-  <div class="wrap">
-    <p class="sec-meta"><span>CRATE 06 — EVENTS · 传单墙</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
-    <h2 class="loud-sec-title">演出日历</h2>
-    <div class="tour-list">
-      {{ range first 3 (where site.RegularPages "Section" "events") }}
-      {{ if ne .File.BaseFileName "_index" }}
-      <a class="tour-row" href="{{ .RelPermalink }}">
-        <span class="tour-date"><strong>{{ .Date.Format "01-02" }}</strong><small>{{ .Date.Format "2006" }}</small></span>
-        <span class="tour-info"><strong>{{ .Title }}</strong></span>
-        <span class="tight-arrow">→</span>
-      </a>
-      {{ end }}
-      {{ end }}
-    </div>
-    <p class="flat-note">演出信息持续收集中——主办方 / 厂牌欢迎投稿：hi@hiphop.ccwu.cc <a href="/events/">全部 →</a></p>
-  </div>
-</section>
 {{ end }}

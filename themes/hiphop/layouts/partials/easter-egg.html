@@ -1,45 +1,7 @@
-{{/* 彩蛋：站长卡通化身，默认隐藏。触发：连点顶栏 Logo 图标三下，或 Konami 秘籍 ↑↑↓↓←←→→BA。点化身关闭。 */}}
+{{/* 彩蛋：站长 3D 化身，默认隐藏。触发：连点顶栏 Logo 图标三下，或 Konami 秘籍 ↑↑↓↓←←→→BA。点化身关闭。 */}}
 <div class="egg" id="eggAvatar" hidden>
   <div class="egg-bubble">哟，被你发现了</div>
   <button class="egg-figure" type="button" aria-label="关闭彩蛋">
-    <svg viewBox="0 0 200 280" role="img" aria-label="站长卡通化身">
-      <!-- 脏辫（后层） -->
-      <g stroke="#141414" stroke-width="10" stroke-linecap="round" fill="none">
-        <path d="M60 35 Q45 70 50 115"/>
-        <path d="M82 22 Q75 60 78 105"/>
-        <path d="M118 22 Q125 60 122 105"/>
-        <path d="M140 35 Q155 70 150 115"/>
-      </g>
-      <ellipse cx="100" cy="28" rx="38" ry="18" fill="#141414"/>
-      <!-- 腿 + 鞋 -->
-      <rect x="62" y="185" width="32" height="58" rx="10" fill="#2b2b2b"/>
-      <rect x="106" y="185" width="32" height="58" rx="10" fill="#2b2b2b"/>
-      <rect x="56" y="238" width="42" height="20" rx="9" fill="#ffffff" stroke="#111111" stroke-width="2"/>
-      <rect x="102" y="238" width="42" height="20" rx="9" fill="#ffffff" stroke="#111111" stroke-width="2"/>
-      <!-- 夹克 -->
-      <rect x="42" y="100" width="116" height="100" rx="24" fill="#141414"/>
-      <!-- T 恤 + 链子 -->
-      <rect x="86" y="102" width="28" height="55" rx="8" fill="#ffe600"/>
-      <path d="M82 100 Q100 112 118 100" stroke="#ffe600" stroke-width="3" fill="none"/>
-      <!-- 手臂：左下垂，右举起打招呼 -->
-      <path d="M52 115 Q38 145 44 178" stroke="#141414" stroke-width="20" stroke-linecap="round" fill="none"/>
-      <circle cx="45" cy="188" r="9" fill="#e6b98c"/>
-      <path d="M148 115 Q168 85 172 58" stroke="#141414" stroke-width="20" stroke-linecap="round" fill="none"/>
-      <circle cx="173" cy="48" r="9" fill="#e6b98c"/>
-      <!-- 脏辫（前层，搭在肩上） -->
-      <g stroke="#141414" stroke-width="9" stroke-linecap="round" fill="none">
-        <path d="M68 40 Q60 80 64 120"/>
-        <path d="M132 40 Q140 80 136 120"/>
-      </g>
-      <!-- 头 + 脸 -->
-      <circle cx="70" cy="62" r="6" fill="#e6b98c"/>
-      <circle cx="130" cy="62" r="6" fill="#e6b98c"/>
-      <circle cx="100" cy="62" r="30" fill="#e6b98c"/>
-      <circle cx="89" cy="60" r="3" fill="#111111"/>
-      <circle cx="111" cy="60" r="3" fill="#111111"/>
-      <path d="M84 50 Q89 47 94 50" stroke="#111111" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M106 50 Q111 47 116 50" stroke="#111111" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M90 74 Q100 82 110 74" stroke="#111111" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    </svg>
+    <span class="egg-canvas" id="eggCanvasWrap"></span>
   </button>
 </div>

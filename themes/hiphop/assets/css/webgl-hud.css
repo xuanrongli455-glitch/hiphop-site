@@ -1,34 +1,38 @@
-/* HERO · 密集黑胶场：3D 画布 + 取景器覆盖层（画板框 / 十字标记 / 参考线 / 坐标读数） */
-.vinyl-stage { position: relative; height: 640px; margin: 24px 0 0; overflow: hidden; background: #000; cursor: grab; }
-.vinyl-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; }
-.vinyl-frame { position: absolute; inset: 16px; border: 1px dashed rgba(255,255,255,.25); pointer-events: none; z-index: 2; }
-.vinyl-frame-tag { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); background: #000; padding: 0 8px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 10px; letter-spacing: .14em; color: rgba(255,255,255,.65); white-space: nowrap; }
-.vx { position: absolute; font-style: normal; font-size: 14px; line-height: 1; color: rgba(255,255,255,.7); }
-.vx.tl { top: -8px; left: -5px; }
-.vx.tr { top: -8px; right: -5px; }
-.vx.bl { bottom: -8px; left: -5px; }
-.vx.br { bottom: -8px; right: -5px; }
-.vinyl-guide-v, .vinyl-guide-h { position: absolute; z-index: 3; pointer-events: none; display: none; }
-.vinyl-guide-v { top: 0; bottom: 0; border-left: 1px dashed rgba(255,255,255,.3); }
-.vinyl-guide-h { left: 0; right: 0; border-top: 1px dashed rgba(255,255,255,.3); }
-.vinyl-coord { position: absolute; right: 28px; bottom: 24px; z-index: 4; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .1em; color: var(--acc); pointer-events: none; }
-.vinyl-tape { position: absolute; left: 28px; bottom: 24px; z-index: 4; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .08em; color: rgba(255,255,255,.85); max-width: 55%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; pointer-events: none; }
-.vinyl-hint { position: absolute; left: 50%; top: 24px; transform: translateX(-50%); z-index: 4; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .08em; color: rgba(255,255,255,.55); pointer-events: none; white-space: nowrap; }
-.vinyl-sound { position: absolute; top: 24px; right: 28px; z-index: 5; pointer-events: auto; background: rgba(0,0,0,.6); border: 1px solid rgba(255,255,255,.35); color: rgba(255,255,255,.85); font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .1em; padding: 5px 9px; cursor: pointer; }
-.vinyl-sound:hover { border-color: var(--acc); color: var(--acc); }
+/* 首页 = 全屏 3D 世界：画布铺满整屏，标题与取景器标注浮在世界之上 */
+body.world-home { overflow: hidden; height: 100vh; }
+/* 菜单 3D：顶栏是浮在世界里的 3D 面板（透视倾斜 + 阴影），链接与投稿全部保留 */
+body.world-home .site-header { position: fixed; top: 0; left: 0; right: 0; background: rgba(10, 10, 10, .55); transform: perspective(1200px) rotateX(8deg); transform-origin: top center; transition: none; box-shadow: 0 12px 24px rgba(0, 0, 0, .5); border-bottom: 1px solid rgba(255, 255, 255, .12); }
+.world-stage { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: #000; cursor: grab; }
+.world-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+.world-title { position: fixed; top: 96px; left: 0; right: 0; z-index: 10; text-align: center; pointer-events: none; font-family: var(--font-hei); font-weight: 900; font-size: clamp(48px, 8vw, 120px); line-height: 1.05; letter-spacing: .02em; color: #fff; text-shadow: 0 2px 24px rgba(0, 0, 0, .8); }
+.world-title .world-line { display: block; }
+.world-frame { position: absolute; top: 84px; right: 12px; bottom: 12px; left: 12px; border: 1px dashed rgba(255, 255, 255, .25); pointer-events: none; z-index: 2; }
+.world-frame-tag { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); background: #000; padding: 0 8px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 10px; letter-spacing: .14em; color: rgba(255, 255, 255, .65); white-space: nowrap; }
+.wx { position: absolute; font-style: normal; font-size: 14px; line-height: 1; color: rgba(255, 255, 255, .7); }
+.wx.tl { top: -8px; left: -5px; }
+.wx.tr { top: -8px; right: -5px; }
+.wx.bl { bottom: -8px; left: -5px; }
+.wx.br { bottom: -8px; right: -5px; }
+.world-guide-v, .world-guide-h { position: absolute; z-index: 3; pointer-events: none; display: none; }
+.world-guide-v { top: 0; bottom: 0; border-left: 1px dashed rgba(255, 255, 255, .3); }
+.world-guide-h { left: 0; right: 0; border-top: 1px dashed rgba(255, 255, 255, .3); }
+.world-coord { position: absolute; right: 28px; bottom: 20px; z-index: 4; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .1em; color: var(--acc); pointer-events: none; }
+.world-tape { position: absolute; left: 28px; bottom: 20px; z-index: 4; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .08em; color: rgba(255, 255, 255, .85); max-width: 55%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; pointer-events: none; }
+.world-hint { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 4; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .08em; color: rgba(255, 255, 255, .55); pointer-events: none; white-space: nowrap; }
+.world-sound { position: absolute; top: 88px; right: 28px; z-index: 5; pointer-events: auto; background: rgba(0, 0, 0, .6); border: 1px solid rgba(255, 255, 255, .35); color: rgba(255, 255, 255, .85); font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .1em; padding: 5px 9px; cursor: pointer; }
+.world-sound:hover { border-color: var(--acc); color: var(--acc); }
 /* 回退：WebGL / CDN 失败时显示的静态封面网格 */
-.vinyl-fallback { position: absolute; inset: 0; z-index: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 40px; align-content: center; background: #000; }
-.vinyl-fallback a { display: block; color: #fff; text-decoration: none; }
-.vinyl-fallback img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
-.vinyl-fallback span { display: block; margin-top: 8px; font-size: 13px; line-height: 1.4; }
-/* 取景器语言贯穿全页：每个章节头显示真实纵坐标 */
-.sec-coord { margin-left: 8px; font-size: 11px; letter-spacing: .1em; white-space: nowrap; }
+.world-fallback { position: absolute; inset: 0; z-index: 1; overflow-y: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 190px 24px 40px; align-content: start; background: #000; }
+.world-fallback a { display: block; color: #fff; text-decoration: none; }
+.world-fallback img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+.world-fallback span { display: block; margin-top: 8px; font-size: 13px; line-height: 1.4; }
 @media (max-width: 760px) {
-  .vinyl-stage { height: 460px; }
-  .vinyl-frame { inset: 8px; }
-  .vinyl-coord { right: 16px; bottom: 14px; }
-  .vinyl-tape { left: 16px; bottom: 14px; max-width: 52%; }
-  .vinyl-hint { display: none; }
-  .vinyl-fallback { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 24px; }
-  .vinyl-guide-v, .vinyl-guide-h { display: none !important; }
+  .world-title { top: 84px; font-size: clamp(44px, 13vw, 72px); }
+  .world-frame { top: 76px; }
+  .world-coord { right: 16px; bottom: 14px; }
+  .world-tape { left: 16px; bottom: 14px; max-width: 52%; }
+  .world-hint { display: none; }
+  .world-sound { top: 80px; right: 16px; }
+  .world-fallback { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 180px 16px 24px; }
+  .world-guide-v, .world-guide-h { display: none !important; }
 }
