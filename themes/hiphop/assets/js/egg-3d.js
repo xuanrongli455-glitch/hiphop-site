@@ -80,9 +80,18 @@
   }
 
   function toWireframe(THREE, group) {
-    var m = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.35 });
+      var m = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.5 });
     group.traverse(function (o) { if (o.isMesh) o.material = m; });
     return m;
+  }
+
+  function startFade() {
+    fading = true;
+    fadeT0 = performance.now();
+    solidMats.forEach(function (m) { m.opacity = 0; });
+    solid.visible = true;
+    ghost.visible = true;
+    if (ghostMat) ghostMat.opacity = 0.5;
   }
 
   function init() {
@@ -103,6 +112,7 @@
       dir.position.set(2, 3, 4);
       scene.add(dir);
       rig = new THREE.Group();
+      rig.scale.setScalar(1.1);
       scene.add(rig);
       var built = buildAvatar(THREE);
       solid = built.group;
@@ -117,6 +127,7 @@
       ghostMat = toWireframe(THREE, ghost);
       rig.add(ghost);
       started = true;
+      if (running) startFade();
       if (running && !raf) loop();
     }).catch(function () { /* 3D 失败则只显示气泡，不挡彩蛋 */ });
   }
@@ -157,12 +168,7 @@
       clockStart = performance.now();
       if (!started) { init(); return; }
       /* 每次弹出都重播一次线框幽灵 → 实体 */
-      fading = true;
-      fadeT0 = performance.now();
-      solidMats.forEach(function (m) { m.opacity = 0; });
-      solid.visible = true;
-      ghost.visible = true;
-      if (ghostMat) ghostMat.opacity = 0.35;
+      startFade();
       if (!raf) loop();
     },
     hide: function () {

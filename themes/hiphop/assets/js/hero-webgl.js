@@ -166,16 +166,16 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     return tex;
   }
 
-  /* 横屏排布：挤满画面、互相遮挡；倾斜收敛到 ±40°，盘面保持可读，不转成薄片 */
+  /* 横屏排布：更宽更深，盘面冲出画框、互相遮挡，像原版那样挤满画面 */
   var LAYOUT_LANDSCAPE = [
-    { x: -3.3, y: 1.35, z: 0.2, rx: 0.35, ry: 0.4, rz: -0.25, s: 1.05 },
-    { x: -1.15, y: 1.55, z: -0.6, rx: -0.3, ry: 0.6, rz: 0.3, s: 0.95 },
-    { x: 1.15, y: 1.35, z: 0.6, rx: 0.45, ry: -0.5, rz: 0.2, s: 1.05 },
-    { x: 3.3, y: 1.05, z: -0.3, rx: -0.4, ry: 0.6, rz: -0.35, s: 0.95 },
-    { x: -3.5, y: -1.15, z: -0.4, rx: 0.3, ry: -0.6, rz: 0.35, s: 1.0 },
-    { x: -1.0, y: -1.35, z: 0.9, rx: -0.45, ry: 0.3, rz: -0.2, s: 1.1 },
-    { x: 1.35, y: -1.25, z: -0.7, rx: 0.4, ry: 0.7, rz: 0.25, s: 0.95 },
-    { x: 3.5, y: -1.45, z: 0.3, rx: -0.35, ry: -0.6, rz: -0.3, s: 1.0 }
+    { x: -4.8, y: 2.0, z: -1.5, rx: 0.35, ry: 0.4, rz: -0.25, s: 1.1 },
+    { x: -2.0, y: 1.4, z: 1.2, rx: -0.3, ry: 0.6, rz: 0.3, s: 1.0 },
+    { x: 0.6, y: 2.2, z: -2.0, rx: 0.45, ry: -0.5, rz: 0.2, s: 1.1 },
+    { x: 3.2, y: 1.2, z: 0.4, rx: -0.4, ry: 0.6, rz: -0.35, s: 1.0 },
+    { x: -3.6, y: -1.4, z: 0.8, rx: 0.3, ry: -0.6, rz: 0.35, s: 1.05 },
+    { x: -0.8, y: -2.2, z: -1.2, rx: -0.45, ry: 0.3, rz: -0.2, s: 1.15 },
+    { x: 2.0, y: -1.6, z: 1.6, rx: 0.4, ry: 0.7, rz: 0.25, s: 1.0 },
+    { x: 4.6, y: -2.0, z: -0.8, rx: -0.35, ry: -0.6, rz: -0.3, s: 1.05 }
   ];
   /* 竖屏排布：竖直一摞唱片，像伸手进箱子翻找；上下拖动平移 */
   var LAYOUT_PORTRAIT = [
@@ -266,7 +266,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     var h = stage.clientHeight || 1;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    camera.position.z = isPortrait ? 8.5 : 6.8;
+    camera.position.z = isPortrait ? 8.5 : 6.2;
     camera.updateProjectionMatrix();
   }
   applyLayout();
