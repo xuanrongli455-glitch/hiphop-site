@@ -180,14 +180,15 @@ import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.j
     if (item.image) {
       var thumb = new THREE.Group();
       var backing = new THREE.Mesh(
-        new THREE.PlaneGeometry(1.41, 0.91),
+        new THREE.PlaneGeometry(1.26, 0.81),
         new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.6 })
       );
       backing.position.z = -0.005;
-      var thumbMat = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.5, metalness: 0 });
-      var thumbMesh = new THREE.Mesh(new THREE.PlaneGeometry(1.35, 0.85), thumbMat);
+      /* 注意：材质 color 会与贴图相乘，必须用白色，否则照片会被压成黑块 */
+      var thumbMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5, metalness: 0 });
+      var thumbMesh = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 0.75), thumbMat);
       thumb.add(backing, thumbMesh);
-      thumb.position.set(0, -0.3, 0.95);
+      thumb.position.set(0, -0.35, 0.95);
       thumb.rotation.set(0, -0.08, 0.02);
       tape.add(thumb);
       new THREE.TextureLoader().load(item.image, function (tex) {
