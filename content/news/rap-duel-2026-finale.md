@@ -3,7 +3,8 @@ title: "《说唱巅峰对决2026》落幕：弹壳双料封王，Yamy 成名人
 date: 2026-10-14
 tags: ["资讯", "说唱巅峰对决"]
 description: "9 月 12 日总决赛之夜：弹壳凭《花开花落》拿下总冠军+人气奖，Rapeter 第二顺位进名人堂，Yamy 以《问爱》成为名人堂首位女 Rapper。"
-image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Hoot0212_539.JPG/1280px-Hoot0212_539.JPG"
+image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Hip-hop_DJ_with_a_microphone_%28Unsplash%29.jpg/1280px-Hip-hop_DJ_with_a_microphone_%28Unsplash%29.jpg"
+image_caption: "配图：Hip-hop 现场（Unsplash / Wikimedia Commons）"
 ---
 
 爱奇艺《说唱巅峰对决2026》十周年赛季，于 9 月 12 日晚的巅峰盛典夜落下帷幕。OG 弹壳（Danko）以《花开花落》拿下总决赛全场最高票，登顶年度总冠军，并同步抱走人气奖，成为本季"双料王"。
