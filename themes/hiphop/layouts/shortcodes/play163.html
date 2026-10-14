@@ -1,5 +1,16 @@
-{{/* 网易云官方嵌入播放器：{{< play163 id="网易云歌曲ID" title="歌曲名" >}} */}}
-<div class="music163-embed">
-  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="66" src="https://music.163.com/outchain/player?type=2&id={{ .Get "id" }}&auto=0&height=66"></iframe>
-  {{ with .Get "title" }}<p class="music163-note">在网易云音乐播放《{{ . }}》（官方嵌入播放器）</p>{{ end }}
+{{/* 分轨式播放卡：圆形彩图 + 黑圆白三角按钮 + 波形条，点击展开网易云官方嵌入播放器
+  用法：{{< play163 id="网易云歌曲ID" title="歌曲名" >}}
+  注意：只做外观与触发，实际播放走网易云官方嵌入；不托管完整版权音乐。
+  波形条为装饰性图形，不代表真实播放进度；不展示未经核实的歌曲时长。 */}}
+<div class="stem-player" data-song-id="{{ .Get "id" }}">
+  <div class="stem-art">
+    <div class="stem-ring stem-ring-1"><div class="stem-ring stem-ring-2"></div></div>
+    <button class="stem-play" type="button" aria-label="播放《{{ .Get "title" }}》" aria-expanded="false"><span class="stem-play-glyph" aria-hidden="true">▶</span></button>
+  </div>
+  <div class="stem-wave" aria-hidden="true"></div>
+  {{ with .Get "title" }}<p class="stem-title">《{{ . }}》</p>{{ end }}
+  <div class="stem-embed" hidden>
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="66" data-src="https://music.163.com/outchain/player?type=2&id={{ .Get "id" }}&auto=1&height=66"></iframe>
+    <p class="stem-note">在网易云音乐播放（官方嵌入播放器）</p>
+  </div>
 </div>

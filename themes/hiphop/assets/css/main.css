@@ -351,8 +351,25 @@ a { color: inherit; }
 /* 人名/关键信息突出：黄色 */
 .article-body strong { color: var(--acc); }
 /* 网易云嵌入播放器 */
-.music163-embed { margin: 16px 0 28px; }
-.music163-embed iframe { display: block; border: 1px solid var(--line); border-radius: 6px; background: #1a1a1a; }
+/* 分轨式播放卡：圆形彩图 + 黑圆白三角按钮 + 波形条 */
+.stem-player { margin: 24px 0 36px; text-align: center; }
+.stem-art { position: relative; width: 180px; height: 180px; margin: 0 auto; border-radius: 50%; background: #ffe600; }
+.stem-ring { position: absolute; border-radius: 50%; }
+.stem-ring-1 { inset: 24px; background: #ff4d00; }
+.stem-ring-2 { inset: 24px; background: #fff; }
+.stem-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 56px; height: 56px; padding: 0; border: 0; border-radius: 50%; background: #000; color: #fff; cursor: pointer; }
+.stem-play:hover { transform: translate(-50%, -50%) scale(1.08); }
+.stem-play-glyph { display: block; font-size: 20px; line-height: 1; transform: translateX(2px); }
+.stem-player.is-open .stem-play-glyph { transform: none; font-size: 22px; }
+.stem-wave { display: flex; align-items: center; justify-content: center; gap: 3px; height: 28px; margin: 16px auto 0; }
+.stem-wave span { display: block; width: 3px; border-radius: 2px; background: var(--muted); }
+.stem-title { margin: 10px 0 0; font-size: 16px; font-weight: 600; }
+.stem-embed { margin-top: 16px; }
+.stem-embed iframe { display: block; width: 100%; border: 1px solid var(--line); border-radius: 6px; background: #1a1a1a; }
+.stem-note { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+@media (max-width: 640px) {
+  .stem-art { width: 160px; height: 160px; }
+}
 .music163-note { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
 /* 文内插图 figure */
 .article-figure { margin: 32px 0; }

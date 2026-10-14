@@ -161,3 +161,53 @@
     });
   });
 })();
+
+/* 分轨式播放卡：按歌曲 ID 生成同心圆配色与装饰波形，点击展开网易云官方播放器 */
+(function () {
+  var players = document.querySelectorAll(".stem-player");
+  if (!players.length) return;
+  function hashStr(s) { var h = 0; for (var i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) | 0; } return Math.abs(h); }
+  function mulberry(seed) { return function () { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; var t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  var palette = ["#ffe600", "#ff4d00", "#3cffd0", "#5200ff", "#ff2e88", "#00aaff", "#ffffff"];
+  players.forEach(function (p) {
+    var rnd = mulberry(hashStr(p.getAttribute("data-song-id") || "0"));
+    var art = p.querySelector(".stem-art");
+    var ring1 = p.querySelector(".stem-ring-1");
+    var ring2 = p.querySelector(".stem-ring-2");
+    if (art && ring1 && ring2) {
+      var c1 = palette[Math.floor(rnd() * palette.length)];
+      var c2 = palette[Math.floor(rnd() * palette.length)];
+      var c3 = palette[Math.floor(rnd() * palette.length)];
+      if (c2 === c1) c2 = palette[(palette.indexOf(c1) + 3) % palette.length];
+      if (c3 === c1 || c3 === c2) c3 = palette[(palette.indexOf(c1) + 5) % palette.length];
+      art.style.background = c1;
+      ring1.style.background = c2;
+      ring2.style.background = c3;
+    }
+    var wave = p.querySelector(".stem-wave");
+    if (wave) {
+      for (var i = 0; i < 48; i++) {
+        var bar = document.createElement("span");
+        var env = Math.sin((i / 47) * Math.PI);
+        bar.style.height = Math.max(4, Math.round(4 + env * rnd() * 22)) + "px";
+        wave.appendChild(bar);
+      }
+    }
+    var btn = p.querySelector(".stem-play");
+    var embed = p.querySelector(".stem-embed");
+    var glyph = p.querySelector(".stem-play-glyph");
+    if (btn && embed) {
+      btn.addEventListener("click", function () {
+        var open = embed.hidden;
+        if (open) {
+          var frame = embed.querySelector("iframe");
+          if (frame && !frame.getAttribute("src")) frame.setAttribute("src", frame.getAttribute("data-src"));
+        }
+        embed.hidden = !open;
+        p.classList.toggle("is-open", open);
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+        if (glyph) glyph.textContent = open ? "✕" : "▶";
+      });
+    }
+  });
+})();
