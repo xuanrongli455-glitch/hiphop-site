@@ -866,3 +866,34 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 }
 
 .genre-photo-cap { margin: 10px 0 0; font-size: 12px; line-height: 1.6; color: var(--muted); }
+
+/* Beat 实验室 · 可玩鼓机 */
+.drumlab { padding: 48px 0 64px; }
+.drum-title { margin: 0; font-family: var(--font-display); font-size: clamp(56px, 9vw, 120px); line-height: .95; }
+.drum-intro { max-width: 680px; margin: 20px 0 0; font-size: 17px; line-height: 1.8; color: var(--muted); }
+.transport { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin: 32px 0 0; }
+.btn-play { border: 0; border-radius: 6px; background: var(--acc); color: #111; font-size: 18px; font-weight: 700; padding: 12px 24px; cursor: pointer; }
+.bpm-wrap, .vol-wrap { display: flex; align-items: center; gap: 10px; font-size: 15px; }
+.bpm-wrap input, .vol-wrap input { width: 130px; accent-color: var(--acc); }
+.preset-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.preset-btn { border: 1px solid var(--line); border-radius: 6px; background: #242424; color: #fff; font-size: 14px; font-weight: 600; padding: 8px 14px; cursor: pointer; }
+.preset-btn:hover { border-color: var(--acc); color: var(--acc); }
+.pads { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 28px 0 0; }
+.pad { min-height: 88px; border: 1px solid var(--line); border-radius: 6px; background: #242424; color: #fff; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.pad:active, .pad.lit { background: var(--acc); color: #111; border-color: var(--acc); }
+.pad-name { font-size: 17px; font-weight: 700; }
+.pad-key { font-size: 12px; color: var(--muted); }
+.pad.lit .pad-key { color: #111; }
+.seq { margin: 36px 0 0; overflow-x: auto; padding-bottom: 8px; }
+.seq-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; min-width: 560px; }
+.seq-label { width: 64px; flex: 0 0 auto; font-size: 13px; color: var(--muted); }
+.seq-steps { display: flex; gap: 5px; flex: 1; }
+.step { flex: 1; height: 30px; min-width: 24px; border: 1px solid var(--line); border-radius: 4px; background: #1a1a1a; cursor: pointer; padding: 0; }
+.step.beat-start { margin-left: 8px; }
+.step.on { background: var(--acc); border-color: var(--acc); }
+.step.now { box-shadow: 0 0 0 2px #fff inset; }
+.drum-note { margin: 24px 0 0; font-size: 14px; line-height: 1.8; color: var(--muted); }
+@media (max-width: 640px) {
+  .pads { grid-template-columns: repeat(3, 1fr); }
+  .pad { min-height: 76px; }
+}

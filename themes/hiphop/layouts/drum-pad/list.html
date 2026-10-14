@@ -1,0 +1,260 @@
+{{ define "main" }}
+<!-- Beat 实验室 · 可玩鼓机：Web Audio 全合成鼓声，无音频文件 -->
+<section class="drumlab">
+  <div class="wrap">
+    <p class="genres-kicker">DRUM PAD</p>
+    <h1 class="drum-title">鼓机</h1>
+    <p class="drum-intro">点垫子出声，排音序器做 beat。鼓声全部由 Web Audio 实时合成，没有任何音频文件。三个预设一键载入：Trap、Boom Bap、Drill。键盘 Q / W / E / R / A / S / D / F / Z / X / C / V 也能敲垫子。想先听懂一首 beat 由什么组成，去 <a href="/beat-lab/">Beat 实验室：拆开一首 trap beat →</a></p>
+
+    <div class="transport">
+      <button class="btn-play" id="dmPlay" type="button">▶ 播放</button>
+      <label class="bpm-wrap">BPM <input id="dmBpm" type="range" min="60" max="160" value="140"><span id="dmBpmVal">140</span></label>
+      <label class="vol-wrap">音量 <input id="dmVol" type="range" min="0" max="100" value="80"></label>
+      <div class="preset-group">
+        <button class="preset-btn" data-preset="trap" type="button">Trap</button>
+        <button class="preset-btn" data-preset="boombap" type="button">Boom Bap</button>
+        <button class="preset-btn" data-preset="drill" type="button">Drill</button>
+        <button class="preset-btn" data-preset="clear" type="button">清空</button>
+      </div>
+    </div>
+
+    <div class="pads" id="dmPads">
+      <button class="pad" data-sound="kick" data-key="a" type="button"><span class="pad-name">Kick</span><span class="pad-key">A</span></button>
+      <button class="pad" data-sound="snare" data-key="z" type="button"><span class="pad-name">Snare</span><span class="pad-key">Z</span></button>
+      <button class="pad" data-sound="clap" data-key="x" type="button"><span class="pad-name">Clap</span><span class="pad-key">X</span></button>
+      <button class="pad" data-sound="rim" data-key="c" type="button"><span class="pad-name">Rim</span><span class="pad-key">C</span></button>
+      <button class="pad" data-sound="chat" data-key="d" type="button"><span class="pad-name">闭镲</span><span class="pad-key">D</span></button>
+      <button class="pad" data-sound="ohat" data-key="f" type="button"><span class="pad-name">开镲</span><span class="pad-key">F</span></button>
+      <button class="pad" data-sound="crash" data-key="r" type="button"><span class="pad-name">Crash</span><span class="pad-key">R</span></button>
+      <button class="pad" data-sound="bass808" data-key="q" type="button"><span class="pad-name">808</span><span class="pad-key">Q</span></button>
+      <button class="pad" data-sound="tomlo" data-key="s" type="button"><span class="pad-name">低通</span><span class="pad-key">S</span></button>
+      <button class="pad" data-sound="tomhi" data-key="e" type="button"><span class="pad-name">高通</span><span class="pad-key">E</span></button>
+      <button class="pad" data-sound="cowbell" data-key="w" type="button"><span class="pad-name">Cowbell</span><span class="pad-key">W</span></button>
+      <button class="pad" data-sound="shaker" data-key="v" type="button"><span class="pad-name">Shaker</span><span class="pad-key">V</span></button>
+    </div>
+
+    <div class="seq" id="dmSeq"></div>
+    <p class="drum-note">音序器 16 步循环。点格子排鼓，点播放开始循环。预设是通用风格型，不复制任何具体歌曲。</p>
+  </div>
+</section>
+
+<script>
+(function () {
+  var ctx = null, master = null, noiseBuf = null;
+  function ac() {
+    if (!ctx) {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      master = ctx.createGain();
+      master.gain.value = 0.8;
+      master.connect(ctx.destination);
+      noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 1, ctx.sampleRate);
+      var d = noiseBuf.getChannelData(0);
+      for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    if (ctx.state === "suspended") ctx.resume();
+    return ctx;
+  }
+  function env(t, a, peak, dec) {
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(peak, t + a);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + a + dec);
+    g.connect(master);
+    return g;
+  }
+  function tone(t, type, f0, f1, dur, peak) {
+    var o = ctx.createOscillator();
+    o.type = type;
+    o.frequency.setValueAtTime(f0, t);
+    o.frequency.exponentialRampToValueAtTime(Math.max(f1, 1), t + dur);
+    o.connect(env(t, 0.002, peak, dur));
+    o.start(t); o.stop(t + dur + 0.05);
+  }
+  function noise(t, filterType, freq, q, dur, peak, attack) {
+    var src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    src.loop = true;
+    var f = ctx.createBiquadFilter();
+    f.type = filterType; f.frequency.value = freq; f.Q.value = q || 1;
+    src.connect(f);
+    f.connect(env(t, attack || 0.001, peak, dur));
+    src.start(t); src.stop(t + dur + 0.1);
+  }
+  var SOUNDS = {
+    kick: function (t) { tone(t, "sine", 150, 40, 0.14, 1.0); },
+    snare: function (t) { noise(t, "bandpass", 1800, 0.8, 0.18, 0.7); tone(t, "triangle", 190, 120, 0.1, 0.4); },
+    clap: function (t) { noise(t, "bandpass", 1200, 1, 0.06, 0.6); noise(t + 0.07, "bandpass", 1200, 1, 0.06, 0.6); noise(t + 0.14, "bandpass", 1200, 1, 0.18, 0.7); },
+    rim: function (t) { tone(t, "square", 420, 320, 0.05, 0.35); },
+    chat: function (t) { noise(t, "highpass", 8000, 1, 0.05, 0.5); },
+    ohat: function (t) { noise(t, "highpass", 8000, 1, 0.3, 0.45); },
+    crash: function (t) { noise(t, "highpass", 5000, 1, 1.0, 0.5); },
+    bass808: function (t) { tone(t, "sine", 70, 34, 0.42, 0.9); },
+    tomlo: function (t) { tone(t, "sine", 130, 60, 0.25, 0.7); },
+    tomhi: function (t) { tone(t, "sine", 210, 110, 0.2, 0.6); },
+    cowbell: function (t) { tone(t, "square", 560, 540, 0.16, 0.25); tone(t, "square", 840, 820, 0.16, 0.25); },
+    shaker: function (t) { noise(t, "bandpass", 6000, 2, 0.09, 0.4, 0.01); }
+  };
+  function play(name, t) { ac(); SOUNDS[name](t || ctx.currentTime); }
+
+  /* 垫子 */
+  var pads = {};
+  document.querySelectorAll("#dmPads .pad").forEach(function (btn) {
+    var name = btn.getAttribute("data-sound");
+    pads[name] = btn;
+    function hit() {
+      play(name);
+      btn.classList.add("lit");
+      setTimeout(function () { btn.classList.remove("lit"); }, 140);
+    }
+    btn.addEventListener("click", hit);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.repeat) return;
+    var btn = document.querySelector('#dmPads .pad[data-key="' + e.key.toLowerCase() + '"]');
+    if (btn) btn.click();
+  });
+
+  /* 音序器：8 个核心声部 × 16 步 */
+  var SEQ_SOUNDS = ["kick", "snare", "clap", "rim", "chat", "ohat", "bass808", "crash"];
+  var SEQ_LABEL = { kick: "Kick", snare: "Snare", clap: "Clap", rim: "Rim", chat: "闭镲", ohat: "开镲", bass808: "808", crash: "Crash" };
+  var patterns = {};
+  SEQ_SOUNDS.forEach(function (n) { patterns[n] = new Array(16).fill(0); });
+  var seqEl = document.getElementById("dmSeq");
+  var stepBtns = {};
+  SEQ_SOUNDS.forEach(function (name) {
+    var row = document.createElement("div");
+    row.className = "seq-row";
+    var label = document.createElement("span");
+    label.className = "seq-label";
+    label.textContent = SEQ_LABEL[name];
+    row.appendChild(label);
+    var steps = document.createElement("div");
+    steps.className = "seq-steps";
+    stepBtns[name] = [];
+    for (var i = 0; i < 16; i++) {
+      (function (n, i) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "step" + (i % 4 === 0 ? " beat-start" : "");
+        b.setAttribute("aria-label", SEQ_LABEL[n] + " 第 " + (i + 1) + " 步");
+        b.addEventListener("click", function () {
+          patterns[n][i] = patterns[n][i] ? 0 : 1;
+          b.classList.toggle("on", !!patterns[n][i]);
+        });
+        steps.appendChild(b);
+        stepBtns[n].push(b);
+      })(name, i);
+    }
+    row.appendChild(steps);
+    seqEl.appendChild(row);
+  });
+  function paintGrid() {
+    SEQ_SOUNDS.forEach(function (n) {
+      stepBtns[n].forEach(function (b, i) { b.classList.toggle("on", !!patterns[n][i]); });
+    });
+  }
+  function flashPad(name) {
+    var btn = pads[name];
+    if (!btn) return;
+    btn.classList.add("lit");
+    setTimeout(function () { btn.classList.remove("lit"); }, 120);
+  }
+  function flashCol(s) {
+    document.querySelectorAll(".seq-row").forEach(function (row) {
+      row.querySelectorAll(".step").forEach(function (b, i) { b.classList.toggle("now", i === s); });
+    });
+  }
+
+  /* 播放调度 */
+  var playing = false, step = 0, nextTime = 0, timer = null;
+  var bpm = 140;
+  function stepDur() { return 60 / bpm / 4; }
+  function tick() {
+    while (nextTime < ctx.currentTime + 0.12) {
+      (function (s, t) {
+        SEQ_SOUNDS.forEach(function (n) { if (patterns[n][s]) play(n, t); });
+        setTimeout(function () {
+          flashCol(s);
+          SEQ_SOUNDS.forEach(function (n) { if (patterns[n][s]) flashPad(n); });
+        }, Math.max(0, (t - ctx.currentTime) * 1000));
+      })(step, nextTime);
+      nextTime += stepDur();
+      step = (step + 1) % 16;
+    }
+  }
+  var playBtn = document.getElementById("dmPlay");
+  playBtn.addEventListener("click", function () {
+    ac();
+    if (playing) {
+      playing = false;
+      clearInterval(timer);
+      playBtn.textContent = "▶ 播放";
+      document.querySelectorAll(".step.now").forEach(function (b) { b.classList.remove("now"); });
+      return;
+    }
+    playing = true;
+    step = 0;
+    nextTime = ctx.currentTime + 0.06;
+    timer = setInterval(tick, 25);
+    playBtn.textContent = "■ 停止";
+  });
+
+  /* BPM / 音量 */
+  var bpmInput = document.getElementById("dmBpm");
+  var bpmVal = document.getElementById("dmBpmVal");
+  bpmInput.addEventListener("input", function () {
+    bpm = parseInt(bpmInput.value, 10);
+    bpmVal.textContent = bpm;
+  });
+  document.getElementById("dmVol").addEventListener("input", function (e) {
+    if (master) master.gain.value = e.target.value / 100;
+  });
+
+  /* 预设：通用风格型，不复制任何具体歌曲 */
+  var PRESETS = {
+    trap: { bpm: 140,
+      kick:   [1,0,0,0, 0,0,0,1, 0,0,1,0, 0,0,0,0],
+      snare:  [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
+      clap:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+      rim:    [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+      chat:   [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,1],
+      ohat:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,1,0],
+      bass808: [1,0,0,0, 0,0,0,1, 0,0,1,0, 0,0,0,0],
+      crash:  [1,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0] },
+    boombap: { bpm: 90,
+      kick:   [1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,1,0],
+      snare:  [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
+      clap:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+      rim:    [0,0,0,0, 0,0,0,0, 0,0,1,0, 0,0,0,0],
+      chat:   [1,0,1,1, 0,1,0,1, 1,0,1,1, 0,1,0,1],
+      ohat:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+      bass808: [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+      crash:  [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0] },
+    drill: { bpm: 140,
+      kick:   [1,0,0,1, 0,0,1,0, 0,1,0,0, 1,0,0,0],
+      snare:  [0,0,0,0, 0,0,1,0, 0,0,0,0, 0,0,1,0],
+      clap:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+      rim:    [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+      chat:   [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,0],
+      ohat:   [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,1],
+      bass808: [1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0],
+      crash:  [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0] }
+  };
+  document.querySelectorAll(".preset-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var key = btn.getAttribute("data-preset");
+      if (key === "clear") {
+        SEQ_SOUNDS.forEach(function (n) { patterns[n] = new Array(16).fill(0); });
+      } else {
+        var p = PRESETS[key];
+        bpm = p.bpm;
+        bpmInput.value = bpm;
+        bpmVal.textContent = bpm;
+        SEQ_SOUNDS.forEach(function (n) { patterns[n] = p[n].slice(); });
+      }
+      paintGrid();
+    });
+  });
+})();
+</script>
+{{ end }}
