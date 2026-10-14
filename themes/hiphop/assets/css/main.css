@@ -897,3 +897,14 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
   .pads { grid-template-columns: repeat(3, 1fr); }
   .pad { min-height: 76px; }
 }
+
+/* Overmind 细节（2026-10-14，用户批准打破 Loud and flat 部分规则）：
+   章节编号 + 等宽小标签 + 十字对位标记 + 细线分隔 + 描边卡片 */
+.sec-meta { display: flex; align-items: center; gap: 12px; margin: 0 0 10px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 12px; letter-spacing: .18em; color: var(--muted); }
+.sec-meta::before, .sec-meta::after { content: "+"; color: var(--acc); font-weight: 700; }
+.sec-meta-line { flex: 1; height: 1px; background: var(--line); }
+.staircase .sec-meta { color: rgba(0,0,0,.6); }
+.staircase .sec-meta::before, .staircase .sec-meta::after { color: #111; }
+.staircase .sec-meta-line { background: rgba(0,0,0,.25); }
+.lineup, .tiles, .flat { border-top: 1px solid var(--line); }
+.tile { border: 1px solid var(--line); }
