@@ -20,6 +20,8 @@
   {{ end }}
   {{ $js := resources.Get "js/main.js" | minify | fingerprint }}
   <script src="{{ $js.RelPermalink }}" defer></script>
+  {{ $smooth := resources.Get "js/smooth-scroll.js" | minify | fingerprint }}
+  <script src="{{ $smooth.RelPermalink }}" defer></script>
   {{ $egg := resources.Get "js/egg-3d.js" | fingerprint }}
   <script src="{{ $egg.RelPermalink }}" defer></script>
   {{ $fluid := resources.Get "js/mouse-fluid.js" | minify | fingerprint }}

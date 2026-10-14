@@ -168,8 +168,8 @@
   if (!players.length) return;
   function hashStr(s) { var h = 0; for (var i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) | 0; } return Math.abs(h); }
   function mulberry(seed) { return function () { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; var t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
-  var palette = ["#ffe600", "#242424", "#ffffff", "#3a3a3a"];
-  var bright = ["#ffe600", "#ffffff"];
+  var palette = ["#ffffff", "#242424", "#cccccc", "#3a3a3a"];
+  var bright = ["#ffffff", "#cccccc"];
   players.forEach(function (p) {
     var rnd = mulberry(hashStr(p.getAttribute("data-song-id") || "0"));
     var art = p.querySelector(".stem-art");

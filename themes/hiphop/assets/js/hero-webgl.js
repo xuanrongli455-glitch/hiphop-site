@@ -101,22 +101,23 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   var fill = new THREE.DirectionalLight(0xffffff, 0.7);
   fill.position.set(0, 0, 8);
   scene.add(fill);
-  var rim = new THREE.DirectionalLight(0x88aaff, 2.5);
+  var rim = new THREE.DirectionalLight(0xffffff, 2.5);
   rim.position.set(-6, 2, -6);
   scene.add(rim);
   var rim2 = new THREE.DirectionalLight(0xffffff, 1.2);
   rim2.position.set(6, -3, -8);
   scene.add(rim2);
 
+  /* 黑白单色：中标统一白底黑字 */
   var LABELS = [
-    { bg: "#ffe600", fg: "#111111" },
-    { bg: "#f5f0e6", fg: "#111111" },
-    { bg: "#ff2e2e", fg: "#ffffff" },
-    { bg: "#3cffd0", fg: "#111111" },
-    { bg: "#ff7a1a", fg: "#111111" },
-    { bg: "#a06bff", fg: "#ffffff" },
-    { bg: "#00aaff", fg: "#ffffff" },
-    { bg: "#ff2e88", fg: "#ffffff" }
+    { bg: "#f2f2f2", fg: "#0a0a0a" },
+    { bg: "#f2f2f2", fg: "#0a0a0a" },
+    { bg: "#f2f2f2", fg: "#0a0a0a" },
+    { bg: "#f2f2f2", fg: "#0a0a0a" },
+    { bg: "#f2f2f2", fg: "#0a0a0a" },
+    { bg: "#f2f2f2", fg: "#0a0a0a" },
+    { bg: "#f2f2f2", fg: "#0a0a0a" },
+    { bg: "#f2f2f2", fg: "#0a0a0a" }
   ];
 
   function wrapTitle(ctx, text, maxW, maxLines) {
@@ -135,7 +136,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     return lines;
   }
 
-  /* 盘面贴图：纯 Canvas 绘制（黑胶纹路 + 彩色中标），无外部图片依赖 */
+  /* 盘面贴图：纯 Canvas 绘制（黑胶纹路 + 白色中标），无外部图片依赖 */
   function makeVinylTexture(item, label) {
     var c = document.createElement("canvas");
     c.width = 1024; c.height = 1024;
@@ -213,10 +214,10 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     var disc = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 0.1, 64), [sideMat, faceMat, botMat]);
     disc.rotation.x = Math.PI / 2;
     rec.add(disc);
-    /* 悬停选中圈（黄） */
+    /* 悬停选中圈（白） */
     var ring = new THREE.Mesh(
       new THREE.TorusGeometry(1.4, 0.018, 8, 72),
-      new THREE.MeshBasicMaterial({ color: 0xffe600, transparent: true, opacity: 0 })
+      new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 })
     );
     ring.position.z = 0.06;
     rec.add(ring);
