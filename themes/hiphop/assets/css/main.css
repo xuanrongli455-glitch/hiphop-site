@@ -354,6 +354,9 @@ body.custom-cursor.cursor-text, body.custom-cursor.cursor-text * { cursor: text 
   font-family: var(--font-display); font-size: clamp(84px, 15vw, 210px); line-height: 1;
   letter-spacing: .04em; white-space: nowrap; color: transparent;
   -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.12);
+  /* 出血边缘渐隐，避免被硬切看着像 bug */
+  -webkit-mask-image: linear-gradient(90deg, #000 55%, transparent 98%);
+  mask-image: linear-gradient(90deg, #000 55%, transparent 98%);
 }
 .page-title { font-family: var(--font-display); font-size: clamp(44px, 7.5vw, 92px); margin: 0 0 12px; letter-spacing: 0.02em; }
 .page-desc { color: var(--muted); font-size: 17px; margin: 0; max-width: 640px; }
@@ -495,6 +498,9 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
   .menu-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   .card-grid, .card-grid-4 { grid-template-columns: 1fr; }
   .hero { padding-top: 110px; }
+  /* 移动端列表页：收紧顶部留白，水印缩小避免被切得太难看 */
+  .page-head { padding: 92px 0 24px; }
+  .page-watermark { font-size: 72px; top: 66px; }
   .section { padding: 60px 0; }
   .track, .event-row { padding: 14px 16px; gap: 12px; }
   .track-no { min-width: 32px; font-size: 20px; }
@@ -504,8 +510,11 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 /* 真图：有 image frontmatter 时替代占位 */
 .card-art img, .feed-thumb img, .hero-main-art img, .side-art img, .fresh-art img {
   width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: grayscale(1) contrast(1.05);
   transition: transform 0.4s ease;
 }
+/* 文章头图也统一黑白 */
+.article-hero img { filter: grayscale(1) contrast(1.05); }
 .card:hover .card-art img, .feed-row:hover .feed-thumb img,
 .hero-main:hover .hero-main-art img, .side-card:hover .side-art img,
 .fresh-card:hover .fresh-art img { transform: scale(1.05); }
