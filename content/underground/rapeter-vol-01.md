@@ -1,4 +1,5 @@
 ---
+image: "https://upload.wikimedia.org/wikipedia/commons/8/85/Casual_hieroglyphics.jpg"
 title: "地下新声 Vol.01｜Rapeter：把'年轻人的焦虑'写进总决赛的 24 岁"
 date: 2026-10-14
 tags: ["地下新声", "新生代"]
