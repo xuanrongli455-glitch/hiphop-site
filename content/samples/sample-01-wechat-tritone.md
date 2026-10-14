@@ -1,5 +1,7 @@
 ---
 title: "采样考古 001：Higher Brothers《WeChat》里，藏着你 iPhone 的短信提示音"
+image: "https://upload.wikimedia.org/wikipedia/commons/6/64/Turntables_and_mixer.jpg"
+image_caption: "配图：唱盘与调音台（Wikimedia Commons / Baskoner，CC BY 3.0）"
 date: 2026-10-13
 tags: ["采样考古", "Higher Brothers", "Keith Ape"]
 description: "一首歌名叫微信的歌，采样了全世界最有名的短信提示音：苹果 Tri-tone。"

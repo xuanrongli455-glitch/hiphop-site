@@ -1,5 +1,7 @@
 ---
 title: "演出日历使用说明"
+image: "https://upload.wikimedia.org/wikipedia/commons/6/64/Concert_crowd.jpg"
+image_caption: "配图：演唱会现场（Wikimedia Commons / Alpharockindia，CC BY-SA 3.0）"
 date: 2026-10-13
 tags: ["演出", "指南"]
 description: "如何使用本站演出日历，以及如何投稿演出信息。"
