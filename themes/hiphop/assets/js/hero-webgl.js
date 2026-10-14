@@ -1,4 +1,4 @@
-/* 首页 = 全屏 3D 世界：整页就是唱片箱。拖动旋转、滚轮推进、悬停出图、点击落针 */
+/* 首页 = 全屏 3D 世界：整页就是唱片箱。拖动旋转、滚轮推进、悬停选中、点击落针 */
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
@@ -212,8 +212,6 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   var group = new THREE.Group();
   scene.add(group);
   var records = [];
-  var texLoader = new THREE.TextureLoader();
-  texLoader.setCrossOrigin("anonymous");
 
   items.forEach(function (item, i) {
     var rec = new THREE.Group();
@@ -239,34 +237,12 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     );
     edge.position.z = 0.06;
     rec.add(edge);
-    /* 悬停预览图：默认隐藏，悬停才出现（原版的交互） */
-    var preview = null;
-    if (item.image) {
-      var pg = new THREE.Group();
-      var backMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0 });
-      var back = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 1.07), backMat);
-      pg.add(back);
-      var pm = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 });
-      var pim = new THREE.Mesh(new THREE.PlaneGeometry(1.52, 0.99), pm);
-      pim.position.z = 0.01;
-      pg.add(pim);
-      pg.position.set(1.05, 0.8, 1.3);
-      pg.rotation.set(0, -0.15, 0.05);
-      pg.visible = false;
-      rec.add(pg);
-      texLoader.load(item.image, function (t) {
-        t.colorSpace = THREE.SRGBColorSpace;
-        pm.map = t;
-        pm.needsUpdate = true;
-      }, undefined, function () { pg.userData.failed = true; });
-      preview = { group: pg, mats: [backMat, pm] };
-    }
     rec.userData = {
       url: item.url, title: item.title, index: i,
       baseY: 0, phase: i * 1.3,
       spin: (0.15 + (i % 3) * 0.08) * (i % 2 ? 1 : -1),
-      disc: disc, ring: ring, preview: preview,
-      ringOp: 0, prevOp: 0
+      disc: disc, ring: ring,
+      ringOp: 0
     };
     group.add(rec);
     records.push(rec);
@@ -425,11 +401,6 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
       var target = (rec === selected) ? 1 : 0;
       u.ringOp += (target - u.ringOp) * 0.15;
       u.ring.material.opacity = u.ringOp * 0.95;
-      if (u.preview && !u.preview.group.userData.failed) {
-        u.prevOp += (target - u.prevOp) * 0.12;
-        u.preview.mats.forEach(function (m) { m.opacity = u.prevOp; });
-        u.preview.group.visible = u.prevOp > 0.02;
-      }
       rec.position.y = u.baseY + Math.sin(now * 0.0005 + u.phase) * 0.06;
       u.disc.rotation.y += u.spin * dt;
     });
