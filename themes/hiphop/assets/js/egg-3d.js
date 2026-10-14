@@ -1,4 +1,4 @@
-/* 彩蛋 3D 化身：低多边形小人（脏辫 + 黑夹克 + 黄 T + 宽松裤 + 登山靴），先线框幽灵再变实体，像原版一样。
+/* 彩蛋 3D 化身：低多边形小人（脏辫 + 黑皮夹克 + 黑 T + 黑宽松裤 + 黑登山靴 + 铆钉腰带，all-black opium），先线框幽灵再变实体，像原版一样。
    懒加载：只在第一次触发时才动态 import three，不拖首页。 */
 (function () {
   var wrap = null, renderer = null, scene = null, camera = null;
@@ -14,13 +14,14 @@
     function mat(color) {
       return new THREE.MeshStandardMaterial({ color: color, roughness: 0.85, metalness: 0, flatShading: true, transparent: true });
     }
-    var skin = mat(0xe6b98c), black = mat(0x141414), yellow = mat(0xffe600), pants = mat(0x2b2b2b), white = mat(0xf5f5f5), sole = mat(0x9a9a9a);
+    /* all-black opium：黑夹克 + 黑 T + 黑宽松裤，全身黑，只留首饰和眼睛是亮的 */
+    var skin = mat(0xe6b98c), black = mat(0x141414), yellow = mat(0x1a1a1a), pants = mat(0x151515), white = mat(0xf5f5f5), sole = mat(0x9a9a9a);
     /* VVS 首饰：高金属 + 低粗糙，模拟冰钻反光；紫色主石呼应站长那条十字架吊坠 */
     var diamond = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.12, metalness: 1, flatShading: true, transparent: true, emissive: 0x666666, emissiveIntensity: 0.25 });
     var blackDiamond = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.2, metalness: 0.9, flatShading: true, transparent: true, emissive: 0x111111, emissiveIntensity: 0.3 });
     var purpleGem = new THREE.MeshStandardMaterial({ color: 0x7b1fa2, roughness: 0.15, metalness: 0.4, flatShading: true, transparent: true, emissive: 0x3a0a5a, emissiveIntensity: 0.5 });
-    /* 登山靴：深棕黑靴面 + 加厚黑底，参考 HE HIKING BOOTS（Opium 风） */
-    var boot = mat(0x241c14), bootSole = mat(0x0f0f0f), bootLace = mat(0x8a8a8a);
+    /* 登山靴：全黑靴面 + 加厚黑底，参考 HE HIKING BOOTS + all-black opium */
+    var boot = mat(0x101010), bootSole = mat(0x0f0f0f), bootLace = mat(0x8a8a8a);
     var mats = [skin, black, yellow, pants, white, sole, diamond, blackDiamond, purpleGem, boot, bootSole, bootLace];
     var g = new THREE.Group();
     function box(m, w, h, d, x, y, z, parent, r) {
@@ -55,15 +56,24 @@
     /* 加厚大底 */
     box(bootSole, 0.36, 0.1, 0.66, -0.18, -1.28, 0.06);
     box(bootSole, 0.36, 0.1, 0.66, 0.18, -1.28, 0.06);
-    /* 夹克 + 黄 T + 领口 */
+    /* 夹克 + 黑 T + 领口 */
     box(black, 0.86, 0.78, 0.5, 0, 0.08, 0, null, 0.06);
     box(yellow, 0.4, 0.44, 0.06, 0, 0.08, 0.26);
     var collarL = box(black, 0.14, 0.18, 0.03, -0.11, 0.46, 0.25);
     collarL.rotation.z = 0.4;
     var collarR = box(black, 0.14, 0.18, 0.03, 0.11, 0.46, 0.25);
     collarR.rotation.z = -0.4;
+    /* 铆钉腰带：黑带 + 一排银铆钉，opium 标志细节 */
+    box(black, 0.74, 0.08, 0.44, 0, -0.32, 0, null, 0.02);
+    for (var si = 0; si < 9; si++) {
+      var studBelt = new THREE.Mesh(new THREE.OctahedronGeometry(0.028), diamond);
+      studBelt.position.set(-0.28 + si * 0.07, -0.32, 0.23);
+      g.add(studBelt);
+    }
     /* 脖子 */
     box(skin, 0.18, 0.1, 0.18, 0, 0.52, 0);
+    /* 兜帽：搭在脑后肩上，不盖住脏辫 */
+    box(black, 0.5, 0.34, 0.14, 0, 0.66, -0.28, null, 0.05);
     /* VVS 首饰 1：满钻古巴链（绕脖子一圈 + 碎钻点缀） */
     var chain = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.045, 8, 24), diamond);
     chain.position.set(0, 0.48, 0);
@@ -75,7 +85,7 @@
       stud.position.set(Math.cos(ang) * 0.22, 0.48, Math.sin(ang) * 0.22);
       g.add(stud);
     }
-    /* VVS 首饰 2：十字架吊坠（黑边 + 白钻面 + 紫色主石），挂在黄 T 前 */
+    /* VVS 首饰 2：十字架吊坠（黑边 + 白钻面 + 紫色主石），挂在黑 T 前 */
     var pendant = new THREE.Group();
     pendant.position.set(0, 0.18, 0.3);
     var crossBack = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.3, 0.03), blackDiamond);
