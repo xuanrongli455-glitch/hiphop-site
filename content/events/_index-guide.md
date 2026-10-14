@@ -1,7 +1,7 @@
 ---
 title: "演出日历使用说明"
-image: "https://upload.wikimedia.org/wikipedia/commons/6/64/Concert_crowd.jpg"
-image_caption: "配图：演唱会现场（Wikimedia Commons / Alpharockindia，CC BY-SA 3.0）"
+image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/Live_band_performance_at_an_outdoor_concert_with_lights_and_energetic_crowd_during_nighttime.jpg/960px-Live_band_performance_at_an_outdoor_concert_with_lights_and_energetic_crowd_during_nighttime.jpg"
+image_caption: "配图：户外音乐节现场，通用配图。图片：Shixart1985 / Wikimedia Commons，CC BY 2.0"
 date: 2026-10-13
 tags: ["演出", "指南"]
 description: "如何使用本站演出日历，以及如何投稿演出信息。"

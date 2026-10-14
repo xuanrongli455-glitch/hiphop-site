@@ -8,6 +8,8 @@
 .design-sw { position: relative; display: block; width: 28px; height: 28px; }
 .design-sw i { position: absolute; top: -7px; right: -5px; font-style: normal; font-size: 12px; line-height: 1; color: #fff; text-shadow: 0 0 3px #000; }
 .design-sw b { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 4px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 9px; font-weight: 400; letter-spacing: .06em; color: rgba(255,255,255,.75); white-space: nowrap; }
+/* 色卡坐标上下错开，避免相邻标签重叠 */
+.design-sw:nth-child(even) b { top: auto; bottom: 100%; margin-top: 0; margin-bottom: 4px; }
 .design-layers { position: absolute; inset: 0; z-index: 2; }
 .design-layer { position: absolute; display: block; color: #fff; text-decoration: none; transform: rotate(var(--r, 0deg)) translate(var(--px, 0px), var(--py, 0px)); transition: transform .25s ease; }
 .design-layer img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
@@ -33,7 +35,7 @@
 @media (max-width: 760px) {
   .design-hero { height: auto; padding: 16px 16px 48px; }
   .design-bg { opacity: .35; }
-  .design-layers { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 24px 16px; }
+  .design-layers { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 56px 16px; }
   .design-layer { position: relative; left: auto !important; top: auto !important; width: auto !important; }
   .design-frame { inset: 8px; }
   .design-swatches { top: 20px; left: 20px; }
