@@ -1,5 +1,6 @@
 ---
-image: "https://upload.wikimedia.org/wikipedia/commons/8/85/Casual_hieroglyphics.jpg"
+image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Street_art_stencil_painting_of_a_boy_popping_out_from_behind_a_wall%2C_by_German_artist_Tona%2C_in_Vang_Vieng%2C_Laos.jpg/960px-Street_art_stencil_painting_of_a_boy_popping_out_from_behind_a_wall%2C_by_German_artist_Tona%2C_in_Vang_Vieng%2C_Laos.jpg"
+image_caption: "配图：街头涂鸦（非 Rapeter 本人）"
 title: "地下新声 Vol.01｜Rapeter：把'年轻人的焦虑'写进总决赛的 24 岁"
 date: 2026-10-14
 tags: ["地下新声", "新生代"]

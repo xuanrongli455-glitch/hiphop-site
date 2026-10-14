@@ -3,7 +3,8 @@ title: "《说唱巅峰对决2026》作品盘点：五首定义这个赛季的�
 date: 2026-10-14
 tags: ["新歌推荐", "说唱巅峰对决", "盘点"]
 description: "从弹壳的《花开花落》到 Yamy 的《问爱》：五首作品，五种路子，复盘这个十周年赛季的声音。"
-image: "https://upload.wikimedia.org/wikipedia/commons/b/b7/Skyzoo_Performing_Live_June_22%2C_2011.jpg"
+image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/Oxxxymiron_RAW_Berlin_asv2022-04_img15.jpg/1280px-Oxxxymiron_RAW_Berlin_asv2022-04_img15.jpg"
+image_caption: "配图：Rapper 现场演出（资料图）"
 ---
 
 十周年赛季落幕，奖杯之外，真正留下来的是作品。这五首歌，基本定义了《说唱巅峰对决2026》的声音。
