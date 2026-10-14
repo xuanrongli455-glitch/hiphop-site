@@ -15,17 +15,35 @@ import * as THREE from "three";
 
   var palette = ["#ffe600", "#ff4d00", "#3cffd0", "#5200ff", "#ff2e88", "#00aaff"];
 
-  function wrapTitle(title, perLine, maxLines) {
-    var chars = Array.from(title);
+  function wrapTitle(x, title, maxWidthPx, maxLines) {
+    /* 按画布实测宽度换行，优先在空格处断开，英文单词不断半 */
     var lines = [];
-    for (var i = 0; i < chars.length && lines.length < maxLines; i += perLine) {
-      lines.push(chars.slice(i, i + perLine).join(""));
+    var cur = "";
+    var chars = Array.from(title);
+    var i = 0;
+    for (; i < chars.length; i++) {
+      var test = cur + chars[i];
+      if (x.measureText(test).width > maxWidthPx && cur) {
+        var sp = cur.lastIndexOf(" ");
+        if (sp > 0) {
+          lines.push(cur.slice(0, sp));
+          cur = cur.slice(sp + 1) + chars[i];
+        } else {
+          lines.push(cur);
+          cur = chars[i];
+        }
+        if (lines.length >= maxLines) { i++; break; }
+      } else {
+        cur = test;
+      }
     }
-    if (chars.length > perLine * maxLines) {
-      var last = lines[lines.length - 1];
-      lines[lines.length - 1] = last.slice(0, Math.max(0, last.length - 1)) + "…";
+    if (lines.length < maxLines && cur) lines.push(cur);
+    if (i < chars.length) {
+      var last = lines[lines.length - 1] || "";
+      while (last && x.measureText(last + "…").width > maxWidthPx) last = last.slice(0, -1);
+      lines[lines.length - 1] = last + "…";
     }
-    return lines;
+    return lines.slice(0, maxLines);
   }
 
   function makeFaceTexture(item, color) {
@@ -52,7 +70,7 @@ import * as THREE from "three";
     x.font = "600 44px sans-serif";
     x.fillText(item.col, 64, 96);
     x.font = "700 84px 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif";
-    var lines = wrapTitle(item.title, 9, 2);
+    var lines = wrapTitle(x, item.title, 896, 2);
     lines.forEach(function (ln, i) { x.fillText(ln, 64, 210 + i * 100); });
     /* 底部色条 */
     x.fillStyle = "#111111";
