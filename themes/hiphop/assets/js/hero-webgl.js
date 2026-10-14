@@ -219,8 +219,8 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     /* 盘面：降低环境反射强度，避免洗成灰；清漆面保留黑胶光泽 */
     var faceMat = new THREE.MeshPhysicalMaterial({ map: tex, roughness: 0.38, metalness: 0.05, clearcoat: 1, clearcoatRoughness: 0.22, envMapIntensity: 0.7 });
     var sideMat = new THREE.MeshPhysicalMaterial({ color: 0x1e1e1e, roughness: 0.35, clearcoat: 0.8, clearcoatRoughness: 0.35 });
-    var botMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.6 });
-    var disc = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 0.1, 64), [sideMat, faceMat, botMat]);
+    /* 背面也用盘面材质：翻过来的黑胶是 B 面，不是灰饼 */
+    var disc = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 0.1, 64), [sideMat, faceMat, faceMat]);
     disc.rotation.x = Math.PI / 2;
     rec.add(disc);
     /* 悬停选中圈（电光黄） */
@@ -332,6 +332,8 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   var canHover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
   /* 菜单 3D：顶栏跟随鼠标轻微倾斜，像浮在世界里的面板 */
   var headerEl = document.getElementById("siteHeader");
+  var worldHeadEl = document.querySelector(".world-head");
+  var lastZoom = 0;
   var tiltTX = 8, tiltTY = 0, tiltCX = 8, tiltCY = 0;
   window.addEventListener("pointermove", function (e) {
     var nx = e.clientX / window.innerWidth - 0.5;
@@ -385,6 +387,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   /* 滚轮 = 镜头在世界里推进/拉远 */
   el.addEventListener("wheel", function (e) {
     lastInteract = Date.now();
+    lastZoom = lastInteract;
     e.preventDefault();
     camera.position.z = Math.max(3.5, Math.min(12, camera.position.z + e.deltaY * 0.005));
   }, { passive: false });
@@ -420,6 +423,10 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
       tiltCX += (tiltTX - tiltCX) * 0.08;
       tiltCY += (tiltTY - tiltCY) * 0.08;
       headerEl.style.transform = "perspective(1200px) rotateX(" + tiltCX.toFixed(2) + "deg) rotateY(" + tiltCY.toFixed(2) + "deg)";
+    }
+    /* 探索时标题让路：拖动/滚轮/落针中淡出，停手恢复 */
+    if (worldHeadEl) {
+      worldHeadEl.classList.toggle("dim", dragging || (now - lastZoom < 1200) || !!diving);
     }
     renderer.render(scene, camera);
   }
