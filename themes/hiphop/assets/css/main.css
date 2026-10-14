@@ -115,7 +115,7 @@ a { color: inherit; }
 .feature-art { min-height: 340px; display: grid; place-items: center; position: relative; overflow: hidden; }
 .feature-art .card-initial { font-family: var(--font-display); font-size: clamp(120px, 14vw, 200px); color: rgba(0, 0, 0, 0.5); }
 .feature-body { padding: 40px 40px 36px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
-.feature-body h2 { margin: 0; font-size: clamp(28px, 3.6vw, 44px); line-height: 1.2; font-weight: 900; }
+.feature-body h2 { margin: 0; font-size: clamp(28px, 3.6vw, 44px); line-height: 1.1; font-weight: 900; }
 .feature-body p { margin: 0; color: var(--muted); font-size: 15px; }
 .feature-meta { color: var(--muted); font-size: 12px; font-family: var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; }
 .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; margin: 36px 0 64px; }
@@ -159,7 +159,7 @@ a { color: inherit; }
   font-family: var(--font-display);
 }
 .lyric-line.annotated { background: rgba(255,230,0,.10); border-left: 3px solid var(--acc); }
-.lyric-line.annotated:hover { background: rgba(255,230,0,.20); }
+.lyric-line.annotated:hover { background: rgba(255,230,0,.28); cursor: pointer; }
 .lyric-dot {
   display: inline-block; width: 8px; height: 8px; border-radius: 50%;
   background: var(--acc); margin-left: 10px; vertical-align: middle;
@@ -216,7 +216,7 @@ a { color: inherit; }
   border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
   transition: transform 0.25s ease, border-color 0.2s;
 }
-.card:hover { transform: translateY(-6px); border-color: rgba(255, 230, 0, 0.55); }
+.card:hover { border-color: rgba(255, 230, 0, 0.55); }
 .card-art { aspect-ratio: 16 / 10; display: grid; place-items: center; overflow: hidden; position: relative; }
 .card-art .card-initial {
   font-family: var(--font-display); font-size: 80px; color: rgba(0, 0, 0, 0.5);
@@ -231,7 +231,7 @@ a { color: inherit; }
 .art-3 { background: #262626; }
 .art-3 .card-initial { color: rgba(255, 255, 255, 0.28); }
 .card-body { padding: 20px 20px 22px; }
-.card-body h3 { margin: 10px 0 8px; font-size: 20px; line-height: 1.45; font-weight: 800; }
+.card-body h3 { margin: 10px 0 8px; font-size: 20px; line-height: 1.25; font-weight: 800; }
 .card-meta { margin: 0; color: var(--muted); font-size: 13px; font-family: var(--font-mono); letter-spacing: 0.06em; }
 .card-desc { margin: 8px 0 0; color: var(--muted); font-size: 15px; }
 .chip {
@@ -351,7 +351,7 @@ a { color: inherit; }
 .video-frame { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #000; }
 .video-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 .video-embed figcaption { color: var(--muted); font-size: 13px; margin-top: 10px; text-align: center; }
-.article-body h2 { font-size: 28px; margin: 48px 0 16px; padding-left: 14px; border-left: 4px solid var(--acc); }
+.article-body h2 { font-size: 28px; margin: 56px 0 16px; padding-left: 14px; border-left: 4px solid var(--acc); }
 .article-body h3 { font-size: 22px; margin: 36px 0 12px; }
 .article-body p { margin: 0 0 20px; }
 .article-body ul, .article-body ol { padding-left: 24px; margin: 0 0 20px; }
@@ -377,13 +377,21 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
   margin-bottom: 8px;
 }
 .anno-card p { margin: 0; font-size: 15px; color: var(--ink); }
+.anno-back { display: inline-block; margin-top: 12px; font-size: 13px; color: var(--acc); text-decoration: none; }
+.anno-back:hover { text-decoration: underline; }
+
+/* 引言金句（Pitchfork 式 pull-quote） */
+.pullquote {
+  margin: 48px 0; padding: 4px 0 4px 20px; border-left: 4px solid var(--acc);
+  font-family: var(--font-display); font-size: 28px; line-height: 1.35; color: var(--ink);
+}
 .article-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 64px; }
 .anav {
   border: 1px solid var(--line); border-radius: var(--radius); padding: 20px;
   text-decoration: none; transition: border-color 0.2s, transform 0.25s; display: block;
   background: var(--panel);
 }
-.anav:hover { border-color: var(--acc); transform: translateY(-4px); }
+.anav:hover { border-color: var(--acc); }
 .anav small { display: block; color: var(--muted); font-size: 11px; margin-bottom: 6px; font-family: var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; }
 .anav strong { font-size: 17px; line-height: 1.4; display: block; }
 .anav.next { text-align: right; }
@@ -496,7 +504,7 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 .hero-main-art { display: grid; place-items: center; aspect-ratio: 16 / 9; overflow: hidden; }
 .hero-main-art .card-initial { font-family: var(--font-display); font-size: clamp(100px, 10vw, 160px); color: rgba(0, 0, 0, 0.5); }
 .hero-main-body { padding: 36px 32px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
-.hero-main-body h2 { margin: 0; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.25; font-weight: 900; }
+.hero-main-body h2 { margin: 0; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.15; font-weight: 900; }
 .hero-main-body p { margin: 0; color: var(--muted); font-size: 15px; }
 .hero-side { display: flex; flex-direction: column; gap: 22px; }
 .side-card {
@@ -528,7 +536,7 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 .feed-row:hover h3 { color: var(--acc); }
 .feed-thumb { border-radius: 10px; display: grid; place-items: center; aspect-ratio: 16/10; overflow: hidden; }
 .feed-thumb .card-initial { font-family: var(--font-display); font-size: 56px; color: rgba(0, 0, 0, 0.5); }
-.feed-body h3 { margin: 8px 0 6px; font-size: 20px; line-height: 1.4; transition: color 0.2s; }
+.feed-body h3 { margin: 8px 0 6px; font-size: 20px; line-height: 1.25; transition: color 0.2s; }
 .feed-body p { margin: 0 0 8px; color: var(--muted); font-size: 14px; }
 
 /* 榜单行 */
@@ -548,8 +556,7 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 
 /* Freshman 四宫格 */
 .fresh-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
-.fresh-card { text-decoration: none; transition: transform 0.25s; }
-.fresh-card:hover { transform: translateY(-6px); }
+.fresh-card { text-decoration: none; }
 .fresh-no { font-family: var(--font-display); font-size: 40px; color: transparent; -webkit-text-stroke: 1.5px var(--acc); display: block; margin-bottom: 10px; }
 .fresh-art { border-radius: 10px; aspect-ratio: 1; display: grid; place-items: center; border: 1px solid var(--line); margin-bottom: 12px; }
 .fresh-art .card-initial { font-family: var(--font-display); font-size: 64px; color: rgba(0, 0, 0, 0.5); }
@@ -591,7 +598,7 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 
 /* 头条大卡 */
 .lead-card { display: grid; grid-template-columns: 1.15fr 1fr; gap: 0; text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-bottom: 8px; transition: transform .25s, border-color .25s; }
-.lead-card:hover { transform: translateY(-4px); border-color: rgba(255,230,0,.35); }
+.lead-card:hover { border-color: rgba(255,230,0,.35); }
 .lead-img { min-height: 300px; position: relative; overflow: hidden; }
 .lead-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .lead-body { padding: 28px 26px; display: flex; flex-direction: column; justify-content: center; }
@@ -610,12 +617,12 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 /* 三栏大卡 */
 .cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
 .big-card { text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: transform .25s, border-color .25s; display: flex; flex-direction: column; }
-.big-card:hover { transform: translateY(-6px); border-color: rgba(255,230,0,.35); }
+.big-card:hover { border-color: rgba(255,230,0,.35); }
 .big-img { aspect-ratio: 16 / 10; overflow: hidden; position: relative; background: #262626; }
 .big-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
 .big-card:hover .big-img img { transform: scale(1.04); }
 .big-body { padding: 18px 18px 20px; }
-.big-body h3 { margin: 12px 0 10px; font-size: 21px; line-height: 1.4; }
+.big-body h3 { margin: 12px 0 10px; font-size: 21px; line-height: 1.25; }
 .big-body p { margin: 0; color: var(--ink-dim); font-size: 14px; line-height: 1.7; }
 
 /* 双栏：榜单 + 订阅 */

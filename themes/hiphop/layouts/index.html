@@ -3,8 +3,8 @@
 <div id="splash" aria-hidden="true"><span class="splash-logo">HIPHOP</span></div>
 
 {{ $news := where site.RegularPages "Section" "news" }}
-{{ $feed := where site.RegularPages "Section" "in" (slice "news" "music" "underground" "lyrics" "artists") }}
-{{ $label := dict "news" "资讯" "music" "新歌推荐" "underground" "地下新声" "lyrics" "歌词解析" "artists" "艺人厂牌" }}
+{{ $feed := where site.RegularPages "Section" "in" (slice "news" "music" "underground" "lyrics" "artists" "samples" "events") }}
+{{ $label := dict "news" "资讯" "music" "新歌推荐" "underground" "地下新声" "lyrics" "歌词解析" "artists" "艺人厂牌" "samples" "采样考古" "events" "演出日历" }}
 
 <!-- HERO · Shouted headline, rising photograph -->
 <section class="loud-hero">
@@ -32,6 +32,8 @@
       <button class="lchip" data-col="地下新声">地下新声</button>
       <button class="lchip" data-col="歌词解析">歌词解析</button>
       <button class="lchip" data-col="艺人厂牌">艺人厂牌</button>
+      <button class="lchip" data-col="采样考古">采样考古</button>
+      <button class="lchip" data-col="演出日历">演出日历</button>
     </div>
     <div class="lineup-rows" id="lineupRows">
       {{ range $i, $p := first 12 $feed }}
