@@ -794,3 +794,18 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
   .loud-line, .loud-photo img { animation: none; }
 }
 
+
+/* 彩蛋：站长卡通化身（默认隐藏，连点 Logo 图标三下或 Konami 秘籍触发） */
+.egg { position: fixed; right: 16px; bottom: 16px; z-index: 90; text-align: center; }
+.egg[hidden] { display: none; }
+.egg-figure { background: none; border: 0; padding: 0; cursor: pointer; }
+.egg-figure svg { display: block; width: 110px; height: auto; filter: drop-shadow(0 8px 16px rgba(0,0,0,.45)); }
+.egg.show .egg-figure { animation: egg-pop .45s ease, egg-bob 2s ease-in-out .45s infinite; }
+.egg.bye .egg-figure { animation: egg-spin .5s ease forwards; }
+.egg-bubble { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); white-space: nowrap; padding: 6px 10px; border: 2px solid #111; border-radius: 12px; background: #fff; color: #111; font-size: 14px; font-weight: 600; }
+@keyframes egg-pop { from { transform: scale(.2) rotate(-12deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
+@keyframes egg-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes egg-spin { to { transform: rotate(360deg) scale(.2); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .egg .egg-figure { animation: none !important; }
+}

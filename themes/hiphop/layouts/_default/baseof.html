@@ -9,6 +9,7 @@
     {{ block "main" . }}{{ end }}
   </main>
   {{ partial "footer.html" . }}
+  {{ partial "easter-egg.html" . }}
   <button class="to-top" id="toTop" aria-label="回到顶部">↑</button>
   {{ with .Site.Params.knocketScriptSrc }}
   <script async src="{{ . }}"></script>

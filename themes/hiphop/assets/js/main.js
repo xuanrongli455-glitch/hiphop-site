@@ -168,7 +168,8 @@
   if (!players.length) return;
   function hashStr(s) { var h = 0; for (var i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) | 0; } return Math.abs(h); }
   function mulberry(seed) { return function () { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; var t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
-  var palette = ["#ffe600", "#ff4d00", "#3cffd0", "#5200ff", "#ff2e88", "#00aaff", "#ffffff"];
+  var palette = ["#ffe600", "#242424", "#ffffff", "#3a3a3a"];
+  var bright = ["#ffe600", "#ffffff"];
   players.forEach(function (p) {
     var rnd = mulberry(hashStr(p.getAttribute("data-song-id") || "0"));
     var art = p.querySelector(".stem-art");
@@ -177,9 +178,10 @@
     if (art && ring1 && ring2) {
       var c1 = palette[Math.floor(rnd() * palette.length)];
       var c2 = palette[Math.floor(rnd() * palette.length)];
-      var c3 = palette[Math.floor(rnd() * palette.length)];
-      if (c2 === c1) c2 = palette[(palette.indexOf(c1) + 3) % palette.length];
-      if (c3 === c1 || c3 === c2) c3 = palette[(palette.indexOf(c1) + 5) % palette.length];
+      if (c2 === c1) c2 = palette[(palette.indexOf(c1) + 2) % palette.length];
+      /* 最内圈只用亮色，保证黑色播放按钮始终清晰可见 */
+      var c3 = bright[Math.floor(rnd() * bright.length)];
+      if (c3 === c2) c3 = bright[(bright.indexOf(c3) + 1) % bright.length];
       art.style.background = c1;
       ring1.style.background = c2;
       ring2.style.background = c3;
@@ -210,4 +212,37 @@
       });
     }
   });
+})();
+
+/* 彩蛋：连点顶栏 Logo 图标三下，或 Konami 秘籍 ↑↑↓↓←←→→BA，弹出站长卡通化身；点化身关闭 */
+(function () {
+  var egg = document.getElementById("eggAvatar");
+  var mark = document.querySelector(".brand-mark");
+  if (!egg || !mark) return;
+  function showEgg() {
+    egg.hidden = false;
+    egg.classList.remove("bye");
+    void egg.offsetWidth;
+    egg.classList.add("show");
+  }
+  function hideEgg() {
+    egg.classList.add("bye");
+    setTimeout(function () { egg.hidden = true; egg.classList.remove("show", "bye"); }, 520);
+  }
+  var clicks = 0, timer = null;
+  mark.addEventListener("click", function (e) {
+    e.preventDefault();
+    clicks++;
+    clearTimeout(timer);
+    if (clicks >= 3) { clicks = 0; showEgg(); return; }
+    timer = setTimeout(function () { clicks = 0; }, 1200);
+  });
+  var seq = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowLeft", "ArrowRight", "ArrowRight", "b", "a"];
+  var pos = 0;
+  document.addEventListener("keydown", function (e) {
+    var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    pos = (k === seq[pos]) ? pos + 1 : (k === seq[0] ? 1 : 0);
+    if (pos === seq.length) { pos = 0; showEgg(); }
+  });
+  egg.querySelector(".egg-figure").addEventListener("click", hideEgg);
 })();
