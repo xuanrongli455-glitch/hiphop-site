@@ -26,13 +26,13 @@
       <div class="design-scrim" aria-hidden="true"></div>
       <div class="design-frame" aria-hidden="true"><span class="design-frame-tag">ARTBOARD — HIPHOPNOTE · w: 1200 h: 640</span></div>
       <div class="design-swatches" aria-hidden="true">
-        {{ range $i, $c := $sw }}<span class="design-sw" style="background:{{ $c }}"><i>×</i><b>x: {{ add 96 (mul $i 44) }} y: 064</b></span>{{ end }}
+        {{ range $i, $c := $sw }}<span class="design-sw" style="background:{{ $c }}"><i>×</i></span>{{ end }}
       </div>
       <div class="design-layers">
         {{ range $i, $p := first 8 $feed }}
         {{ $pp := index $pos $i }}
         <a class="design-layer" href="{{ $p.RelPermalink }}" data-depth="{{ $pp.d }}" style="left:{{ $pp.x }}px;top:{{ $pp.y }}px;width:{{ $pp.w }}px;--r:{{ $pp.r }}deg">
-          {{ if $p.Params.image }}<img src="{{ $p.Params.image }}" alt="{{ $p.Title }}" loading="eager">{{ else }}<span class="layer-ph"></span>{{ end }}
+          {{ if $p.Params.image }}<img src="{{ $p.Params.image }}" alt="{{ $p.Title }}" loading="eager"><span class="layer-ph layer-ph-fb"></span>{{ else }}<span class="layer-ph"></span>{{ end }}
           <span class="layer-cap"><b>{{ index $label $p.Section }}</b><span class="layer-title">{{ $p.Title }}</span></span>
           <span class="sel" aria-hidden="true"><i class="h tl"></i><i class="h tr"></i><i class="h bl"></i><i class="h br"></i><em class="xy">x: {{ $pp.x }} y: {{ $pp.y }}</em><em class="wh">w: {{ $pp.w }} h: {{ add (int (mul $pp.w 0.66)) 28 }}</em></span>
         </a>
@@ -56,8 +56,7 @@
   var layers = hero.querySelectorAll(".design-layer");
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function pad3(n) { n = Math.max(0, Math.round(n)); return ("000" + n).slice(-3); }
-  hero.addEventListener("pointermove", function (e) {
-    var r = hero.getBoundingClientRect();
+  hero.addEventListener("pointermove", function (e) {    var r = hero.getBoundingClientRect();
     var mx = e.clientX - r.left, my = e.clientY - r.top;
     if (coord) coord.textContent = "x: " + pad3(mx) + " y: " + pad3(my);
     if (gx) gx.style.left = mx + "px";
@@ -68,6 +67,15 @@
       var d = parseFloat(l.getAttribute("data-depth") || "1");
       l.style.setProperty("--px", (cx * d * 12).toFixed(1) + "px");
       l.style.setProperty("--py", (cy * d * 12).toFixed(1) + "px");
+    });
+  });
+  /* 图层图加载失败：先自动重试一次（Wikimedia 偶发慢/超时），仍失败则换干净色块，绝不显示破图图标 */
+  document.querySelectorAll(".design-layer img").forEach(function (im) {
+    im.addEventListener("error", function () {
+      if (im.dataset.retried) { im.classList.add("img-failed"); return; }
+      im.dataset.retried = "1";
+      var s = im.src;
+      setTimeout(function () { im.src = s + (s.indexOf("?") >= 0 ? "&" : "?") + "retry=1"; }, 800);
     });
   });
 })();

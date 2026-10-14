@@ -7,13 +7,13 @@
 .design-swatches { position: absolute; top: 32px; left: 32px; display: flex; gap: 12px; z-index: 3; }
 .design-sw { position: relative; display: block; width: 28px; height: 28px; }
 .design-sw i { position: absolute; top: -7px; right: -5px; font-style: normal; font-size: 12px; line-height: 1; color: #fff; text-shadow: 0 0 3px #000; }
-.design-sw b { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 4px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 9px; font-weight: 400; letter-spacing: .06em; color: rgba(255,255,255,.75); white-space: nowrap; }
-/* 色卡坐标上下错开，避免相邻标签重叠 */
-.design-sw:nth-child(even) b { top: auto; bottom: 100%; margin-top: 0; margin-bottom: 4px; }
 .design-layers { position: absolute; inset: 0; z-index: 2; }
 .design-layer { position: absolute; display: block; color: #fff; text-decoration: none; transform: rotate(var(--r, 0deg)) translate(var(--px, 0px), var(--py, 0px)); transition: transform .25s ease; }
 .design-layer img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
 .design-layer .layer-ph { display: block; width: 100%; aspect-ratio: 3 / 2; background: #242424; }
+.design-layer .layer-ph-fb { display: none; }
+.design-layer img.img-failed { display: none; }
+.design-layer img.img-failed + .layer-ph-fb { display: block; }
 .layer-cap { display: flex; gap: 8px; align-items: baseline; padding: 6px 0 0; font-size: 13px; line-height: 1.4; }
 .layer-cap b { flex: none; color: var(--acc); font-size: 11px; }
 .design-layer .sel { position: absolute; inset: -8px -8px -30px; border: 1px solid rgba(255,255,255,.55); pointer-events: none; }
@@ -38,7 +38,7 @@
   .design-layers { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 56px 16px; }
   .design-layer { position: relative; left: auto !important; top: auto !important; width: auto !important; }
   /* 移动端去掉数字标注：390px 宽下两列的 x/y/w/h 会互相挤占、且桌面端坐标在移动端是错的 */
-  .design-layer .sel .xy, .design-layer .sel .wh, .design-sw b, .design-coord { display: none; }
+  .design-layer .sel .xy, .design-layer .sel .wh, .design-coord { display: none; }
   .layer-cap { font-size: 12px; }
   .layer-title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .design-frame { inset: 8px; }
