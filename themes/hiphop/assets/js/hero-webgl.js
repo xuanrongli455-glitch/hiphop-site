@@ -108,71 +108,81 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   rim2.position.set(6, -3, -8);
   scene.add(rim2);
 
-  /* 黑白单色：中标统一白底黑字 */
-  var LABELS = [
-    { bg: "#f2f2f2", fg: "#0a0a0a" },
-    { bg: "#f2f2f2", fg: "#0a0a0a" },
-    { bg: "#f2f2f2", fg: "#0a0a0a" },
-    { bg: "#f2f2f2", fg: "#0a0a0a" },
-    { bg: "#f2f2f2", fg: "#0a0a0a" },
-    { bg: "#f2f2f2", fg: "#0a0a0a" },
-    { bg: "#f2f2f2", fg: "#0a0a0a" },
-    { bg: "#f2f2f2", fg: "#0a0a0a" }
-  ];
-
-  function wrapTitle(ctx, text, maxW, maxLines) {
-    var chars = text.split("");
-    var lines = [""];
-    chars.forEach(function (ch) {
-      var cur = lines[lines.length - 1];
-      var next = cur + ch;
-      if (ctx.measureText(next).width > maxW && cur !== "") {
-        if (lines.length < maxLines) lines.push(ch);
-        else lines[lines.length - 1] = cur + "…";
-      } else {
-        lines[lines.length - 1] = next;
-      }
-    });
-    return lines;
-  }
-
-  /* 盘面贴图：纯 Canvas 绘制（黑胶纹路 + 白色中标），无外部图片依赖 */
-  function makeVinylTexture(item, label) {
+  /* 盘面贴图：黑胶画片盘——文章照片直接印在盘面上（cover 裁切铺满）+ 沟纹罩染保留黑胶质感 + 小中标。
+     照片异步加载：先画程序化盘面，图片到了重画并 needsUpdate；加载失败则保留程序化版。 */
+  function makeVinylTexture(item) {
     var c = document.createElement("canvas");
     c.width = 1024; c.height = 1024;
     var x = c.getContext("2d");
-    x.fillStyle = "#0a0a0a";
-    x.fillRect(0, 0, 1024, 1024);
-    /* 盘面径向提亮：中心近黑、边缘深灰，整张盘在黑底上有体量，不只剩边环 */
-    var grad = x.createRadialGradient(512, 512, 180, 512, 512, 512);
-    grad.addColorStop(0, "#101010");
-    grad.addColorStop(0.6, "#1c1c1c");
-    grad.addColorStop(1, "#2e2e2e");
-    x.fillStyle = grad;
-    x.fillRect(0, 0, 1024, 1024);
-    for (var r = 195; r <= 505; r += 3) {
-      x.strokeStyle = "rgba(255,255,255," + (0.1 + (r % 15 === 0 ? 0.08 : 0)) + ")";
-      x.lineWidth = 1;
-      x.beginPath(); x.arc(512, 512, r, 0, Math.PI * 2); x.stroke();
-    }
-    x.fillStyle = label.bg;
-    x.beginPath(); x.arc(512, 512, 185, 0, Math.PI * 2); x.fill();
-    x.strokeStyle = "rgba(0,0,0,0.3)"; x.lineWidth = 2;
-    x.beginPath(); x.arc(512, 512, 185, 0, Math.PI * 2); x.stroke();
-    x.fillStyle = label.fg;
-    x.textAlign = "center";
-    x.font = "600 28px sans-serif";
-    x.fillText(item.col, 512, 395);
-    x.font = "700 44px 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif";
-    var lines = wrapTitle(x, item.title, 300, 2);
-    lines.forEach(function (ln, i) { x.fillText(ln, 512, 495 + i * 52); });
-    x.font = "600 22px sans-serif";
-    x.fillText("SIDE A · HIPHOPNOTE", 512, 630);
-    x.fillStyle = "#111111";
-    x.beginPath(); x.arc(512, 512, 7, 0, Math.PI * 2); x.fill();
     var tex = new THREE.CanvasTexture(c);
     tex.colorSpace = THREE.SRGBColorSpace;
-    tex.anisotropy = 4;
+    tex.anisotropy = 8;
+
+    function drawGrooves(alpha) {
+      for (var r = 195; r <= 505; r += 3) {
+        x.strokeStyle = "rgba(255,255,255," + ((0.1 + (r % 15 === 0 ? 0.08 : 0)) * alpha) + ")";
+        x.lineWidth = 1;
+        x.beginPath(); x.arc(512, 512, r, 0, Math.PI * 2); x.stroke();
+      }
+    }
+    function drawBase() {
+      /* 盘面径向提亮：中心近黑、边缘深灰，整张盘在黑底上有体量 */
+      var grad = x.createRadialGradient(512, 512, 180, 512, 512, 512);
+      grad.addColorStop(0, "#0c0c0c");
+      grad.addColorStop(0.6, "#161616");
+      grad.addColorStop(1, "#262626");
+      x.fillStyle = grad;
+      x.beginPath(); x.arc(512, 512, 512, 0, Math.PI * 2); x.fill();
+    }
+    function drawLabel() {
+      x.fillStyle = "#f2f2f2";
+      x.beginPath(); x.arc(512, 512, 120, 0, Math.PI * 2); x.fill();
+      x.strokeStyle = "rgba(0,0,0,0.3)"; x.lineWidth = 2;
+      x.beginPath(); x.arc(512, 512, 120, 0, Math.PI * 2); x.stroke();
+      x.fillStyle = "#0a0a0a";
+      x.textAlign = "center";
+      x.font = "600 30px sans-serif";
+      x.fillText(item.col || "HIPHOP", 512, 508);
+      x.font = "600 19px sans-serif";
+      x.fillStyle = "#555555";
+      x.fillText("SIDE A · HIPHOPNOTE", 512, 548);
+      x.fillStyle = "#111111";
+      x.beginPath(); x.arc(512, 512, 7, 0, Math.PI * 2); x.fill();
+    }
+    function drawPhoto(img) {
+      var s = Math.max(1024 / img.width, 1024 / img.height);
+      var dw = img.width * s, dh = img.height * s;
+      x.save();
+      x.beginPath(); x.arc(512, 512, 512, 0, Math.PI * 2); x.clip();
+      x.drawImage(img, 512 - dw / 2, 512 - dh / 2, dw, dh);
+      x.restore();
+      /* 沟纹罩染：照片上保留黑胶纹路 */
+      drawGrooves(0.45);
+      /* 边缘压暗，盘边更利落 */
+      var edge = x.createRadialGradient(512, 512, 380, 512, 512, 512);
+      edge.addColorStop(0, "rgba(0,0,0,0)");
+      edge.addColorStop(1, "rgba(0,0,0,0.5)");
+      x.fillStyle = edge;
+      x.beginPath(); x.arc(512, 512, 512, 0, Math.PI * 2); x.fill();
+    }
+
+    drawBase();
+    drawGrooves(1);
+    drawLabel();
+
+    if (item.image) {
+      var img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = function () {
+        try {
+          drawBase();
+          drawPhoto(img);
+          drawLabel();
+          tex.needsUpdate = true;
+        } catch (e) {}
+      };
+      img.src = item.image;
+    }
     return tex;
   }
 
@@ -207,24 +217,25 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
   items.forEach(function (item, i) {
     var rec = new THREE.Group();
-    var tex = makeVinylTexture(item, LABELS[i % LABELS.length]);
-    var faceMat = new THREE.MeshPhysicalMaterial({ map: tex, roughness: 0.32, metalness: 0.05, clearcoat: 1, clearcoatRoughness: 0.28, envMapIntensity: 1.4 });
+    var tex = makeVinylTexture(item);
+    /* 盘面：降低环境反射强度，避免洗成灰；清漆面保留黑胶光泽 */
+    var faceMat = new THREE.MeshPhysicalMaterial({ map: tex, roughness: 0.38, metalness: 0.05, clearcoat: 1, clearcoatRoughness: 0.22, envMapIntensity: 0.7 });
     var sideMat = new THREE.MeshPhysicalMaterial({ color: 0x1e1e1e, roughness: 0.35, clearcoat: 0.8, clearcoatRoughness: 0.35 });
     var botMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.6 });
     var disc = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 0.1, 64), [sideMat, faceMat, botMat]);
     disc.rotation.x = Math.PI / 2;
     rec.add(disc);
-    /* 悬停选中圈（白） */
+    /* 悬停选中圈（电光黄） */
     var ring = new THREE.Mesh(
-      new THREE.TorusGeometry(1.4, 0.018, 8, 72),
-      new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 })
+      new THREE.TorusGeometry(1.4, 0.014, 8, 72),
+      new THREE.MeshBasicMaterial({ color: 0xffe600, transparent: true, opacity: 0 })
     );
     ring.position.z = 0.06;
     rec.add(ring);
-    /* 常亮细边环：黑盘在黑底上靠它显形（不受灯光影响） */
+    /* 常亮细边环：暗黄色，黑盘在黑底上靠它显形（不受灯光影响） */
     var edge = new THREE.Mesh(
-      new THREE.TorusGeometry(1.29, 0.012, 8, 72),
-      new THREE.MeshBasicMaterial({ color: 0x8a8a8a, transparent: true, opacity: 0.35 })
+      new THREE.TorusGeometry(1.29, 0.01, 8, 72),
+      new THREE.MeshBasicMaterial({ color: 0xffe600, transparent: true, opacity: 0.3 })
     );
     edge.position.z = 0.06;
     rec.add(edge);
