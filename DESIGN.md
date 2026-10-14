@@ -51,17 +51,24 @@
 - **栏目头**（Complex 式）：黄色 kicker 标签 + Anton 大标题 + 右侧 View All。
 - **榜单行**：序号 + 标题/元信息 + →；`score` frontmatter 有值时显示 Pitchfork 式黄色评分徽章（无值不渲染，绝不编造）。
 - **歌词批注**：`mark.anno` 黄线高亮 + `.anno-card` 批注卡（采样/双关/典故标签）。
-- **波形签名**：`waveform.html` partial，黄色波形条，全站品牌母题。
+- **文章配图**：`image` frontmatter；卡片/头图有图则渲染真图（`object-fit: cover`，hover 放大），无图回退灰盒首字。
+  2026-10-14 起用 Wikimedia Commons 真实照片直链（upload.wikimedia.org，稳定可热链）：
+  入坑指南=Young Thug 演出现场、Rapeter=underground 演出、Higher Brothers=Icebox 2019、歌词解析=黑胶、每周推荐=DJ 台。
+  教训：AI 生成的 5 张配图因传不进 GitHub 未上线（二进制经 MCP API 必坏、Cloudflare 钥匙失效、浏览器无登录态），
+  暂存 static/images/art/ 本地，以后有传输通道再换。
 - **专属鼠标**：黄点 + 光环（无辉光），点击涟漪。仅精确指针设备。
 - **Logo**：笔刷 H 的 SVG（电光黄），hover 旋转。
 - **导航**：小字粗体，hover 下划线展开变黄。
 
 ## 5. Layout
 
-- `--wrap: 1160px` 居中容器；8px 基准间距。
-- 首页节奏：Hero（含 marquee 跑马灯）→ 最新资讯 → 本周新歌 → 地下新声 →
-  艺人厂牌 → 演出日历 → 互动实验室 → 订阅 → CTA。
-- section 标题格式：`大字<span>金色字</span>`（如"地下<span>新声</span>"）。
+- `--wrap: 1200px` 居中容器；8px 基准间距。
+- 首页结构（2026-10-14 结构重写，不再是统一卡片流）：
+  masthead → 非对称 hero（1 大特稿 + 2 次条）→ marquee →
+  双栏：左信息流（资讯横排 feed-row / 地下新声 Freshman 四宫格 / 歌词解析 / 艺人厂牌）
+  + 右 sticky 栏（Hot 100 榜单 rail-box + 订阅 rail-box）→
+  演出日历 → 互动实验室 → CTA。
+- 栏目头：黄色 kicker 标签 + Anton 大标题 + 右侧 View All。
 - 移动端汉堡菜单；全站 reduced-motion 适配。
 
 ## 6. Do's and Don'ts
