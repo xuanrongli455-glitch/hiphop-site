@@ -15,7 +15,11 @@
       return new THREE.MeshStandardMaterial({ color: color, roughness: 0.85, metalness: 0, flatShading: true, transparent: true });
     }
     var skin = mat(0xe6b98c), black = mat(0x141414), yellow = mat(0xffe600), pants = mat(0x2b2b2b), white = mat(0xf5f5f5), sole = mat(0x9a9a9a);
-    var mats = [skin, black, yellow, pants, white, sole];
+    /* VVS 首饰：高金属 + 低粗糙，模拟冰钻反光；紫色主石呼应站长那条十字架吊坠 */
+    var diamond = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.12, metalness: 1, flatShading: true, transparent: true, emissive: 0x666666, emissiveIntensity: 0.25 });
+    var blackDiamond = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.2, metalness: 0.9, flatShading: true, transparent: true, emissive: 0x111111, emissiveIntensity: 0.3 });
+    var purpleGem = new THREE.MeshStandardMaterial({ color: 0x7b1fa2, roughness: 0.15, metalness: 0.4, flatShading: true, transparent: true, emissive: 0x3a0a5a, emissiveIntensity: 0.5 });
+    var mats = [skin, black, yellow, pants, white, sole, diamond, blackDiamond, purpleGem];
     var g = new THREE.Group();
     function box(m, w, h, d, x, y, z, parent, r) {
       var geo = (RBG && r) ? new RBG(w, h, d, 3, r) : new THREE.BoxGeometry(w, h, d);
@@ -46,6 +50,39 @@
     collarR.rotation.z = -0.4;
     /* 脖子 */
     box(skin, 0.18, 0.1, 0.18, 0, 0.52, 0);
+    /* VVS 首饰 1：满钻古巴链（绕脖子一圈 + 碎钻点缀） */
+    var chain = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.045, 8, 24), diamond);
+    chain.position.set(0, 0.48, 0);
+    chain.rotation.x = Math.PI / 2;
+    g.add(chain);
+    for (var ci = 0; ci < 10; ci++) {
+      var ang = (ci / 10) * Math.PI * 2;
+      var stud = new THREE.Mesh(new THREE.OctahedronGeometry(0.035), diamond);
+      stud.position.set(Math.cos(ang) * 0.22, 0.48, Math.sin(ang) * 0.22);
+      g.add(stud);
+    }
+    /* VVS 首饰 2：十字架吊坠（黑边 + 白钻面 + 紫色主石），挂在黄 T 前 */
+    var pendant = new THREE.Group();
+    pendant.position.set(0, 0.18, 0.3);
+    var crossBack = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.3, 0.03), blackDiamond);
+    crossBack.position.set(0, 0, 0);
+    pendant.add(crossBack);
+    var crossBackH = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.1, 0.03), blackDiamond);
+    crossBackH.position.set(0, 0.05, 0);
+    pendant.add(crossBackH);
+    var crossV = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.26, 0.045), diamond);
+    crossV.position.set(0, 0, 0.01);
+    pendant.add(crossV);
+    var crossH = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.07, 0.045), diamond);
+    crossH.position.set(0, 0.05, 0.01);
+    pendant.add(crossH);
+    var gem = new THREE.Mesh(new THREE.OctahedronGeometry(0.055), purpleGem);
+    gem.position.set(0, 0.02, 0.05);
+    gem.scale.set(1, 1, 0.6);
+    pendant.add(gem);
+    g.add(pendant);
+    var pendantLink = box(diamond, 0.03, 0.14, 0.03, 0, 0.38, 0.24);
+    pendantLink.rotation.x = 0.35;
     /* 头（圆角）+ 脸 */
     var headG = new THREE.Group();
     headG.position.set(0, 0.92, 0);
@@ -89,6 +126,16 @@
       var hand = new THREE.Mesh(new THREE.SphereGeometry(0.11, 8, 8), skin);
       hand.position.set(0, -0.42, 0);
       el.add(hand);
+      /* VVS 首饰 3：右手冰戒指（举起打招呼的那只手） */
+      if (side === 1) {
+        var ring = new THREE.Mesh(new THREE.TorusGeometry(0.09, 0.022, 8, 20), diamond);
+        ring.position.set(0, -0.42, 0);
+        ring.rotation.x = Math.PI / 2;
+        el.add(ring);
+        var ringGem = new THREE.Mesh(new THREE.OctahedronGeometry(0.04), diamond);
+        ringGem.position.set(0, -0.42, 0.09);
+        el.add(ringGem);
+      }
       sh.add(el);
       g.add(sh);
       return { shoulder: sh, elbow: el };
