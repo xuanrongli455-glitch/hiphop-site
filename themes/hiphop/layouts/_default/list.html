@@ -9,6 +9,7 @@
 </section>
 <section class="section">
   <div class="wrap">
+    <div class="cols-head" aria-hidden="true"><span>INDEX</span><span>TITLE</span><span>CATEGORY</span><span>DATE</span></div>
     <div class="card-grid">
       {{ range .Pages }}
       {{ $isIndex := false }}{{ with .File }}{{ if eq .BaseFileName "_index" }}{{ $isIndex = true }}{{ end }}{{ end }}

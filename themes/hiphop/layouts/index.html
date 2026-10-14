@@ -9,7 +9,10 @@
 <!-- 首页 = 全屏 3D 世界：整页就是唱片箱，导航保留，内容在各栏目页 -->
 {{ $tapes := slice }}
 {{ range first 8 $feed }}{{ $tapes = $tapes | append (dict "title" .Title "col" (index $label .Section) "url" .RelPermalink "image" (.Params.image | default "")) }}{{ end }}
-<h1 class="world-title"><span class="world-line">中文说唱</span><span class="world-line">正在发生</span></h1>
+<div class="world-head">
+  <h1 class="world-title"><span class="world-line">中文说唱</span><span class="world-line">正在发生</span></h1>
+  <div class="world-cols" aria-hidden="true"><span>HIPHOPNOTE®</span><span>中文说唱</span><span>正在发生</span><span>VOL.01 — 2026</span></div>
+</div>
 <div class="world-stage" id="worldStage">
   <div class="world-frame" aria-hidden="true"><span class="world-frame-tag">ARTBOARD — HIPHOPNOTE · VINYL FIELD</span><i class="wx tl">×</i><i class="wx tr">×</i><i class="wx bl">×</i><i class="wx br">×</i></div>
   <span class="world-guide-v" id="worldGuideX" aria-hidden="true"></span>

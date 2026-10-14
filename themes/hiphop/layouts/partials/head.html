@@ -14,6 +14,10 @@
 <link rel="stylesheet" href="{{ $css.RelPermalink }}">
 {{ $hud := resources.Get "css/webgl-hud.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $hud.RelPermalink }}">
-<script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+{{/* Three.js 本地托管：构建时从 CDN 拉取一次，随站发布；浏览器不再直连 CDN，单 CDN 挂掉不再导致黑胶消失 */}}
+{{ $three := resources.GetRemote "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" | resources.Copy "js/vendor/three.module.min.js" }}
+{{ $roomEnv := resources.GetRemote "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/environments/RoomEnvironment.js" | resources.Copy "js/vendor/addons/environments/RoomEnvironment.js" }}
+{{ $addonsBase := replace $roomEnv.RelPermalink "environments/RoomEnvironment.js" "" }}
+<script type="importmap">{"imports": {"three": "{{ $three.RelPermalink }}", "three/addons/": "{{ $addonsBase }}"}}</script>
 <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230a0a0c'/><path d='M16 10 L28 10 L24 28 L36 28 L40 10 L52 10 L44 54 L32 54 L36 34 L24 34 L20 54 L8 54 Z' fill='%23ffe600'/></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230a0a0c'/><path d='M16 10 L28 10 L24 28 L36 28 L40 10 L52 10 L44 54 L32 54 L36 34 L24 34 L20 54 L8 54 Z' fill='%23ffffff'/></svg>">
