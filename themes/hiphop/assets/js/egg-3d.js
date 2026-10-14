@@ -91,9 +91,12 @@
     var eyeL = new THREE.Mesh(eyeGeo, black); eyeL.position.set(-0.12, 0.02, 0.26); headG.add(eyeL);
     var eyeR = new THREE.Mesh(eyeGeo, black); eyeR.position.set(0.12, 0.02, 0.26); headG.add(eyeR);
     box(black, 0.15, 0.025, 0.02, 0, -0.12, 0.26, headG);
+    /* 发顶：盖住头顶肤色，不然从正面看像秃头；脏辫从发顶长出来 */
+    box(black, 0.58, 0.2, 0.52, 0, 0.28, 0, headG, 0.06);
+    box(black, 0.5, 0.1, 0.46, 0, 0.36, 0, headG, 0.04);
     g.add(headG);
-    /* 脏辫：细、垂、长短不一，顺着重力往下挂，不往外杈 */
-    var lockGeo = new THREE.CylinderGeometry(0.045, 0.035, 1.0, 6);
+    /* 脏辫：粗一点、垂、长短不一，顺着重力往下挂，不往外杈 */
+    var lockGeo = new THREE.CylinderGeometry(0.06, 0.05, 1.0, 6);
     var locks = [
       [-0.3, 1.18, 0.02, 0.06, 0, 0.95],
       [0.3, 1.18, 0.02, -0.06, 0, 0.9],
@@ -104,7 +107,10 @@
       [0, 1.2, -0.28, 0, -0.06, 0.85],
       [-0.32, 1.1, -0.12, 0.08, 0.05, 0.9],
       [0.32, 1.1, -0.12, -0.08, -0.05, 0.85],
-      [-0.1, 1.22, 0.1, 0.02, 0.04, 0.55]
+      [-0.1, 1.22, 0.1, 0.02, 0.04, 0.55],
+      [-0.2, 1.3, 0.2, 0.05, 0.05, 0.7],
+      [0.2, 1.3, 0.2, -0.05, -0.05, 0.7],
+      [0, 1.3, 0.24, 0, 0.06, 0.6]
     ];
     locks.forEach(function (L) {
       var m = new THREE.Mesh(lockGeo, black);
