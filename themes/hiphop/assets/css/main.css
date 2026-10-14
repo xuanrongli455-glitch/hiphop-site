@@ -13,6 +13,8 @@
   --font-display: "Anton", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   /* 衬线展示字：Anton 无中文字符，中文标题用系统衬线（iPhone 宋体 Songti SC） */
   --font-serif: "Songti SC", "STSong", "Noto Serif SC", "SimSun", serif;
+  /* 黑体展示字：思源黑体 Black 900（Fontsource，经 jsdelivr 加载） */
+  --font-hei: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --font-body: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --font-mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   --radius: 6px;
@@ -702,7 +704,7 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 
 /* ============ Loud and flat · taste-skill 方向 (seed 533659044) ============ */
 .loud-hero { padding: 110px 0 60px; text-align: center; }
-.loud-title { margin: 0; font-family: var(--font-serif); font-size: clamp(88px, 11.4vw, 176px); line-height: 1.05; letter-spacing: 0.02em; font-weight: 900; }
+.loud-title { margin: 0; font-family: var(--font-hei); font-size: clamp(88px, 11.4vw, 176px); line-height: 1.05; letter-spacing: 0.02em; font-weight: 900; }
 .loud-mask { display: block; overflow: hidden; }
 .loud-line { display: block; animation: loudRise 900ms cubic-bezier(.2,.7,.2,1) both; }
 .loud-mask + .loud-mask .loud-line { animation-delay: 110ms; }

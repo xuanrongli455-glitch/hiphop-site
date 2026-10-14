@@ -36,3 +36,7 @@ Overmind 方向更好。以下 Overmind 细节正式取代 Loud and flat 的对�
 ## 修正案 2（2026-10-14，用户反馈“首页大标题字体不太好”）
 根因：Anton 没有中文字符，中文标题实际一直用的苹方 fallback。Hero 大标题改系统衬线
 （Songti SC / STSong / Noto Serif SC / SimSun），走 Overmind 的衬线大标题方向；其他标题仍用 Anton。
+
+## 修正案 3（2026-10-14，用户选“思源黑体 Black”）
+Hero 大标题改思源黑体 Black 900（Fontsource，经 jsdelivr 加载，OFL 可商用），
+替换修正案 2 的系统衬线临时方案；加载失败时回退苹方。其他标题仍用 Anton。
