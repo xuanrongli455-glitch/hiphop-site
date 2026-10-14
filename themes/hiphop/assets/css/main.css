@@ -462,22 +462,22 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 }
 
 /* ============ 杂志结构 · 非对称布局 ============ */
-.hero-mag { padding-bottom: 0; }
+.hero-mag { padding: 96px 0 0; }
 .masthead { display: flex; align-items: baseline; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
 .masthead-name { font-family: var(--font-display); font-size: clamp(34px, 5vw, 54px); letter-spacing: 0.03em; }
 .masthead-name span { color: var(--acc); font-size: 0.55em; margin-left: 10px; letter-spacing: 0.2em; }
 .masthead-tag { color: var(--muted); font-size: 13px; font-family: var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; }
 .hero-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 22px; margin-bottom: 56px; }
 .hero-main {
-  display: grid; grid-template-columns: 1fr 1fr; text-decoration: none;
+  display: flex; flex-direction: column; text-decoration: none;
   background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
   overflow: hidden; transition: border-color 0.2s; min-height: 380px;
 }
 .hero-main:hover { border-color: var(--acc); }
-.hero-main-art { display: grid; place-items: center; min-height: 100%; }
+.hero-main-art { display: grid; place-items: center; aspect-ratio: 16 / 9; overflow: hidden; }
 .hero-main-art .card-initial { font-family: var(--font-display); font-size: clamp(100px, 10vw, 160px); color: rgba(0, 0, 0, 0.5); }
 .hero-main-body { padding: 36px 32px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
-.hero-main-body h2 { margin: 0; font-size: clamp(26px, 3vw, 38px); line-height: 1.25; font-weight: 900; }
+.hero-main-body h2 { margin: 0; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.25; font-weight: 900; }
 .hero-main-body p { margin: 0; color: var(--muted); font-size: 15px; }
 .hero-side { display: flex; flex-direction: column; gap: 22px; }
 .side-card {

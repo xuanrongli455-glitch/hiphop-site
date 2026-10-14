@@ -2,87 +2,86 @@
 <!-- 启动画面 · 像 X 的黑屏 Logo -->
 <div id="splash" aria-hidden="true"><span class="splash-logo">HIPHOP</span></div>
 
-<!-- HERO · 全幅特稿 -->
-<section class="hero-bleed">
-  {{ $news := where site.RegularPages "Section" "news" }}
-  {{ range first 1 $news }}
-  <a class="bleed" href="{{ .RelPermalink }}">
-    {{ with .Params.image }}<img class="bleed-bg" src="{{ . }}" alt="{{ $.Title }}" loading="eager">{{ end }}
-    <div class="bleed-shade"></div>
-    <div class="wrap bleed-content">
-      <span class="kicker">封面特稿</span>
-      <h2>{{ .Title }}</h2>
-      <p>{{ .Description | default (.Summary | plainify | truncate 90) }}</p>
-      <span class="feature-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟阅读</span>
-    </div>
-  </a>
-  {{ end }}
-</section>
+{{ $label := dict "news" "资讯" "music" "新歌推荐" "underground" "地下新声" "lyrics" "歌词解析" "artists" "艺人厂牌" }}
+{{ $news := where site.RegularPages "Section" "news" }}
+{{ $underground := where site.RegularPages "Section" "underground" }}
+{{ $lyrics := where site.RegularPages "Section" "lyrics" }}
+{{ $feed := where site.RegularPages "Section" "in" (slice "news" "music" "underground" "lyrics" "artists") }}
 
-<!-- 最新资讯 · 头条 + 紧凑列表 -->
-<section class="sec">
+<!-- HERO · Complex 式：大特稿 + 3 篇侧栏 -->
+<section class="hero-mag">
   <div class="wrap">
-    <div class="sec-head">
-      <h2 class="sec-title">最新资讯</h2>
-      <a class="sec-more" href="/news/">全部 →</a>
-    </div>
-    {{ range first 1 (after 1 $news) }}
-    <a class="lead-card" href="{{ .RelPermalink }}">
-      <div class="lead-img">{{ with .Params.image }}<img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">{{ end }}</div>
-      <div class="lead-body">
-        <span class="kicker">Fresh</span>
-        <h3>{{ .Title }}</h3>
-        <p>{{ .Description | default (.Summary | plainify | truncate 90) }}</p>
-        <p class="card-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟</p>
-      </div>
-    </a>
-    {{ end }}
-    <div class="tight-list">
-      {{ range first 4 (after 2 $news) }}
-      <a class="tight-row" href="{{ .RelPermalink }}">
-        <span class="tight-date">{{ .Date.Format "01-02" }}</span>
-        <h4>{{ .Title }}</h4>
-        <span class="tight-arrow">→</span>
+    <div class="hero-grid">
+      {{ range first 1 $news }}
+      <a class="hero-main" href="{{ .RelPermalink }}">
+        <div class="hero-main-art">
+          {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" loading="eager">{{ else }}<span class="card-initial">{{ substr .Title 0 1 }}</span>{{ end }}
+        </div>
+        <div class="hero-main-body">
+          <span class="kicker">封面特稿 · {{ index $label .Section }}</span>
+          <h2>{{ .Title }}</h2>
+          <p>{{ .Description | default (.Summary | plainify | truncate 90) }}</p>
+          <span class="feature-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟阅读</span>
+        </div>
       </a>
       {{ end }}
+      <div class="hero-side">
+        {{ range first 1 (after 1 $news) }}
+        <a class="side-card" href="{{ .RelPermalink }}">
+          <div class="side-art">
+            {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" loading="lazy">{{ else }}<span class="card-initial">{{ substr .Title 0 1 }}</span>{{ end }}
+          </div>
+          <div class="side-body">
+            <span class="kicker">{{ index $label .Section }}</span>
+            <h3>{{ .Title }}</h3>
+          </div>
+        </a>
+        {{ end }}
+        {{ range first 1 $underground }}
+        <a class="side-card" href="{{ .RelPermalink }}">
+          <div class="side-art">
+            {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" loading="lazy">{{ else }}<span class="card-initial">{{ substr .Title 0 1 }}</span>{{ end }}
+          </div>
+          <div class="side-body">
+            <span class="kicker">{{ index $label .Section }}</span>
+            <h3>{{ .Title }}</h3>
+          </div>
+        </a>
+        {{ end }}
+        {{ range first 1 $lyrics }}
+        <a class="side-card" href="{{ .RelPermalink }}">
+          <div class="side-art">
+            {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" loading="lazy">{{ else }}<span class="card-initial">{{ substr .Title 0 1 }}</span>{{ end }}
+          </div>
+          <div class="side-body">
+            <span class="kicker">{{ index $label .Section }}</span>
+            <h3>{{ .Title }}</h3>
+          </div>
+        </a>
+        {{ end }}
+      </div>
     </div>
   </div>
 </section>
 
-<!-- 栏目精选 · 三栏大卡 -->
-<section class="sec sec-alt">
+<!-- 最新 · 横排信息流 -->
+<section class="sec">
   <div class="wrap">
     <div class="sec-head">
-      <h2 class="sec-title">栏目精选</h2>
+      <h2 class="sec-title">最新</h2>
+      <a class="sec-more" href="/news/">全部 →</a>
     </div>
-    <div class="cols-3">
-      {{ range first 1 (where site.RegularPages "Section" "underground") }}
-      <a class="big-card" href="{{ .RelPermalink }}">
-        <div class="big-img">{{ with .Params.image }}<img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">{{ end }}</div>
-        <div class="big-body">
-          <span class="kicker">Freshman · 地下新声</span>
-          <h3>{{ .Title }}</h3>
-          <p>{{ .Description | default (.Summary | plainify | truncate 60) }}</p>
+    <div class="feed-list">
+      {{ range first 6 $feed }}
+      <a class="feed-row" href="{{ .RelPermalink }}">
+        <div class="feed-thumb">
+          {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" loading="lazy">{{ else }}<span class="card-initial">{{ substr .Title 0 1 }}</span>{{ end }}
         </div>
-      </a>
-      {{ end }}
-      {{ range first 1 (where site.RegularPages "Section" "lyrics") }}
-      <a class="big-card" href="{{ .RelPermalink }}">
-        <div class="big-img">{{ with .Params.image }}<img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">{{ end }}</div>
-        <div class="big-body">
-          <span class="kicker">Annotated · 歌词解析</span>
+        <div class="feed-body">
+          <span class="kicker">{{ index $label .Section }}</span>
           <h3>{{ .Title }}</h3>
-          <p>{{ .Description | default (.Summary | plainify | truncate 60) }}</p>
-        </div>
-      </a>
-      {{ end }}
-      {{ range first 1 (where site.RegularPages "Section" "artists") }}
-      <a class="big-card" href="{{ .RelPermalink }}">
-        <div class="big-img">{{ with .Params.image }}<img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">{{ end }}</div>
-        <div class="big-body">
-          <span class="kicker">Artists · 艺人厂牌</span>
-          <h3>{{ .Title }}</h3>
-          <p>{{ .Description | default (.Summary | plainify | truncate 60) }}</p>
+          <p>{{ .Description | default (.Summary | plainify | truncate 80) }}</p>
+          <p class="card-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟</p>
         </div>
       </a>
       {{ end }}
@@ -91,7 +90,7 @@
 </section>
 
 <!-- 热歌榜 + 订阅 · 双栏 -->
-<section class="sec">
+<section class="sec sec-alt">
   <div class="wrap split">
     <div class="chart-box">
       <div class="sec-head">
@@ -122,7 +121,7 @@
 </section>
 
 <!-- 演出日历 -->
-<section class="sec sec-alt">
+<section class="sec">
   <div class="wrap">
     <div class="sec-head">
       <h2 class="sec-title">演出日历 <span class="kicker">On Tour</span></h2>
@@ -144,7 +143,7 @@
 </section>
 
 <!-- 互动实验室 -->
-<section class="sec">
+<section class="sec sec-alt">
   <div class="wrap">
     <div class="sec-head">
       <h2 class="sec-title">互动实验室 <span class="kicker">Lab</span></h2>
@@ -175,15 +174,6 @@
         <div class="big-body"><span class="kicker">投稿</span><h3>我要投稿</h3><p>新歌、演出、故事线索，好内容值得被更多人看到</p></div>
       </a>
     </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta">
-  <div class="wrap cta-inner">
-    <h2>有料？来投稿。</h2>
-    <p>新歌、演出、艺人故事——好内容值得被更多人看到。</p>
-    <a class="btn btn-gold" href="/submit/">去投稿</a>
   </div>
 </section>
 {{ end }}
