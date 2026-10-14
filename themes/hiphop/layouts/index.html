@@ -6,20 +6,28 @@
 {{ $feed := where site.RegularPages "Section" "in" (slice "news" "music" "underground" "lyrics" "artists" "samples" "events") }}
 {{ $label := dict "news" "资讯" "music" "新歌推荐" "underground" "地下新声" "lyrics" "歌词解析" "artists" "艺人厂牌" "samples" "采样考古" "events" "演出日历" }}
 
-<!-- HERO · Shouted headline, rising photograph -->
+<!-- HERO · Shouted headline, WebGL tape gallery -->
 <section class="loud-hero">
   <div class="wrap">
     <h1 class="loud-title"><span class="loud-mask"><span class="loud-line">中文说唱</span></span><span class="loud-mask"><span class="loud-line">正在发生</span></span></h1>
-    {{ range first 1 $news }}
-    <a class="loud-photo" href="{{ .RelPermalink }}">
-      {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" loading="eager">{{ end }}
-    </a>
-    <p class="loud-caption"><a href="{{ .RelPermalink }}">{{ .Title }}</a> · {{ .Date.Format "2006-01-02" }}</p>
+    <div class="webgl-stage" id="webglStage" hidden></div>
+    <div class="webgl-fallback" id="webglFallback">
+      {{ range first 1 $news }}
+      <a class="loud-photo" href="{{ .RelPermalink }}">
+        {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" loading="eager">{{ end }}
+      </a>
+      <p class="loud-caption"><a href="{{ .RelPermalink }}">{{ .Title }}</a> · {{ .Date.Format "2006-01-02" }}</p>
+      <a class="btn-loud" href="{{ .RelPermalink }}">读封面特稿</a>
+      {{ end }}
+    </div>
+    <p class="webgl-hint" id="webglHint" hidden>拖动旋转 · 点击磁带进入文章</p>
     <p class="loud-standfirst">说唱 / 街舞 / 潮流文化中文资讯小站。不装老炮，只做认真整理内容的搬运工。</p>
-    <a class="btn-loud" href="{{ .RelPermalink }}">读封面特稿</a>
-    {{ end }}
   </div>
 </section>
+<script type="application/json" id="tapeData">[{{ range $i, $p := first 8 $feed }}{{ if $i }},{{ end }}{"title":{{ $p.Title | jsonify }},"col":{{ index $label $p.Section | jsonify }},"url":{{ $p.RelPermalink | jsonify }}}{{ end }}]</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+{{ $hero := resources.Get "js/hero-webgl.js" | fingerprint }}
+<script type="module" src="{{ $hero.RelPermalink }}"></script>
 
 <!-- 最新 · Line-up table -->
 <section class="lineup">
