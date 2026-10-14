@@ -15,7 +15,11 @@
       {{ if not $isIndex }}
       <a class="card reveal" href="{{ .RelPermalink }}">
         <div class="card-art art-{{ mod (len .Title) 4 }}">
+          {{ with .Params.image }}
+          <img src="{{ . }}" alt="" loading="lazy" onerror="this.remove()">
+          {{ else }}
           <span class="card-initial">{{ substr .Title 0 1 }}</span>
+          {{ end }}
         </div>
         <div class="card-body">
           {{ with .Params.tags }}<span class="chip">{{ index . 0 }}</span>{{ end }}

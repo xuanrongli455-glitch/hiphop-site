@@ -17,13 +17,14 @@
       <span class="brand-text">HIPHOP<em>中文站</em></span>
     </a>
     <nav class="site-nav" id="siteNav">
-      <a href="/news/">资讯</a>
-      <a href="/music/">新歌推荐</a>
-      <a href="/underground/">地下新声</a>
-      <a href="/artists/">艺人/厂牌</a>
-      <a href="/samples/">采样考古</a>
-      <a href="/events/">演出日历</a>
-      <a href="/about/">关于</a>
+      {{ $cur := .RelPermalink }}
+      <a href="/news/"{{ if hasPrefix $cur "/news/" }} class="active"{{ end }}>资讯</a>
+      <a href="/music/"{{ if hasPrefix $cur "/music/" }} class="active"{{ end }}>新歌推荐</a>
+      <a href="/underground/"{{ if hasPrefix $cur "/underground/" }} class="active"{{ end }}>地下新声</a>
+      <a href="/artists/"{{ if hasPrefix $cur "/artists/" }} class="active"{{ end }}>艺人/厂牌</a>
+      <a href="/samples/"{{ if hasPrefix $cur "/samples/" }} class="active"{{ end }}>采样考古</a>
+      <a href="/events/"{{ if hasPrefix $cur "/events/" }} class="active"{{ end }}>演出日历</a>
+      <a href="/about/"{{ if hasPrefix $cur "/about/" }} class="active"{{ end }}>关于</a>
     </nav>
     <button class="menu-btn" id="menuBtn" aria-label="菜单">
       <span></span><span></span><span></span>

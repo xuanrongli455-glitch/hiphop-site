@@ -38,13 +38,20 @@
     revealEls.forEach(function (el) { el.classList.add("in"); });
   }
 
-  /* 顶栏滚动效果 + 回到顶部 */
+  /* 顶栏滚动效果 + 回到顶部（下滑藏顶栏，上滑出现） */
   var header = document.getElementById("siteHeader");
   var toTop = document.getElementById("toTop");
+  var lastY = window.scrollY || 0;
   function onScroll() {
     var y = window.scrollY || 0;
-    if (header) header.classList.toggle("scrolled", y > 24);
+    if (header) {
+      header.classList.toggle("scrolled", y > 24);
+      var goingDown = y > lastY && y > 120;
+      var menuOpen = siteNav && siteNav.classList.contains("open");
+      header.classList.toggle("nav-hidden", goingDown && !menuOpen);
+    }
     if (toTop) toTop.classList.toggle("show", y > 600);
+    lastY = y;
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
