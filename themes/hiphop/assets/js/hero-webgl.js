@@ -176,11 +176,37 @@ import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.j
     back.position.z = -0.141;
     back.rotation.y = Math.PI;
     tape.add(shell, face, back);
+    /* 原版式浮动预览图：文章封面卡悬在磁带前方，压住窗口区，标签标题仍可见 */
+    if (item.image) {
+      var thumb = new THREE.Group();
+      var backing = new THREE.Mesh(
+        new THREE.PlaneGeometry(1.41, 0.91),
+        new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.6 })
+      );
+      backing.position.z = -0.005;
+      var thumbMat = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.5, metalness: 0 });
+      var thumbMesh = new THREE.Mesh(new THREE.PlaneGeometry(1.35, 0.85), thumbMat);
+      thumb.add(backing, thumbMesh);
+      thumb.position.set(0, -0.3, 0.95);
+      thumb.rotation.set(0, -0.08, 0.02);
+      tape.add(thumb);
+      new THREE.TextureLoader().load(item.image, function (tex) {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        thumbMat.map = tex;
+        thumbMat.needsUpdate = true;
+      }, undefined, function () { thumb.visible = false; });
+    }
     var angle = (i / items.length) * Math.PI * 2;
-    tape.position.set(Math.sin(angle) * radius, 0, Math.cos(angle) * radius);
+    /* 打破完美圆环：每盘高低、倾斜、大小都略有不同，像漂浮的实物 */
+    var baseY = Math.sin(i * 2.3) * 0.45;
+    tape.position.set(Math.sin(angle) * radius, baseY, Math.cos(angle) * radius);
     tape.rotation.y = angle;
-    tape.rotation.x = -0.06;
+    tape.rotation.x = -0.06 + Math.sin(i * 1.3) * 0.05;
+    tape.rotation.z = Math.sin(i * 1.7) * 0.1;
+    tape.scale.setScalar(0.95 + (i % 3) * 0.05);
     tape.userData.url = item.url;
+    tape.userData.baseY = baseY;
+    tape.userData.phase = i * 1.3;
     group.add(tape);
     tapes.push(tape);
   });
@@ -274,6 +300,13 @@ import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.j
       velocity *= 0.94;
     }
     group.rotation.y += (targetRot - group.rotation.y) * 0.08;
+    /* 磁带各自缓缓浮动 + 镜头轻微漂移，原版那种“活的”镜头感 */
+    tapes.forEach(function (t) {
+      t.position.y = t.userData.baseY + Math.sin(now * 0.0006 + t.userData.phase) * 0.08;
+    });
+    camera.position.x = Math.sin(now * 0.00008) * 0.35;
+    camera.position.y = 0.7 + Math.sin(now * 0.00011 + 1) * 0.18;
+    camera.lookAt(0, 0, 0);
     renderer.render(scene, camera);
   }
   requestAnimationFrame(loop);

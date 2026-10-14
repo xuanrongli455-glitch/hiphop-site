@@ -24,7 +24,7 @@
     <p class="loud-standfirst">说唱 / 街舞 / 潮流文化中文资讯小站。不装老炮，只做认真整理内容的搬运工。</p>
   </div>
 </section>
-<script type="application/json" id="tapeData">{{ $tapes := slice }}{{ range $p := first 8 $feed }}{{ $tapes = $tapes | append (dict "title" $p.Title "col" (index $label $p.Section) "url" $p.RelPermalink) }}{{ end }}{{ $tapes | jsonify | safeJS }}</script>
+<script type="application/json" id="tapeData">{{ $tapes := slice }}{{ range $p := first 8 $feed }}{{ $tapes = $tapes | append (dict "title" $p.Title "col" (index $label $p.Section) "url" $p.RelPermalink "image" ($p.Params.image | default "")) }}{{ end }}{{ $tapes | jsonify | safeJS }}</script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 {{ $hero := resources.Get "js/hero-webgl.js" | fingerprint }}
 <script type="module" src="{{ $hero.RelPermalink }}"></script>
