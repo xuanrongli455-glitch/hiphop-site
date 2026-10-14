@@ -46,35 +46,75 @@ import * as THREE from "three";
     return lines.slice(0, maxLines);
   }
 
+  function roundRect(x, px, py, w, h, r) {
+    x.beginPath();
+    x.moveTo(px + r, py);
+    x.arcTo(px + w, py, px + w, py + h, r);
+    x.arcTo(px + w, py + h, px, py + h, r);
+    x.arcTo(px, py + h, px, py, r);
+    x.arcTo(px, py, px + w, py, r);
+    x.closePath();
+  }
+
+  /* 真磁带质感：纸标签 + 螺丝 + 带盘窗（辐条轮 + 磁带条）+ 底部卡口 */
   function makeFaceTexture(item, color) {
     var c = document.createElement("canvas");
     c.width = 1024; c.height = 640;
     var x = c.getContext("2d");
+    /* 壳体 */
     x.fillStyle = color;
     x.fillRect(0, 0, 1024, 640);
-    /* 磁带窗口：深色横条，像磁带中间的透明窗 */
-    x.fillStyle = "rgba(0,0,0,0.72)";
-    x.fillRect(64, 300, 896, 150);
-    x.fillStyle = "#ffffff";
-    x.beginPath();
-    x.arc(230, 375, 52, 0, Math.PI * 2);
-    x.arc(794, 375, 52, 0, Math.PI * 2);
-    x.fill();
-    x.fillStyle = color;
-    x.beginPath();
-    x.arc(230, 375, 30, 0, Math.PI * 2);
-    x.arc(794, 375, 30, 0, Math.PI * 2);
-    x.fill();
-    /* 栏目 + 标题 */
+    x.strokeStyle = "rgba(0,0,0,0.25)";
+    x.lineWidth = 6;
+    x.strokeRect(10, 10, 1004, 620);
+    /* 四角螺丝 */
+    [[44, 44], [980, 44], [44, 596], [980, 596]].forEach(function (p) {
+      x.fillStyle = "rgba(0,0,0,0.35)";
+      x.beginPath(); x.arc(p[0], p[1], 16, 0, Math.PI * 2); x.fill();
+      x.strokeStyle = "rgba(255,255,255,0.35)"; x.lineWidth = 3;
+      x.beginPath(); x.moveTo(p[0] - 9, p[1]); x.lineTo(p[0] + 9, p[1]); x.stroke();
+    });
+    /* 纸标签：栏目 + 标题，标题不再撞进窗口 */
+    x.fillStyle = "#f5f0e6";
+    roundRect(x, 56, 56, 912, 210, 10); x.fill();
+    x.fillStyle = "#666666";
+    x.font = "600 34px sans-serif";
+    x.fillText(item.col, 88, 116);
     x.fillStyle = "#111111";
-    x.font = "600 44px sans-serif";
-    x.fillText(item.col, 64, 96);
-    x.font = "700 84px 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif";
-    var lines = wrapTitle(x, item.title, 896, 2);
-    lines.forEach(function (ln, i) { x.fillText(ln, 64, 210 + i * 100); });
-    /* 底部色条 */
-    x.fillStyle = "#111111";
-    x.fillRect(64, 560, 200, 12);
+    x.font = "700 56px 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif";
+    var lines = wrapTitle(x, item.title, 848, 2);
+    lines.forEach(function (ln, i) { x.fillText(ln, 88, 180 + i * 62); });
+    /* 磁带窗口 */
+    x.fillStyle = "#141414";
+    roundRect(x, 64, 300, 896, 190, 16); x.fill();
+    /* 磁带条：连着两个轮 */
+    x.fillStyle = "#5a3a1a";
+    x.fillRect(230, 387, 564, 6);
+    /* 两个带盘：磁带卷 + 白色辐条轮 + 彩色轮毂 */
+    [230, 794].forEach(function (cx) {
+      x.fillStyle = "#7a4a1f";
+      x.beginPath(); x.arc(cx, 395, 60, 0, Math.PI * 2); x.fill();
+      x.fillStyle = "#f2f2f2";
+      x.beginPath(); x.arc(cx, 395, 46, 0, Math.PI * 2); x.fill();
+      x.strokeStyle = "#141414"; x.lineWidth = 5;
+      for (var k = 0; k < 3; k++) {
+        var a = k * Math.PI * 2 / 3 - Math.PI / 2;
+        x.beginPath();
+        x.moveTo(cx, 395);
+        x.lineTo(cx + Math.cos(a) * 44, 395 + Math.sin(a) * 44);
+        x.stroke();
+      }
+      x.fillStyle = color;
+      x.beginPath(); x.arc(cx, 395, 15, 0, Math.PI * 2); x.fill();
+      x.fillStyle = "#141414";
+      x.beginPath(); x.arc(cx, 395, 6, 0, Math.PI * 2); x.fill();
+    });
+    /* 底部卡口：中间磁头开口 + 两侧小切口 */
+    x.fillStyle = "#0a0a0a";
+    x.beginPath();
+    x.moveTo(412, 640); x.lineTo(452, 556); x.lineTo(572, 556); x.lineTo(612, 640); x.closePath(); x.fill();
+    x.fillRect(180, 600, 84, 40);
+    x.fillRect(760, 600, 84, 40);
     var tex = new THREE.CanvasTexture(c);
     tex.colorSpace = THREE.SRGBColorSpace;
     tex.anisotropy = 4;
@@ -96,14 +136,20 @@ import * as THREE from "three";
 
   var group = new THREE.Group();
   scene.add(group);
-  var dark = new THREE.MeshBasicMaterial({ color: 0x1a1a1a });
   var tapes = [];
   var radius = 4.6;
+  function shadeMat(hex, f) {
+    var col = new THREE.Color(hex);
+    col.multiplyScalar(f);
+    return new THREE.MeshBasicMaterial({ color: col });
+  }
   items.forEach(function (item, i) {
     var color = palette[i % palette.length];
     var face = new THREE.MeshBasicMaterial({ map: makeFaceTexture(item, color) });
-    var geo = new THREE.BoxGeometry(2.4, 1.5, 0.22);
-    var mesh = new THREE.Mesh(geo, [dark, dark, dark, dark, face, dark]);
+    var edge = shadeMat(color, 0.55);
+    var back = shadeMat(color, 0.3);
+    var geo = new THREE.BoxGeometry(2.4, 1.5, 0.28);
+    var mesh = new THREE.Mesh(geo, [edge, edge, edge, edge, face, back]);
     var angle = (i / items.length) * Math.PI * 2;
     mesh.position.set(Math.sin(angle) * radius, 0, Math.cos(angle) * radius);
     mesh.rotation.y = angle;
