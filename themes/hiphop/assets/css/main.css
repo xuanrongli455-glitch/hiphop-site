@@ -11,6 +11,7 @@
   --line: rgba(242, 239, 230, 0.13);
   --font-display: "Anton", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --font-body: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   --radius: 14px;
   --wrap: 1160px;
 }
@@ -133,7 +134,8 @@ body.custom-cursor.cursor-text .cursor-ring { opacity: 0; }
     radial-gradient(500px 260px at 10% 90%, rgba(255, 75, 46, 0.1), transparent 60%);
 }
 .eyebrow {
-  display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 0.28em;
+  display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 0.22em;
+  font-family: var(--font-mono);
   color: var(--gold); text-transform: uppercase;
   border: 1px solid rgba(242, 178, 52, 0.4); border-radius: 999px;
   padding: 8px 18px; margin: 0 0 28px;
@@ -147,8 +149,8 @@ body.custom-cursor.cursor-text .cursor-ring { opacity: 0; }
 .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 72px; }
 
 .btn {
-  display: inline-block; padding: 14px 30px; border-radius: 999px;
-  font-weight: 900; font-size: 15px; text-decoration: none; letter-spacing: 0.04em;
+  display: inline-block; padding: 14px 32px; border-radius: 999px;
+  font-weight: 900; font-size: 15px; text-decoration: none; letter-spacing: 0.12em;
   transition: transform 0.25s, box-shadow 0.25s, background 0.25s, color 0.25s;
 }
 .btn-gold { background: var(--gold); color: #0a0a0c; }
@@ -202,12 +204,13 @@ body.custom-cursor.cursor-text .cursor-ring { opacity: 0; }
 .art-3 { background: linear-gradient(135deg, #17171c 0%, #3d3d4a 100%); }
 .card-body { padding: 22px 22px 24px; }
 .card-body h3 { margin: 12px 0 8px; font-size: 19px; line-height: 1.45; }
-.card-meta { margin: 0; color: var(--muted); font-size: 13px; }
+.card-meta { margin: 0; color: var(--muted); font-size: 12px; font-family: var(--font-mono); letter-spacing: 0.06em; }
 .card-desc { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
 .chip {
-  display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+  display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+  font-family: var(--font-mono); text-transform: uppercase;
   background: rgba(242, 178, 52, 0.14); color: var(--gold);
-  border: 1px solid rgba(242, 178, 52, 0.35); border-radius: 999px; padding: 3px 12px;
+  border: 1px solid rgba(242, 178, 52, 0.35); border-radius: 999px; padding: 4px 12px;
   margin: 0 6px 6px 0;
 }
 .chip-red { background: rgba(255, 75, 46, 0.12); color: var(--red); border-color: rgba(255, 75, 46, 0.35); }
