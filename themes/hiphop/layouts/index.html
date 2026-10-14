@@ -1,27 +1,38 @@
 {{ define "main" }}
-<!-- HERO · 封面特稿 -->
-<section class="hero">
+<!-- HERO · 非对称封面区：1 大特稿 + 2 次条 -->
+<section class="hero hero-mag">
   <div class="wrap">
-    <div class="hero-top">
-      <h1 class="hero-wordmark reveal">HIPHOP<small>中文站 · 说唱 / 街舞 / 潮流</small></h1>
-      <p class="hero-lede reveal">资讯速递、新歌盘点、艺人档案、演出日历——一个为中文说唱爱好者做的街区电台。</p>
+    <div class="masthead reveal">
+      <span class="masthead-name">HIPHOP<span>中文站</span></span>
+      <span class="masthead-tag">说唱 / 街舞 / 潮流文化</span>
     </div>
-    {{ range first 1 (where site.RegularPages "Section" "news") }}
-    <a class="feature reveal" href="{{ .RelPermalink }}">
-      <div class="feature-art art-{{ mod (len .Title) 4 }}">
-        <span class="card-initial">{{ substr .Title 0 1 }}</span>
+    {{ $news := where site.RegularPages "Section" "news" }}
+    <div class="hero-grid reveal">
+      {{ range first 1 $news }}
+      <a class="hero-main" href="{{ .RelPermalink }}">
+        <div class="hero-main-art art-{{ mod (len .Title) 4 }}">
+          <span class="card-initial">{{ substr .Title 0 1 }}</span>
+        </div>
+        <div class="hero-main-body">
+          <span class="kicker">封面特稿</span>
+          <h2>{{ .Title }}</h2>
+          <p>{{ .Description | default (.Summary | plainify | truncate 80) }}</p>
+          <span class="feature-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟</span>
+        </div>
+      </a>
+      {{ end }}
+      <div class="hero-side">
+        {{ range first 2 (after 1 $news) }}
+        <a class="side-card" href="{{ .RelPermalink }}">
+          <div class="side-art art-{{ mod (len .Title) 4 }}"><span class="card-initial">{{ substr .Title 0 1 }}</span></div>
+          <div class="side-body">
+            {{ with .Params.tags }}<span class="chip">{{ index . 0 }}</span>{{ end }}
+            <h3>{{ .Title }}</h3>
+            <p class="card-meta">{{ .Date.Format "2006-01-02" }}</p>
+          </div>
+        </a>
+        {{ end }}
       </div>
-      <div class="feature-body">
-        <span><span class="kicker">封面特稿</span></span>
-        <h2>{{ .Title }}</h2>
-        <p>{{ .Description | default (.Summary | plainify | truncate 90) }}</p>
-        <span class="feature-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟阅读</span>
-      </div>
-    </a>
-    {{ end }}
-    <div class="hero-cta reveal">
-      <a class="btn btn-gold" href="/news/">开始探索</a>
-      <a class="btn btn-ghost" href="/music/">本周新歌 →</a>
     </div>
   </div>
   <div class="marquee" aria-hidden="true">
@@ -32,134 +43,130 @@
   </div>
 </section>
 
-<!-- 最新资讯 -->
-<section class="section">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="kicker">Fresh</span>
-      <h2 class="sec-title">最新资讯</h2>
-      <a class="sec-more" href="/news/">View All →</a>
-    </div>
-    <div class="card-grid card-grid-4">
-      {{ range first 4 (where site.RegularPages "Section" "news") }}
-      <a class="card reveal" href="{{ .RelPermalink }}">
-        <div class="card-art art-{{ mod (len .Title) 4 }}">
-          <span class="card-initial">{{ substr .Title 0 1 }}</span>
-        </div>
-        <div class="card-body">
-          {{ with .Params.tags }}<span class="chip">{{ index . 0 }}</span>{{ end }}
-          <h3>{{ .Title }}</h3>
-          <p class="card-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟</p>
-        </div>
-      </a>
-      {{ end }}
-    </div>
-  </div>
-</section>
+<!-- 主体：左信息流 + 右榜单栏 -->
+<div class="wrap content-grid">
+  <main class="feed">
 
-<!-- 热歌榜 -->
-<section class="section section-alt">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="kicker">Hot 100</span>
-      <h2 class="sec-title">热歌榜</h2>
-      <a class="sec-more" href="/charts/">View All →</a>
-    </div>
-    <div class="track-list">
-      {{ range $i, $p := first 5 (where site.RegularPages "Section" "music") }}
-      <a class="track reveal" href="{{ $p.RelPermalink }}">
-        <span class="track-no">{{ printf "%02d" (add $i 1) }}</span>
-        {{ with $p.Params.score }}<span class="score">{{ . }}</span>{{ end }}
-        <span class="track-info">
-          <strong>{{ $p.Title }}</strong>
-          <small>{{ $p.Date.Format "2006-01-02" }}{{ with $p.Params.tags }} · {{ delimit . " / " }}{{ end }}</small>
-        </span>
-        <span class="track-arrow">→</span>
-      </a>
-      {{ end }}
-    </div>
-  </div>
-</section>
+    <!-- 最新资讯 · 横排信息流 -->
+    <section class="section" style="padding-top:64px">
+      <div class="sec-head reveal">
+        <span class="kicker">Fresh</span>
+        <h2 class="sec-title">最新资讯</h2>
+        <a class="sec-more" href="/news/">View All →</a>
+      </div>
+      <div class="feed-list">
+        {{ range first 5 $news }}
+        <a class="feed-row reveal" href="{{ .RelPermalink }}">
+          <div class="feed-thumb art-{{ mod (len .Title) 4 }}"><span class="card-initial">{{ substr .Title 0 1 }}</span></div>
+          <div class="feed-body">
+            {{ with .Params.tags }}<span class="chip">{{ index . 0 }}</span>{{ end }}
+            <h3>{{ .Title }}</h3>
+            <p>{{ .Description | default (.Summary | plainify | truncate 72) }}</p>
+            <p class="card-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟</p>
+          </div>
+        </a>
+        {{ end }}
+      </div>
+    </section>
 
-<!-- 地下新声 -->
-<section class="section">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="kicker">Freshman</span>
-      <h2 class="sec-title">地下新声</h2>
-      <a class="sec-more" href="/underground/">View All →</a>
-    </div>
-    <div class="card-grid">
-      {{ range first 3 (where site.RegularPages "Section" "underground") }}
-      {{ if ne .File.BaseFileName "_index" }}
-      <a class="card reveal" href="{{ .RelPermalink }}">
-        <div class="card-art art-{{ mod (len .Title) 4 }}">
-          <span class="card-initial">{{ substr .Title 0 1 }}</span>
-        </div>
-        <div class="card-body">
-          <span class="chip chip-acc">新人</span>
-          <h3>{{ .Title }}</h3>
-          <p class="card-meta">{{ .Description | default (.Summary | plainify | truncate 60) }}</p>
-        </div>
-      </a>
-      {{ end }}
-      {{ end }}
-    </div>
-  </div>
-</section>
+    <!-- 地下新声 · Freshman 横排 -->
+    <section class="section" style="padding-top:0">
+      <div class="sec-head reveal">
+        <span class="kicker">Freshman</span>
+        <h2 class="sec-title">地下新声</h2>
+        <a class="sec-more" href="/underground/">View All →</a>
+      </div>
+      <div class="fresh-grid">
+        {{ range $i, $p := first 4 (where site.RegularPages "Section" "underground") }}
+        {{ if ne $p.File.BaseFileName "_index" }}
+        <a class="fresh-card reveal" href="{{ $p.RelPermalink }}">
+          <span class="fresh-no">{{ printf "%02d" (add $i 1) }}</span>
+          <div class="fresh-art art-{{ mod (len $p.Title) 4 }}"><span class="card-initial">{{ substr $p.Title 0 1 }}</span></div>
+          <h3>{{ $p.Title }}</h3>
+          <p class="card-meta">{{ $p.Description | default ($p.Summary | plainify | truncate 48) }}</p>
+        </a>
+        {{ end }}
+        {{ end }}
+      </div>
+    </section>
 
-<!-- 歌词解析 -->
-<section class="section section-alt">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="kicker">Annotated</span>
-      <h2 class="sec-title">歌词解析</h2>
-      <a class="sec-more" href="/lyrics/">View All →</a>
-    </div>
-    <div class="card-grid">
-      {{ range first 3 (where site.RegularPages "Section" "lyrics") }}
-      {{ if ne .File.BaseFileName "_index" }}
-      <a class="card reveal" href="{{ .RelPermalink }}">
-        <div class="card-art art-2">
-          <span class="card-initial">{{ substr .Title 0 1 }}</span>
-        </div>
-        <div class="card-body">
-          <span class="chip chip-acc">批注</span>
-          <h3>{{ .Title }}</h3>
-          <p class="card-meta">{{ .Description | default (.Summary | plainify | truncate 60) }}</p>
-        </div>
-      </a>
-      {{ end }}
-      {{ end }}
-    </div>
-    <div class="reveal" style="margin-top:28px">{{ partial "waveform.html" . }}</div>
-  </div>
-</section>
+    <!-- 歌词解析 -->
+    <section class="section" style="padding-top:0">
+      <div class="sec-head reveal">
+        <span class="kicker">Annotated</span>
+        <h2 class="sec-title">歌词解析</h2>
+        <a class="sec-more" href="/lyrics/">View All →</a>
+      </div>
+      <div class="feed-list">
+        {{ range first 3 (where site.RegularPages "Section" "lyrics") }}
+        {{ if ne .File.BaseFileName "_index" }}
+        <a class="feed-row reveal" href="{{ .RelPermalink }}">
+          <div class="feed-thumb art-2"><span class="card-initial">{{ substr .Title 0 1 }}</span></div>
+          <div class="feed-body">
+            <span class="chip chip-acc">批注</span>
+            <h3>{{ .Title }}</h3>
+            <p>{{ .Description | default (.Summary | plainify | truncate 72) }}</p>
+          </div>
+        </a>
+        {{ end }}
+        {{ end }}
+      </div>
+      <div class="reveal" style="margin-top:28px">{{ partial "waveform.html" . }}</div>
+    </section>
 
-<!-- 艺人 / 厂牌 -->
-<section class="section">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="kicker">Artists</span>
-      <h2 class="sec-title">艺人厂牌</h2>
-      <a class="sec-more" href="/artists/">View All →</a>
+    <!-- 艺人 / 厂牌 -->
+    <section class="section" style="padding-top:0">
+      <div class="sec-head reveal">
+        <span class="kicker">Artists</span>
+        <h2 class="sec-title">艺人厂牌</h2>
+        <a class="sec-more" href="/artists/">View All →</a>
+      </div>
+      <div class="card-grid">
+        {{ range first 3 (where site.RegularPages "Section" "artists") }}
+        <a class="card reveal" href="{{ .RelPermalink }}">
+          <div class="card-art art-{{ mod (len .Title) 4 }}">
+            <span class="card-initial">{{ substr .Title 0 1 }}</span>
+          </div>
+          <div class="card-body">
+            {{ with .Params.tags }}<span class="chip">{{ index . 0 }}</span>{{ end }}
+            <h3>{{ .Title }}</h3>
+            <p class="card-meta">{{ .Description | default (.Summary | plainify | truncate 60) }}</p>
+          </div>
+        </a>
+        {{ end }}
+      </div>
+    </section>
+  </main>
+
+  <!-- 右栏：榜单 + 订阅 -->
+  <aside class="rail">
+    <div class="rail-box reveal">
+      <div class="sec-head" style="margin-bottom:20px">
+        <span class="kicker">Hot 100</span>
+        <h2 class="sec-title" style="font-size:28px">热歌榜</h2>
+      </div>
+      <div class="chart-list">
+        {{ range $i, $p := first 10 (where site.RegularPages "Section" "music") }}
+        <a class="chart-row" href="{{ $p.RelPermalink }}">
+          <span class="chart-no">{{ add $i 1 }}</span>
+          {{ with $p.Params.score }}<span class="score score-sm">{{ . }}</span>{{ end }}
+          <span class="chart-info"><strong>{{ $p.Title }}</strong><small>{{ $p.Date.Format "01-02" }}</small></span>
+        </a>
+        {{ end }}
+      </div>
+      <a class="sec-more" href="/charts/" style="margin:16px 0 0">完整榜单 →</a>
     </div>
-    <div class="card-grid">
-      {{ range first 3 (where site.RegularPages "Section" "artists") }}
-      <a class="card reveal" href="{{ .RelPermalink }}">
-        <div class="card-art art-{{ mod (len .Title) 4 }}">
-          <span class="card-initial">{{ substr .Title 0 1 }}</span>
-        </div>
-        <div class="card-body">
-          {{ with .Params.tags }}<span class="chip">{{ index . 0 }}</span>{{ end }}
-          <h3>{{ .Title }}</h3>
-          <p class="card-meta">{{ .Description | default (.Summary | plainify | truncate 60) }}</p>
-        </div>
-      </a>
-      {{ end }}
+    <div class="rail-box reveal">
+      <span class="kicker">Stay Tuned</span>
+      <h3 style="margin:12px 0 8px;font-size:20px">订阅本站</h3>
+      <p class="hint" style="margin-top:0">RSS 永远有效。公众号「嘻哈笔记」筹备中。</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn btn-gold" style="padding:10px 20px" href="/index.xml">RSS</a>
+        <a class="btn btn-ghost" style="padding:10px 20px" href="/submit/">投稿</a>
+      </div>
     </div>
-  </div>
-</section>
+  </aside>
+</div>
 
 <!-- 演出日历 -->
 <section class="section section-alt">
@@ -252,21 +259,6 @@
           <p class="card-meta">新歌、演出、故事线索，好内容值得被看到</p>
         </div>
       </a>
-    </div>
-  </div>
-</section>
-
-<!-- 订阅 -->
-<section class="section section-alt">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="kicker">Stay Tuned</span>
-      <h2 class="sec-title">订阅本站</h2>
-    </div>
-    <p class="hint reveal">域名可能被封，微信可能抽风——但 RSS 永远有效。微信公众号「嘻哈笔记」筹备中，敬请期待。</p>
-    <div class="hero-cta reveal" style="margin-bottom:0">
-      <a class="btn btn-gold" href="/index.xml">RSS 订阅</a>
-      <a class="btn btn-ghost" href="/submit/">我要投稿 →</a>
     </div>
   </div>
 </section>
