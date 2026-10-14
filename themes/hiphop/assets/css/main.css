@@ -14,7 +14,7 @@
   --font-body: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --font-mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   --radius: 12px;
-  --wrap: 1200px;
+  --wrap: 1400px;
 }
 
 /* ============ Base ============ */
@@ -425,6 +425,31 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 .fresh-card:hover .fresh-art img { transform: scale(1.05); }
 .hero-main-art, .side-art, .feed-thumb, .fresh-art { padding: 0; }
 .hero-main-art img { min-height: 100%; }
+
+/* ============ 全幅 Hero（对标 Complex 效果图） ============ */
+.hero-bleed { padding: 68px 0 0; }
+.bleed { position: relative; display: block; text-decoration: none; overflow: hidden; min-height: 74vh; }
+.bleed-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.bleed-shade {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(8,8,10,.30) 0%, rgba(8,8,10,.15) 40%, rgba(8,8,10,.78) 78%, rgba(13,13,16,.96) 100%);
+}
+.bleed-content {
+  position: relative; min-height: 74vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding-top: 140px; padding-bottom: 60px;
+}
+.bleed-content h2 {
+  margin: 18px 0 14px; font-weight: 900; max-width: 1000px;
+  font-size: clamp(38px, 5.6vw, 78px); line-height: 1.16;
+  text-shadow: 0 2px 30px rgba(0,0,0,.55);
+}
+.bleed-content > p { margin: 0 0 12px; color: rgba(245,244,240,.88); font-size: 18px; max-width: 680px; }
+.bleed .marquee { position: relative; }
+@media (max-width: 640px) {
+  .bleed, .bleed-content { min-height: 62vh; }
+  .bleed-content { padding-bottom: 40px; }
+}
 
 /* ============ 杂志结构 · 非对称布局 ============ */
 .hero-mag { padding-bottom: 0; }

@@ -1,40 +1,19 @@
 {{ define "main" }}
-<!-- HERO · 非对称封面区：1 大特稿 + 2 次条 -->
-<section class="hero hero-mag">
-  <div class="wrap">
-    <div class="masthead reveal">
-      <span class="masthead-name">HIPHOP<span>中文站</span></span>
-      <span class="masthead-tag">说唱 / 街舞 / 潮流文化</span>
+<!-- HERO · 全幅特稿（对标效果图） -->
+<section class="hero-bleed">
+  {{ $news := where site.RegularPages "Section" "news" }}
+  {{ range first 1 $news }}
+  <a class="bleed reveal" href="{{ .RelPermalink }}">
+    {{ with .Params.image }}<img class="bleed-bg" src="{{ . }}" alt="{{ $.Title }}" loading="eager">{{ end }}
+    <div class="bleed-shade"></div>
+    <div class="wrap bleed-content">
+      <span class="kicker">封面特稿</span>
+      <h2>{{ .Title }}</h2>
+      <p>{{ .Description | default (.Summary | plainify | truncate 90) }}</p>
+      <span class="feature-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟阅读</span>
     </div>
-    {{ $news := where site.RegularPages "Section" "news" }}
-    <div class="hero-grid reveal">
-      {{ range first 1 $news }}
-      <a class="hero-main" href="{{ .RelPermalink }}">
-        <div class="hero-main-art art-{{ mod (len .Title) 4 }}">
-          {{ with .Params.image }}<img src="{{ . }}" alt="{{ $.Title }}" loading="eager">{{ else }}<span class="card-initial">{{ substr $.Title 0 1 }}</span>{{ end }}
-        </div>
-        <div class="hero-main-body">
-          <span class="kicker">封面特稿</span>
-          <h2>{{ .Title }}</h2>
-          <p>{{ .Description | default (.Summary | plainify | truncate 80) }}</p>
-          <span class="feature-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟</span>
-        </div>
-      </a>
-      {{ end }}
-      <div class="hero-side">
-        {{ range first 2 (after 1 $news) }}
-        <a class="side-card" href="{{ .RelPermalink }}">
-          <div class="side-art art-{{ mod (len .Title) 4 }}">{{ with .Params.image }}<img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">{{ else }}<span class="card-initial">{{ substr $.Title 0 1 }}</span>{{ end }}</div>
-          <div class="side-body">
-            {{ with .Params.tags }}<span class="chip">{{ index . 0 }}</span>{{ end }}
-            <h3>{{ .Title }}</h3>
-            <p class="card-meta">{{ .Date.Format "2006-01-02" }}</p>
-          </div>
-        </a>
-        {{ end }}
-      </div>
-    </div>
-  </div>
+  </a>
+  {{ end }}
   <div class="marquee" aria-hidden="true">
     <div class="marquee-track">
       <span>说唱 RAP — 街舞 BREAKING — 潮流 STREETWEAR — DJ — 涂鸦 GRAFFITI — BATTLE —&nbsp;</span>
@@ -212,7 +191,7 @@
     </div>
     <div class="card-grid">
       <a class="card reveal" href="/dialect-map/">
-        <div class="card-art art-1"><span class="card-initial">方</span></div>
+        <div class="card-art"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Shang_hai_street_night.jpg/960px-Shang_hai_street_night.jpg" alt="方言说唱地图" loading="lazy"></div>
         <div class="card-body">
           <span class="chip">互动</span>
           <h3>方言说唱地图</h3>
@@ -220,7 +199,7 @@
         </div>
       </a>
       <a class="card reveal" href="/beat-lab/">
-        <div class="card-art art-0"><span class="card-initial">拆</span></div>
+        <div class="card-art"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/EMI_studio_mixer_%281940s%29%2C_Abbey_Road_Studios.jpg/960px-EMI_studio_mixer_%281940s%29%2C_Abbey_Road_Studios.jpg" alt="Beat 拆解实验室" loading="lazy"></div>
         <div class="card-body">
           <span class="chip">互动</span>
           <h3>Beat 拆解实验室</h3>
@@ -228,7 +207,7 @@
         </div>
       </a>
       <a class="card reveal" href="/timeline/">
-        <div class="card-art art-3"><span class="card-initial">史</span></div>
+        <div class="card-art"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Street_art_stencil_painting_of_a_boy_popping_out_from_behind_a_wall%2C_by_German_artist_Tona%2C_in_Vang_Vieng%2C_Laos.jpg/960px-Street_art_stencil_painting_of_a_boy_popping_out_from_behind_a_wall%2C_by_German_artist_Tona%2C_in_Vang_Vieng%2C_Laos.jpg" alt="说唱编年史" loading="lazy"></div>
         <div class="card-body">
           <span class="chip">互动</span>
           <h3>说唱编年史</h3>
@@ -236,7 +215,7 @@
         </div>
       </a>
       <a class="card reveal" href="/samples/">
-        <div class="card-art art-2"><span class="card-initial">采</span></div>
+        <div class="card-art"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Lang%27s_Recording_Studio_console.jpg/960px-Lang%27s_Recording_Studio_console.jpg" alt="采样考古" loading="lazy"></div>
         <div class="card-body">
           <span class="chip chip-acc">考古</span>
           <h3>采样考古</h3>
@@ -244,7 +223,7 @@
         </div>
       </a>
       <a class="card reveal" href="/awards/">
-        <div class="card-art art-1"><span class="card-initial">奖</span></div>
+        <div class="card-art"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/WikiCup_Trophy_Gold.png" alt="年度榜单" loading="lazy"></div>
         <div class="card-body">
           <span class="chip">年度</span>
           <h3>年度榜单</h3>
@@ -252,7 +231,7 @@
         </div>
       </a>
       <a class="card reveal" href="/submit/">
-        <div class="card-art art-0"><span class="card-initial">投</span></div>
+        <div class="card-art"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Shanghai-neon_%28279418574%29.jpg/960px-Shanghai-neon_%28279418574%29.jpg" alt="投稿入口" loading="lazy"></div>
         <div class="card-body">
           <span class="chip chip-acc">投稿</span>
           <h3>我要投稿</h3>
