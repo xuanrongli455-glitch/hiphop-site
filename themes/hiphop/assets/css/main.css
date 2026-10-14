@@ -346,6 +346,14 @@ a { color: inherit; }
 .article-hero figcaption { color: var(--muted); font-size: 13px; margin-top: 10px; text-align: center; }
 .article-body { font-size: 18px; color: #e8e7e2; }
 .article-body img { max-width: 100%; border-radius: 12px; border: 1px solid var(--line); }
+/* 网易云嵌入播放器 */
+.music163-embed { margin: 16px 0 28px; }
+.music163-embed iframe { display: block; border: 1px solid var(--line); border-radius: 6px; background: #1a1a1a; }
+.music163-note { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
+/* 文内插图 figure */
+.article-figure { margin: 32px 0; }
+.article-figure img { width: 100%; display: block; border-radius: 6px; border: 1px solid var(--line); }
+.article-figure figcaption { color: var(--muted); font-size: 14px; margin-top: 10px; text-align: center; }
 /* B 站视频嵌入 */
 .video-embed { margin: 32px 0; }
 .video-frame { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #000; }
@@ -671,12 +679,12 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 
 /* ============ Loud and flat · taste-skill 方向 (seed 533659044) ============ */
 .loud-hero { padding: 110px 0 60px; text-align: center; }
-.loud-title { margin: 0; font-family: var(--font-display); font-size: clamp(88px, 11.4vw, 176px); line-height: 0.88; letter-spacing: -0.02em; font-weight: 900; }
+.loud-title { margin: 0; font-family: var(--font-display); font-size: clamp(88px, 11.4vw, 176px); line-height: 0.95; letter-spacing: -0.02em; font-weight: 900; }
 .loud-mask { display: block; overflow: hidden; }
 .loud-line { display: block; animation: loudRise 900ms cubic-bezier(.2,.7,.2,1) both; }
 .loud-mask + .loud-mask .loud-line { animation-delay: 110ms; }
 @keyframes loudRise { from { transform: translateY(110%); } to { transform: translateY(0); } }
-.loud-photo { display: block; width: min(27vw, 420px); margin: -1.2vw auto 0; aspect-ratio: 3 / 4; overflow: hidden; }
+.loud-photo { display: block; width: min(27vw, 420px); margin: 0 auto 0; aspect-ratio: 3 / 4; overflow: hidden; }
 .loud-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 75% 50%; animation: photoDrift 20s ease-in-out infinite alternate; }
 @keyframes photoDrift { from { transform: scale(1); } to { transform: scale(1.06); } }
 .loud-caption { font-size: 17px; color: var(--muted); margin: 20px 0 0; }
