@@ -9,6 +9,8 @@ image_caption: "配图：Rapper 现场演出（资料图）"
 
 十周年赛季落幕，奖杯之外，真正留下来的是作品。这五首歌，基本定义了《说唱巅峰对决2026》的声音。
 
+{{< figure src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/LL_Cool_J_performing_in_Wilmington%2C_Delaware.jpg/1280px-LL_Cool_J_performing_in_Wilmington%2C_Delaware.jpg" caption="配图：说唱歌手 LL Cool J 2008 年在美国特拉华州威尔明顿的演出，非本文所述演出（Saquan Stimpson / Wikimedia Commons，CC BY 2.0）" >}}
+
 ## 1. 弹壳《花开花落》——冠军的收官之作
 
 总决赛之夜全场最高票，直接把弹壳送上年度总冠军+人气奖的"双料王"。OG 的松弛感：不需要炸场，一首歌把十年的分量唱完。

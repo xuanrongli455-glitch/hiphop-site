@@ -9,6 +9,8 @@ image_caption: "配图：Hip-hop 现场（Unsplash / Wikimedia Commons）"
 
 爱奇艺《说唱巅峰对决2026》十周年赛季，于 9 月 12 日晚的巅峰盛典夜落下帷幕。OG 弹壳（Danko）以《花开花落》拿下总决赛全场最高票，登顶年度总冠军，并同步抱走人气奖，成为本季"双料王"。
 
+{{< figure src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Male_vocalist_performing_at_a_concert_in_Pavlodar.jpg/1280px-Male_vocalist_performing_at_a_concert_in_Pavlodar.jpg" caption="配图：舞台演出，非本文所述总决赛现场（Graphique38 / Wikimedia Commons，CC BY 4.0）" >}}
+
 ## 名人堂 TOP 5 出炉
 
 本季最终入驻年度名人堂的五位音乐人：**弹壳、Rapeter、盛宇、Yamy、功夫胖**。其中 Rapeter（吴嘉轩）以第二顺位进榜，是本季最受瞩目的新生代 Rapper 之一。

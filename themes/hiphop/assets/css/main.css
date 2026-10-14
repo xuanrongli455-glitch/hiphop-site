@@ -344,8 +344,12 @@ a { color: inherit; }
 .article-hero { margin: 0 0 40px; }
 .article-hero img { width: 100%; border-radius: 12px; border: 1px solid var(--line); display: block; }
 .article-hero figcaption { color: var(--muted); font-size: 13px; margin-top: 10px; text-align: center; }
-.article-body { font-size: 18px; color: #e8e7e2; }
+.article-body { font-size: 20px; line-height: 1.85; color: #e8e7e2; }
 .article-body img { max-width: 100%; border-radius: 12px; border: 1px solid var(--line); }
+/* 导语：首段放大，当作杂志导语 */
+.article-body > p:first-of-type { font-size: 22px; line-height: 1.75; font-weight: 600; }
+/* 人名/关键信息突出：黄色 */
+.article-body strong { color: var(--acc); }
 /* 网易云嵌入播放器 */
 .music163-embed { margin: 16px 0 28px; }
 .music163-embed iframe { display: block; border: 1px solid var(--line); border-radius: 6px; background: #1a1a1a; }
@@ -359,11 +363,11 @@ a { color: inherit; }
 .video-frame { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #000; }
 .video-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 .video-embed figcaption { color: var(--muted); font-size: 13px; margin-top: 10px; text-align: center; }
-.article-body h2 { font-size: 28px; margin: 56px 0 16px; padding-left: 14px; border-left: 4px solid var(--acc); }
-.article-body h3 { font-size: 22px; margin: 36px 0 12px; }
-.article-body p { margin: 0 0 20px; }
-.article-body ul, .article-body ol { padding-left: 24px; margin: 0 0 20px; }
-.article-body li { margin-bottom: 8px; }
+.article-body h2 { font-family: var(--font-display); font-size: 36px; margin: 72px 0 24px; line-height: 1.15; }
+.article-body h3 { font-size: 24px; margin: 44px 0 16px; }
+.article-body p { margin: 0 0 24px; }
+.article-body ul, .article-body ol { padding-left: 24px; margin: 0 0 24px; }
+.article-body li { margin-bottom: 14px; }
 .article-body li::marker { color: var(--acc); }
 .article-body blockquote {
   margin: 28px 0; padding: 4px 0 4px 20px; border-left: 3px solid var(--acc);
@@ -765,6 +769,9 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
   .stair { font-size: 24px; }
   .stair span:nth-child(2) { padding-left: 5vw; }
   .stair span:nth-child(3) { padding-left: 10vw; }
+  .article-body { font-size: 19px; line-height: 1.8; }
+  .article-body > p:first-of-type { font-size: 21px; }
+  .article-body h2 { font-size: 30px; margin: 56px 0 20px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .loud-line, .loud-photo img { animation: none; }

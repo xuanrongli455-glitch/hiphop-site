@@ -12,6 +12,8 @@ description: "刚接触中文说唱？这篇帮你理清地图。"
 
 {{< pullquote >}}说唱是现场艺术，看 livehouse 演出或音乐节录像，感受完全不同。{{< /pullquote >}}
 
+{{< figure src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Web_Summit_2018_-_Musicnotes_-_Day_3%2C_November_8_SMX_1999_%2844868853735%29.jpg/960px-Web_Summit_2018_-_Musicnotes_-_Day_3%2C_November_8_SMX_1999_%2844868853735%29.jpg?_=20181119064333" caption="配图：舞台演出，非本文所述演出（Stephen McCarthy / Web Summit / Wikimedia Commons，CC BY 2.0）" >}}
+
 ## 先搞懂几个词
 
 - **Flow**：说唱的 flow 指的是节奏、韵脚和语气的流动方式，是评判 rapper 水平的核心维度之一。

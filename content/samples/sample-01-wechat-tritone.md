@@ -11,6 +11,8 @@ description: "一首歌名叫微信的歌，采样了全世界最有名的短信
 
 《WeChat》是 Higher Brothers 首张专辑《Black Cab》（2017）中的一首歌，合作艺人是韩国说唱歌手 Keith Ape。歌名直译就是"微信"——中国人最熟悉的聊天软件。这首歌和《Made In China》一起，被认为是 Higher Brothers 早期最具代表性的作品。
 
+{{< figure src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Gemini_iTRAX_-_iPod_DJ_mixer.jpg/1280px-Gemini_iTRAX_-_iPod_DJ_mixer.jpg" caption="配图：DJ 调音台，通用配图（Andres B / Wikimedia Commons，CC BY 2.0）" >}}
+
 ## 采样来源考据
 
 根据 WhoSampled 的记录，《WeChat》采样了一段 **"Tri-tone"** ——署名作者是 **Apple Inc.（苹果公司）**，年份标注为 2001，类型为 Sound FX / Other（音效类）。

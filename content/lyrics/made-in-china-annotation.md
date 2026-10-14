@@ -27,6 +27,8 @@ annotations:
 
 B 站有官方 MV 和大量 reaction，自行搜索"Made In China Higher Brothers"即可。下面解析基于公开音源。
 
+{{< figure src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Record_cabinet_designed_to_play_more_vinyl.jpg/1280px-Record_cabinet_designed_to_play_more_vinyl.jpg" caption="配图：黑胶唱片柜，通用配图（BorisCarter1980 / Wikimedia Commons，CC BY-SA 4.0）" >}}
+
 ## 核心句："Made in China"
 
 整首歌的钩子（hook，见[术语索引](/glossary/#hook)）就建立在这三个词上。这句词有三层意思：

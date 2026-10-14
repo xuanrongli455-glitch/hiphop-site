@@ -15,6 +15,8 @@ description: "地下新声 Vol.01：Dongifuk安允胜（安代表）——抖音
 
 Dongifuk安允胜，别名"安代表"。抖音主页显示 21 岁，IP 属地四川，抖音号 346795725，粉丝约 5.4k，获赞 14.5 万，简介里写着拍摄 @young说唱视觉、商务联系方式。网易云音乐人页上，他从 2024 年 1 月的《Blame U》到 2026 年 6 月的《黑色素》，两年半发了 10 张专辑。
 
+{{< figure src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/2006.10_-_%27Wall-graffiti_behind_the_fence%27_-_Amsterdam_photos_and_pictures%3B_street_art_at_the_former_municipal_Post_Office_building_on_Oosterdok%2C_Amsterdam%3B_Dutch_city_%2B_geotag%2C_Fons_Heijnsbroek%2C_The_Netherlands_%2811247559005%29.jpg/1280px-2006.10_-_%27Wall-graffiti_behind_the_fence%27_-_Amsterdam_photos_and_pictures%3B_street_art_at_the_former_municipal_Post_Office_building_on_Oosterdok%2C_Amsterdam%3B_Dutch_city_%2B_geotag%2C_Fons_Heijnsbroek%2C_The_Netherlands_%2811247559005%29.jpg" caption="配图：阿姆斯特丹街头涂鸦墙，非 Dongifuk安允胜本人（Fons Heijnsbroek / Wikimedia Commons，CC0）" >}}
+
 ## 从哪听起
 
 1. **《U&I》（2026）**：和 Peri1nforest 合作的同名专辑主打。这是他最近期的代表作——先听这首，再决定要不要往下挖。

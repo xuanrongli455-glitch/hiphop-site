@@ -23,6 +23,8 @@ image_caption: "更高兄弟做客亚特兰大 Icebox 珠宝店（2019）。图�
 
 更高兄弟是中文说唱国际化的标志性组合。他们把四川方言说唱嫁接在国际水准的 trap 制作上——Migos、A$AP Rocky 等美国 rapper 都曾公开称赞《Made In China》的 MV，被《纽约时报》称为"席卷全球的 Hip-Hop 超级新星"。2018 年与 Joji、Rich Brian 合作的《Midsummer Madness》在美国拿下 [RIAA 白金认证](/glossary/#riaa)（美国唱片业协会颁发，单曲销量/流媒体折算破百万）。
 
+{{< figure src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Chvrches_10-17-2015_-14_%2822404560266%29.jpg/960px-Chvrches_10-17-2015_-14_%2822404560266%29.jpg?20160725151847" caption="配图：Chvrches 乐队 2015 年在洛杉矶的现场演出，非 Higher Brothers 本人（Justin Higuchi / Wikimedia Commons，CC BY 2.0）" >}}
+
 ## 代表作品
 
 - 《Made In China》（2017）—— 向世界宣告"中国制造"的说唱名片，YouTube 播放量超两千万
