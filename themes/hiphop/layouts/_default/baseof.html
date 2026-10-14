@@ -9,6 +9,7 @@
   <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
   <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
   {{ partial "header.html" . }}
+  <div class="waveform-top" aria-hidden="true">{{ partial "waveform.html" . }}</div>
   <main>
     {{ block "main" . }}{{ end }}
   </main>

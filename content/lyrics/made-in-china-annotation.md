@@ -4,6 +4,19 @@ title: "歌词解析 Vol.01｜《Made In China》：一句口号如何变成出�
 date: 2026-10-14
 tags: ["歌词解析", "Higher Brothers"]
 description: "Higher Brothers《Made In China》选段解析：'Made in China'这句口号为什么能从成都喊到全世界。"
+annotations:
+  - lines: "Made in China"
+    tag: "双关"
+    title: "产地标签的反转"
+    body: "「Made in China」原本是欧美货架上廉价商品的标签，带着刻板印象。Higher Brothers 把它喊成口号，等于把「被贴标签」变成「主动贴标签」——你们说我们是 made in China？对，我们就是，而且很骄傲。这是整首歌的情绪发动机。"
+  - lines: "Made in China"
+    tag: "背景"
+    title: "2017：中文说唱还没有「出海」这个概念"
+    body: "四个成都 rapper 用英文 flow 在 88rising 的平台上发布，「Made in China」既是歌名也是自我介绍：我们从哪里来，一目了然。这句口号后来真的变成了演出现场的万人合唱句。"
+  - lines: "[Hook]"
+    tag: "技法"
+    title: "三个音节的记忆点"
+    body: "重音落在 Chi-na 上，天然适合 trap 的 bounce。好 hook 的标准就是「听一遍就能跟着喊」——这句做到了。"
 ---
 
 # 歌词解析 Vol.01｜《Made In China》

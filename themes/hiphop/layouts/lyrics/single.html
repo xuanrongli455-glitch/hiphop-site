@@ -1,0 +1,55 @@
+{{ define "main" }}
+<article class="article lyrics-page">
+  <div class="wrap article-wrap">
+    <p class="eyebrow eyebrow-back reveal"><a href="{{ .Parent.RelPermalink }}">← {{ .Parent.Title }}</a></p>
+    <h1 class="article-title reveal">{{ .Title }}</h1>
+    <div class="article-meta reveal">
+      <span>{{ .Date.Format "2006-01-02" }}</span>
+      <span>·</span><span>{{ .ReadingTime }} 分钟阅读</span>
+      {{ with .Params.tags }}<span>·</span>{{ range . }}<span class="chip">{{ . }}</span>{{ end }}{{ end }}
+      {{ with .Params.score }}<span class="score score-sm" title="本站评分">{{ . }}</span>{{ end }}
+    </div>
+    {{ with .Params.image }}
+    <figure class="article-hero reveal">
+      <img src="{{ . }}" alt="{{ $.Title }}" loading="eager">
+      {{ with $.Params.image_caption }}<figcaption>{{ . }}</figcaption>{{ end }}
+    </figure>
+    {{ end }}
+
+    {{ with .Params.annotations }}
+    <div class="lyrics-grid reveal">
+      <div class="lyrics-left">
+        <div class="lyrics-head"><span class="kicker">Lyrics</span><h2>歌词</h2></div>
+        {{ range $idx, $a := . }}
+        <a class="lyric-line{{ if $a.tag }} annotated{{ end }}" {{ if $a.tag }}href="#anno-{{ $idx }}"{{ end }}>
+          {{ $a.lines }}
+          {{ if $a.tag }}<span class="lyric-dot" aria-hidden="true"></span>{{ end }}
+        </a>
+        {{ end }}
+        <p class="lyrics-note">黄色高亮的行有批注，点击跳转 →</p>
+      </div>
+      <aside class="lyrics-right">
+        <div class="lyrics-head"><span class="kicker">Annotations</span><h2>批注</h2></div>
+        {{ range $idx, $a := . }}
+        {{ if $a.tag }}
+        <div class="anno-card" id="anno-{{ $idx }}">
+          <span class="anno-tag tag-{{ $a.tag }}">{{ $a.tag }}</span>
+          <h4>{{ $a.title }}</h4>
+          <p>{{ $a.body }}</p>
+        </div>
+        {{ end }}
+        {{ end }}
+      </aside>
+    </div>
+    {{ end }}
+
+    <div class="article-body reveal">
+      {{ .Content }}
+    </div>
+    <nav class="article-nav">
+      {{ with .PrevInSection }}<a class="anav prev" href="{{ .RelPermalink }}"><small>← 上一篇</small><strong>{{ .Title }}</strong></a>{{ end }}
+      {{ with .NextInSection }}<a class="anav next" href="{{ .RelPermalink }}"><small>下一篇 →</small><strong>{{ .Title }}</strong></a>{{ end }}
+    </nav>
+  </div>
+</article>
+{{ end }}

@@ -182,6 +182,62 @@ body.custom-cursor.cursor-text .cursor-ring { opacity: 0; }
 .waveform span { width: 3px; border-radius: 2px; background: var(--acc); opacity: 0.55; }
 .waveform.dim span { opacity: 0.25; }
 
+/* ============ Genius 式歌词批注页 ============ */
+.lyrics-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+  margin: 36px 0 8px; padding: 32px 0;
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+}
+.lyrics-head { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.lyrics-head h2 { margin: 0; font-size: 24px; }
+.lyric-line {
+  display: block; position: relative; text-decoration: none;
+  padding: 10px 14px; margin: 0 -14px; border-radius: 8px;
+  font-size: 19px; line-height: 1.7; color: var(--paper);
+  font-family: var(--font-display);
+}
+.lyric-line.annotated { background: rgba(255,230,0,.10); border-left: 3px solid var(--acc); }
+.lyric-line.annotated:hover { background: rgba(255,230,0,.20); }
+.lyric-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--acc); margin-left: 10px; vertical-align: middle;
+}
+.lyrics-note { margin-top: 18px; color: var(--ink-dim); font-size: 14px; }
+.anno-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 20px 22px; margin-bottom: 18px; scroll-margin-top: 120px;
+}
+.anno-card:target { border-color: var(--acc); box-shadow: 0 0 0 1px var(--acc); }
+.anno-card h4 { margin: 10px 0 8px; font-size: 18px; }
+.anno-card p { margin: 0; color: var(--ink-dim); line-height: 1.8; font-size: 15px; }
+.anno-tag {
+  display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: .08em;
+  padding: 4px 10px; border-radius: 20px; background: rgba(255,230,0,.14);
+  color: var(--acc); border: 1px solid rgba(255,230,0,.35);
+}
+@media (max-width: 860px) {
+  .lyrics-grid { grid-template-columns: 1fr; gap: 28px; }
+}
+
+/* 顶部签名波形条 */
+.waveform-top {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+  height: 26px; overflow: hidden;
+  background: rgba(13,13,16,.92);
+  border-bottom: 1px solid rgba(255,230,0,.14);
+  pointer-events: none;
+}
+.waveform-top .waveform { height: 26px; justify-content: center; gap: 2px; }
+.waveform-top .waveform span { width: 2px; opacity: .8; }
+.site-header { top: 26px; }
+.hero-bleed { padding-top: 94px; }
+@media (max-width: 640px) {
+  .waveform-top { height: 20px; }
+  .waveform-top .waveform { height: 20px; }
+  .site-header { top: 20px; }
+  .hero-bleed { padding-top: 88px; }
+}
+
 /* ============ Sections · 杂志栏目头 ============ */
 .section { padding: 88px 0; }
 .section-alt { background: rgba(0, 0, 0, 0.28); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
@@ -427,7 +483,7 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 .hero-main-art img { min-height: 100%; }
 
 /* ============ 全幅 Hero（对标 Complex 效果图） ============ */
-.hero-bleed { padding: 68px 0 0; }
+.hero-bleed { padding: 94px 0 0; }
 .bleed { position: relative; display: block; text-decoration: none; overflow: hidden; min-height: 74vh; }
 .bleed-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .bleed-shade {
