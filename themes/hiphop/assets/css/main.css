@@ -888,7 +888,9 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
   .track-artist { display: none; }
 }
 
-.genre-photo-cap { margin: 10px 0 0; font-size: 12px; line-height: 1.6; color: var(--muted); }
+/* Bizarro 式配文行：mono 微标签 + 专色小方块 + 顶部分隔线；position/z-index 保证文字压在偏移色块之上 */
+.genre-photo-cap { position: relative; z-index: 1; display: flex; gap: 10px; align-items: baseline; margin: 16px 0 0; padding-top: 10px; border-top: 1px solid var(--line); font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .08em; line-height: 1.7; color: var(--muted); }
+.genre-photo-cap::before { content: ""; flex: 0 0 auto; width: 8px; height: 8px; background: var(--accent); transform: translateY(1px); }
 
 /* Beat 实验室 · 可玩鼓机 */
 .drumlab { padding: 48px 0 64px; }
