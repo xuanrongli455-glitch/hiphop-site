@@ -22,8 +22,7 @@
   <script src="{{ $js.RelPermalink }}" defer></script>
   {{ $egg := resources.Get "js/egg-3d.js" | fingerprint }}
   <script src="{{ $egg.RelPermalink }}" defer></script>
-  <div id="cursorGlow" aria-hidden="true"></div>
-  <div id="cursorRing" aria-hidden="true"></div>
-  <div id="cursorDot" aria-hidden="true"></div>
+  {{ $fluid := resources.Get "js/mouse-fluid.js" | minify | fingerprint }}
+  <script src="{{ $fluid.RelPermalink }}" defer></script>
 </body>
 </html>

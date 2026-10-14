@@ -7,7 +7,6 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   var stage = document.getElementById("worldStage");
   var fallback = document.getElementById("worldFallback");
   var hint = document.getElementById("worldHint");
-  var coordEl = document.getElementById("worldCoord");
   var tapeEl = document.getElementById("worldTape");
   var guideX = document.getElementById("worldGuideX");
   var guideY = document.getElementById("worldGuideY");
@@ -294,8 +293,6 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     resizeTimer = setTimeout(function () { applyLayout(); resize(); }, 150);
   });
 
-  function pad3(n) { n = Math.max(0, Math.round(n)); return ("000" + n).slice(-3); }
-
   var selected = null;
   function setSelected(rec) {
     if (selected === rec) return;
@@ -325,7 +322,6 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   function updateHud(e) {
     var r = el.getBoundingClientRect();
     var mx = e.clientX - r.left, my = e.clientY - r.top;
-    if (coordEl) coordEl.textContent = "x: " + pad3(mx) + " y: " + pad3(my);
     if (guideX) { guideX.style.display = "block"; guideX.style.left = mx + "px"; }
     if (guideY) { guideY.style.display = "block"; guideY.style.top = my + "px"; }
   }

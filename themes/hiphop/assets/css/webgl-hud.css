@@ -16,7 +16,6 @@ body.world-home .site-header { position: fixed; top: 0; left: 0; right: 0; backg
 .world-guide-v, .world-guide-h { position: absolute; z-index: 3; pointer-events: none; display: none; }
 .world-guide-v { top: 0; bottom: 0; border-left: 1px dashed rgba(255, 255, 255, .3); }
 .world-guide-h { left: 0; right: 0; border-top: 1px dashed rgba(255, 255, 255, .3); }
-.world-coord { position: absolute; right: 28px; bottom: 20px; z-index: 4; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .1em; color: var(--acc); pointer-events: none; }
 .world-tape { position: absolute; left: 28px; bottom: 20px; z-index: 4; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .08em; color: rgba(255, 255, 255, .85); max-width: 55%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; pointer-events: none; }
 .world-hint { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 4; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .08em; color: rgba(255, 255, 255, .55); pointer-events: none; white-space: nowrap; }
 .world-sound { position: absolute; top: 88px; right: 28px; z-index: 5; pointer-events: auto; background: rgba(0, 0, 0, .6); border: 1px solid rgba(255, 255, 255, .35); color: rgba(255, 255, 255, .85); font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .1em; padding: 5px 9px; cursor: pointer; }
@@ -29,7 +28,6 @@ body.world-home .site-header { position: fixed; top: 0; left: 0; right: 0; backg
 @media (max-width: 760px) {
   .world-title { top: 84px; font-size: clamp(44px, 13vw, 72px); }
   .world-frame { top: 76px; }
-  .world-coord { right: 16px; bottom: 14px; }
   .world-tape { left: 16px; bottom: 14px; max-width: 52%; }
   .world-hint { display: none; }
   .world-sound { top: 80px; right: 16px; }
