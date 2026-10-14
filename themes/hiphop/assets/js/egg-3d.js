@@ -191,7 +191,7 @@
     ]).then(function (mods) {
       var THREE = mods[0];
       var RBG = mods[1] ? mods[1].RoundedBoxGeometry : null;
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.setClearColor(0x000000, 0);
       renderer.setSize(wrap.clientWidth || 340, wrap.clientHeight || 420, false);
