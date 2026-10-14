@@ -144,7 +144,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     x.fillStyle = "#0a0a0a";
     x.fillRect(0, 0, 1024, 1024);
     for (var r = 195; r <= 505; r += 3) {
-      x.strokeStyle = "rgba(255,255,255," + (0.04 + (r % 15 === 0 ? 0.05 : 0)) + ")";
+      x.strokeStyle = "rgba(255,255,255," + (0.1 + (r % 15 === 0 ? 0.08 : 0)) + ")";
       x.lineWidth = 1;
       x.beginPath(); x.arc(512, 512, r, 0, Math.PI * 2); x.stroke();
     }
@@ -214,6 +214,13 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     );
     ring.position.z = 0.06;
     rec.add(ring);
+    /* 常亮细边环：黑盘在黑底上靠它显形（不受灯光影响） */
+    var edge = new THREE.Mesh(
+      new THREE.TorusGeometry(1.29, 0.012, 8, 72),
+      new THREE.MeshBasicMaterial({ color: 0x8a8a8a, transparent: true, opacity: 0.35 })
+    );
+    edge.position.z = 0.06;
+    rec.add(edge);
     /* 悬停预览图：默认隐藏，悬停才出现（原版的交互） */
     var preview = null;
     if (item.image) {
