@@ -1,4 +1,4 @@
-/* 首页 hero：密集黑胶场 — 原版式 3D 取景器：黑胶挤满画面 + 悬停出图 + 取景器标注贯穿 */
+/* 首页 hero：密集黑胶场 — 原版式 3D 取景器：黑胶挤满画面 + 悬停出图 + 落针飞入 + 声音 */
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
@@ -16,6 +16,62 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   try { items = JSON.parse(dataEl.textContent); } catch (e) { return; }
   if (!items || !items.length) return;
   if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  /* 声音：Web Audio 实时合成，无音频文件。落针“嗒” + 悬停底噪，可关 */
+  var soundBtn = document.getElementById("vinylSound");
+  var soundOn = true;
+  try { soundOn = localStorage.getItem("hiphop-vinyl-sound") !== "off"; } catch (e) {}
+  var audioCtx = null;
+  function ensureAudio() {
+    if (!soundOn) return null;
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return audioCtx;
+    } catch (e) { return null; }
+  }
+  function thock() {
+    var ctx = ensureAudio();
+    if (!ctx) return;
+    var t = ctx.currentTime;
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(140, t);
+    osc.frequency.exponentialRampToValueAtTime(55, t + 0.1);
+    gain.gain.setValueAtTime(0.12, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(t); osc.stop(t + 0.15);
+  }
+  function crackle() {
+    var ctx = ensureAudio();
+    if (!ctx) return;
+    var t = ctx.currentTime;
+    var len = Math.floor(ctx.sampleRate * 0.12);
+    var buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    var d = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * 0.5;
+    var src = ctx.createBufferSource();
+    src.buffer = buf;
+    var filt = ctx.createBiquadFilter();
+    filt.type = "bandpass"; filt.frequency.value = 3500; filt.Q.value = 0.8;
+    var gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.02, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+    src.connect(filt).connect(gain).connect(ctx.destination);
+    src.start(t); src.stop(t + 0.12);
+  }
+  if (soundBtn) {
+    soundBtn.textContent = "SOUND: " + (soundOn ? "ON" : "OFF");
+    soundBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      soundOn = !soundOn;
+      try { localStorage.setItem("hiphop-vinyl-sound", soundOn ? "on" : "off"); } catch (err) {}
+      soundBtn.textContent = "SOUND: " + (soundOn ? "ON" : "OFF");
+      if (soundOn) { ensureAudio(); thock(); }
+    });
+  }
 
   var renderer;
   try {
@@ -198,6 +254,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   function setSelected(rec) {
     if (selected === rec) return;
     selected = rec;
+    if (rec) crackle();
     if (tapeEl) {
       tapeEl.textContent = rec
         ? "VINYL 0" + (rec.userData.index + 1) + " — " + rec.userData.title
@@ -225,6 +282,21 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     if (coordEl) coordEl.textContent = "x: " + pad3(mx) + " y: " + pad3(my);
     if (guideX) { guideX.style.display = "block"; guideX.style.left = mx + "px"; }
     if (guideY) { guideY.style.display = "block"; guideY.style.top = my + "px"; }
+  }
+
+  /* 落针：镜头飞进唱片 + 转速拉起，约 500ms 后进入文章（超时兜底保证跳转） */
+  var diving = null;
+  function diveTo(rec) {
+    if (diving) return;
+    thock();
+    group.updateMatrixWorld();
+    var wp = group.localToWorld(rec.position.clone());
+    diving = {
+      rec: rec, url: rec.userData.url, t0: Date.now(),
+      from: camera.position.clone(),
+      to: new THREE.Vector3(wp.x, wp.y, wp.z + 1.4)
+    };
+    setTimeout(function () { window.location.href = (diving && diving.url) || rec.userData.url; }, 500);
   }
 
   var canHover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
@@ -257,8 +329,8 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     if (moved < 8 && Date.now() - downT < 400) {
       var hit = pick(e.clientX, e.clientY);
       if (hit && hit.userData.url) {
-        if (canHover) { window.location.href = hit.userData.url; }
-        else if (selected === hit) { window.location.href = hit.userData.url; }
+        if (canHover) { diveTo(hit); }
+        else if (selected === hit) { diveTo(hit); }
         else { setSelected(hit); }
       } else if (!canHover) { setSelected(null); }
     }
@@ -288,9 +360,18 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
       rec.position.y = u.baseY + Math.sin(now * 0.0005 + u.phase) * 0.06;
       u.disc.rotation.y += u.spin * dt;
     });
-    camera.position.x = Math.sin(now * 0.00008) * 0.25;
-    camera.position.y = 0.3 + Math.sin(now * 0.00011 + 1) * 0.12;
-    camera.lookAt(0, 0, 0);
+    if (diving) {
+      var k = Math.min(1, (now - diving.t0) / 450);
+      var ease = 1 - Math.pow(1 - k, 3);
+      camera.position.lerpVectors(diving.from, diving.to, ease);
+      diving.rec.userData.disc.rotation.y += 3.5 * dt;
+      group.updateMatrixWorld();
+      camera.lookAt(diving.rec.position.clone().applyMatrix4(group.matrixWorld));
+    } else {
+      camera.position.x = Math.sin(now * 0.00008) * 0.25;
+      camera.position.y = 0.3 + Math.sin(now * 0.00011 + 1) * 0.12;
+      camera.lookAt(0, 0, 0);
+    }
     renderer.render(scene, camera);
   }
 

@@ -19,6 +19,7 @@
       <span class="vinyl-coord" id="vinylCoord">x: 000 y: 000</span>
       <span class="vinyl-tape" id="vinylTape">VINYL — / —</span>
       <p class="vinyl-hint" id="vinylHint" hidden>拖动旋转 · 悬停看图 · 点击进入文章</p>
+      <button class="vinyl-sound" id="vinylSound" type="button">SOUND: ON</button>
       <div class="vinyl-fallback" id="vinylFallback">
         {{ range first 8 $feed }}
         <a href="{{ .RelPermalink }}">{{ with .Params.image }}<img src="{{ . }}" alt="" loading="lazy">{{ end }}<span>{{ .Title }}</span></a>
@@ -52,7 +53,7 @@
 <!-- 最新 · Line-up table -->
 <section class="lineup">
   <div class="wrap">
-    <p class="sec-meta"><span>01 / LATEST</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
+    <p class="sec-meta"><span>CRATE 01 — LATEST · 箱口</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
     <h2 class="loud-sec-title">最新</h2>
     <div class="lineup-filter" id="lineupFilter">
       <button class="lchip active" data-col="all">全部</button>
@@ -80,7 +81,7 @@
 <!-- 栏目 · Wall of word tiles -->
 <section class="tiles">
   <div class="wrap">
-    <p class="sec-meta"><span>02 / SECTIONS</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
+    <p class="sec-meta"><span>CRATE 02 — SECTIONS · 分格</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
     <h2 class="loud-sec-title">栏目</h2>
     <div class="tile-grid">
       <a class="tile reveal" href="/news/"><span class="tile-word">资讯</span><span class="tile-cap">最新动态</span></a>
@@ -104,7 +105,7 @@
 <!-- 宣言 · Staircase statement -->
 <section class="staircase">
   <div class="wrap stair-wrap">
-    <p class="sec-meta"><span>03 / MANIFESTO</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
+    <p class="sec-meta"><span>CRATE 03 — MANIFESTO · 箱标</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
     <div class="stair-text">
     <p class="stair">
       <span>我们不装老炮</span>
@@ -124,7 +125,7 @@
 <section class="flat">
   <div class="wrap flat-split">
     <div class="flat-chart">
-      <p class="sec-meta"><span>04 / CHARTS</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
+      <p class="sec-meta"><span>CRATE 04 — CHARTS · 榜单</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
       <h2 class="loud-sec-title">热歌榜</h2>
       <div class="chart-list">
         {{ range $i, $p := first 5 (where site.RegularPages "Section" "music") }}
@@ -138,7 +139,7 @@
       <p class="flat-note">首期真实 Top 10 即将上线，敬请期待。<a href="/charts/">完整榜单 →</a></p>
     </div>
     <div class="flat-sub">
-      <p class="sec-meta"><span>05 / SUBMIT</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
+      <p class="sec-meta"><span>CRATE 05 — SUBMIT · 投递口</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
       <h2 class="loud-sec-title">来投稿</h2>
       <p class="flat-note">新歌 / 演出 / 线索 / 合作，都可以投。公众号「嘻哈笔记」筹备中。</p>
       <div class="sub-btns">
@@ -151,7 +152,7 @@
 <!-- 演出日历 · 平铺列表 -->
 <section class="flat">
   <div class="wrap">
-    <p class="sec-meta"><span>06 / EVENTS</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
+    <p class="sec-meta"><span>CRATE 06 — EVENTS · 传单墙</span><span class="sec-meta-line"></span><span class="sec-coord"></span></p>
     <h2 class="loud-sec-title">演出日历</h2>
     <div class="tour-list">
       {{ range first 3 (where site.RegularPages "Section" "events") }}
