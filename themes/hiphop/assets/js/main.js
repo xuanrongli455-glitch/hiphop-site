@@ -224,9 +224,11 @@
     egg.classList.remove("bye");
     void egg.offsetWidth;
     egg.classList.add("show");
+    if (window.HipHopEgg) HipHopEgg.show();
   }
   function hideEgg() {
     egg.classList.add("bye");
+    if (window.HipHopEgg) HipHopEgg.hide();
     setTimeout(function () { egg.hidden = true; egg.classList.remove("show", "bye"); }, 520);
   }
   var clicks = 0, timer = null;
