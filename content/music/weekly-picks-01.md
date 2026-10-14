@@ -1,4 +1,5 @@
 ---
+image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c4/DFC_5183_Hands-on_mixing_a_DJ_tweaks_levels_and_cues_glowing_controls_on_a_Pioneer_DJ_mixer_under_red_club_lights.jpg/1280px-DFC_5183_Hands-on_mixing_a_DJ_tweaks_levels_and_cues_glowing_controls_on_a_Pioneer_DJ_mixer_under_red_club_lights.jpg"
 title: "本周推荐：5 首值得循环的中文说唱"
 date: 2026-10-13
 tags: ["新歌推荐", "歌单"]
