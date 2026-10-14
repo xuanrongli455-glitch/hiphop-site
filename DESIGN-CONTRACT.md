@@ -32,3 +32,7 @@ Overmind 方向更好。以下 Overmind 细节正式取代 Loud and flat 的对�
 - 十字对位标记：章节编号行两端的 `+`
 - 细线分隔：章节之间 1px 分隔线，卡片加 1px 描边
 - 仍保留：黄 #ffe600 仅小面积点缀、Anton 粗黑标题、纯平黑底
+
+## 修正案 2（2026-10-14，用户反馈“首页大标题字体不太好”）
+根因：Anton 没有中文字符，中文标题实际一直用的苹方 fallback。Hero 大标题改系统衬线
+（Songti SC / STSong / Noto Serif SC / SimSun），走 Overmind 的衬线大标题方向；其他标题仍用 Anton。
