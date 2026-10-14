@@ -1,9 +1,9 @@
 {{ define "main" }}
-<!-- HERO · 全幅特稿（对标效果图） -->
+<!-- HERO · 全幅特稿 -->
 <section class="hero-bleed">
   {{ $news := where site.RegularPages "Section" "news" }}
   {{ range first 1 $news }}
-  <a class="bleed reveal" href="{{ .RelPermalink }}">
+  <a class="bleed" href="{{ .RelPermalink }}">
     {{ with .Params.image }}<img class="bleed-bg" src="{{ . }}" alt="{{ $.Title }}" loading="eager">{{ end }}
     <div class="bleed-shade"></div>
     <div class="wrap bleed-content">
@@ -22,110 +22,87 @@
   </div>
 </section>
 
-<!-- 主体：左信息流 + 右榜单栏 -->
-<div class="wrap content-grid">
-  <main class="feed">
-
-    <!-- 最新资讯 · 横排信息流 -->
-    <section class="section" style="padding-top:64px">
-      <div class="sec-head reveal">
+<!-- 最新资讯 · 头条 + 紧凑列表 -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="sec-title">最新资讯</h2>
+      <a class="sec-more" href="/news/">全部 →</a>
+    </div>
+    {{ range first 1 (after 1 $news) }}
+    <a class="lead-card" href="{{ .RelPermalink }}">
+      <div class="lead-img">{{ with .Params.image }}<img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">{{ end }}</div>
+      <div class="lead-body">
         <span class="kicker">Fresh</span>
-        <h2 class="sec-title">最新资讯</h2>
-        <a class="sec-more" href="/news/">View All →</a>
+        <h3>{{ .Title }}</h3>
+        <p>{{ .Description | default (.Summary | plainify | truncate 90) }}</p>
+        <p class="card-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟</p>
       </div>
-      <div class="feed-list">
-        {{ range first 5 $news }}
-        <a class="feed-row reveal" href="{{ .RelPermalink }}">
-          <div class="feed-thumb art-{{ mod (len .Title) 4 }}">{{ with .Params.image }}<img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">{{ else }}<span class="card-initial">{{ substr $.Title 0 1 }}</span>{{ end }}</div>
-          <div class="feed-body">
-            {{ with .Params.tags }}<span class="chip">{{ index . 0 }}</span>{{ end }}
-            <h3>{{ .Title }}</h3>
-            <p>{{ .Description | default (.Summary | plainify | truncate 72) }}</p>
-            <p class="card-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟</p>
-          </div>
-        </a>
-        {{ end }}
-      </div>
-    </section>
+    </a>
+    {{ end }}
+    <div class="tight-list">
+      {{ range first 4 (after 2 $news) }}
+      <a class="tight-row" href="{{ .RelPermalink }}">
+        <span class="tight-date">{{ .Date.Format "01-02" }}</span>
+        <h4>{{ .Title }}</h4>
+        <span class="tight-arrow">→</span>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
 
-    <!-- 地下新声 · Freshman 横排 -->
-    <section class="section" style="padding-top:0">
-      <div class="sec-head reveal">
-        <span class="kicker">Freshman</span>
-        <h2 class="sec-title">地下新声</h2>
-        <a class="sec-more" href="/underground/">View All →</a>
-      </div>
-      <div class="fresh-grid">
-        {{ range $i, $p := first 4 (where site.RegularPages "Section" "underground") }}
-        {{ if ne $p.File.BaseFileName "_index" }}
-        <a class="fresh-card reveal" href="{{ $p.RelPermalink }}">
-          <span class="fresh-no">{{ printf "%02d" (add $i 1) }}</span>
-          <div class="fresh-art art-{{ mod (len $p.Title) 4 }}">{{ with $p.Params.image }}<img src="{{ . }}" alt="{{ $p.Title }}" loading="lazy">{{ else }}<span class="card-initial">{{ substr $p.Title 0 1 }}</span>{{ end }}</div>
-          <h3>{{ $p.Title }}</h3>
-          <p class="card-meta">{{ $p.Description | default ($p.Summary | plainify | truncate 48) }}</p>
-        </a>
-        {{ end }}
-        {{ end }}
-      </div>
-    </section>
+<!-- 栏目精选 · 三栏大卡 -->
+<section class="sec sec-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="sec-title">栏目精选</h2>
+    </div>
+    <div class="cols-3">
+      {{ range first 1 (where site.RegularPages "Section" "underground") }}
+      <a class="big-card" href="{{ .RelPermalink }}">
+        <div class="big-img">{{ with .Params.image }}<img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">{{ end }}</div>
+        <div class="big-body">
+          <span class="kicker">Freshman · 地下新声</span>
+          <h3>{{ .Title }}</h3>
+          <p>{{ .Description | default (.Summary | plainify | truncate 60) }}</p>
+        </div>
+      </a>
+      {{ end }}
+      {{ range first 1 (where site.RegularPages "Section" "lyrics") }}
+      <a class="big-card" href="{{ .RelPermalink }}">
+        <div class="big-img">{{ with .Params.image }}<img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">{{ end }}</div>
+        <div class="big-body">
+          <span class="kicker">Annotated · 歌词解析</span>
+          <h3>{{ .Title }}</h3>
+          <p>{{ .Description | default (.Summary | plainify | truncate 60) }}</p>
+        </div>
+      </a>
+      {{ end }}
+      {{ range first 1 (where site.RegularPages "Section" "artists") }}
+      <a class="big-card" href="{{ .RelPermalink }}">
+        <div class="big-img">{{ with .Params.image }}<img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">{{ end }}</div>
+        <div class="big-body">
+          <span class="kicker">Artists · 艺人厂牌</span>
+          <h3>{{ .Title }}</h3>
+          <p>{{ .Description | default (.Summary | plainify | truncate 60) }}</p>
+        </div>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
 
-    <!-- 歌词解析 -->
-    <section class="section" style="padding-top:0">
-      <div class="sec-head reveal">
-        <span class="kicker">Annotated</span>
-        <h2 class="sec-title">歌词解析</h2>
-        <a class="sec-more" href="/lyrics/">View All →</a>
-      </div>
-      <div class="feed-list">
-        {{ range first 3 (where site.RegularPages "Section" "lyrics") }}
-        {{ if ne .File.BaseFileName "_index" }}
-        <a class="feed-row reveal" href="{{ .RelPermalink }}">
-          <div class="feed-thumb art-2">{{ with .Params.image }}<img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">{{ else }}<span class="card-initial">{{ substr $.Title 0 1 }}</span>{{ end }}</div>
-          <div class="feed-body">
-            <span class="chip chip-acc">批注</span>
-            <h3>{{ .Title }}</h3>
-            <p>{{ .Description | default (.Summary | plainify | truncate 72) }}</p>
-          </div>
-        </a>
-        {{ end }}
-        {{ end }}
-      </div>
-      <div class="reveal" style="margin-top:28px">{{ partial "waveform.html" . }}</div>
-    </section>
-
-    <!-- 艺人 / 厂牌 -->
-    <section class="section" style="padding-top:0">
-      <div class="sec-head reveal">
-        <span class="kicker">Artists</span>
-        <h2 class="sec-title">艺人厂牌</h2>
-        <a class="sec-more" href="/artists/">View All →</a>
-      </div>
-      <div class="card-grid">
-        {{ range first 3 (where site.RegularPages "Section" "artists") }}
-        <a class="card reveal" href="{{ .RelPermalink }}">
-          <div class="card-art art-{{ mod (len .Title) 4 }}">
-            {{ with .Params.image }}<img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">{{ else }}<span class="card-initial">{{ substr $.Title 0 1 }}</span>{{ end }}
-          </div>
-          <div class="card-body">
-            {{ with .Params.tags }}<span class="chip">{{ index . 0 }}</span>{{ end }}
-            <h3>{{ .Title }}</h3>
-            <p class="card-meta">{{ .Description | default (.Summary | plainify | truncate 60) }}</p>
-          </div>
-        </a>
-        {{ end }}
-      </div>
-    </section>
-  </main>
-
-  <!-- 右栏：榜单 + 订阅 -->
-  <aside class="rail">
-    <div class="rail-box reveal">
-      <div class="sec-head" style="margin-bottom:20px">
-        <span class="kicker">Hot 100</span>
-        <h2 class="sec-title" style="font-size:28px">热歌榜</h2>
+<!-- 热歌榜 + 订阅 · 双栏 -->
+<section class="sec">
+  <div class="wrap split">
+    <div class="chart-box">
+      <div class="sec-head">
+        <h2 class="sec-title">热歌榜 <span class="kicker">Hot 100</span></h2>
+        <a class="sec-more" href="/charts/">完整榜单 →</a>
       </div>
       <div class="chart-list">
-        {{ range $i, $p := first 10 (where site.RegularPages "Section" "music") }}
+        {{ range $i, $p := first 5 (where site.RegularPages "Section" "music") }}
         <a class="chart-row" href="{{ $p.RelPermalink }}">
           <span class="chart-no">{{ add $i 1 }}</span>
           {{ with $p.Params.score }}<span class="score score-sm">{{ . }}</span>{{ end }}
@@ -133,119 +110,82 @@
         </a>
         {{ end }}
       </div>
-      <a class="sec-more" href="/charts/" style="margin:16px 0 0">完整榜单 →</a>
+      <p class="hint">首期真实 Top 10 即将上线，敬请期待。</p>
     </div>
-    <div class="rail-box reveal">
+    <div class="sub-box">
       <span class="kicker">Stay Tuned</span>
-      <h3 style="margin:12px 0 8px;font-size:20px">订阅本站</h3>
-      <p class="hint" style="margin-top:0">RSS 永远有效。公众号「嘻哈笔记」筹备中。</p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <a class="btn btn-gold" style="padding:10px 20px" href="/index.xml">RSS</a>
-        <a class="btn btn-ghost" style="padding:10px 20px" href="/submit/">投稿</a>
+      <h3>订阅本站</h3>
+      <p class="hint">RSS 永远有效。公众号「嘻哈笔记」筹备中。</p>
+      <div class="sub-btns">
+        <a class="btn btn-gold" href="/index.xml">RSS</a>
+        <a class="btn btn-ghost" href="/submit/">投稿</a>
       </div>
+      <div class="waveform-wrap">{{ partial "waveform.html" . }}</div>
     </div>
-  </aside>
-</div>
+  </div>
+</section>
 
 <!-- 演出日历 -->
-<section class="section section-alt">
+<section class="sec sec-alt">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="kicker">On Tour</span>
-      <h2 class="sec-title">演出日历</h2>
-      <a class="sec-more" href="/events/">View All →</a>
+    <div class="sec-head">
+      <h2 class="sec-title">演出日历 <span class="kicker">On Tour</span></h2>
+      <a class="sec-more" href="/events/">全部 →</a>
     </div>
-    <div class="filter-chips reveal" id="cityFilter">
-      <button class="fchip active" data-city="all">全部</button>
-      <button class="fchip" data-city="北京">北京</button>
-      <button class="fchip" data-city="上海">上海</button>
-      <button class="fchip" data-city="成都">成都</button>
-      <button class="fchip" data-city="广州">广州</button>
-    </div>
-    <div class="event-list" id="eventList">
-      {{ range where site.RegularPages "Section" "events" }}
+    <div class="tour-list">
+      {{ range first 3 (where site.RegularPages "Section" "events") }}
       {{ if ne .File.BaseFileName "_index" }}
-      <a class="event-row reveal" href="{{ .RelPermalink }}" data-city="{{ .Params.city | default "" }}">
-        <span class="event-date"><strong>{{ .Date.Format "01-02" }}</strong><small>{{ .Date.Format "2006" }}</small></span>
-        <span class="event-info">
-          <strong>{{ .Title }}</strong>
-          <small>{{ with .Params.city }}{{ . }} · {{ end }}{{ with .Params.venue }}{{ . }}{{ end }}</small>
-        </span>
-        {{ with .Params.city }}<span class="chip">{{ . }}</span>{{ end }}
-        <span class="track-arrow">→</span>
+      <a class="tour-row" href="{{ .RelPermalink }}">
+        <span class="tour-date"><strong>{{ .Date.Format "01-02" }}</strong><small>{{ .Date.Format "2006" }}</small></span>
+        <span class="tour-info"><strong>{{ .Title }}</strong></span>
+        <span class="tight-arrow">→</span>
       </a>
       {{ end }}
       {{ end }}
-      <div class="event-empty" id="eventEmpty" hidden>该城市暂无演出收录，欢迎投稿。</div>
     </div>
-    <p class="hint reveal">演出信息持续收集中——主办方 / 厂牌欢迎投稿：hi@hiphop.ccwu.cc</p>
+    <p class="hint">演出信息持续收集中——主办方 / 厂牌欢迎投稿：hi@hiphop.ccwu.cc</p>
   </div>
 </section>
 
 <!-- 互动实验室 -->
-<section class="section">
+<section class="sec">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="kicker">Lab</span>
-      <h2 class="sec-title">互动实验室</h2>
+    <div class="sec-head">
+      <h2 class="sec-title">互动实验室 <span class="kicker">Lab</span></h2>
     </div>
-    <div class="card-grid">
-      <a class="card reveal" href="/dialect-map/">
-        <div class="card-art"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Shang_hai_street_night.jpg/960px-Shang_hai_street_night.jpg" alt="方言说唱地图" loading="lazy"></div>
-        <div class="card-body">
-          <span class="chip">互动</span>
-          <h3>方言说唱地图</h3>
-          <p class="card-meta">点开省份，看各地的方言说唱代表人物</p>
-        </div>
+    <div class="cols-3">
+      <a class="big-card" href="/dialect-map/">
+        <div class="big-img"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Shang_hai_street_night.jpg/960px-Shang_hai_street_night.jpg" alt="方言说唱地图" loading="lazy"></div>
+        <div class="big-body"><span class="chip">互动</span><h3>方言说唱地图</h3><p>点开省份，看各地的方言说唱代表人物</p></div>
       </a>
-      <a class="card reveal" href="/beat-lab/">
-        <div class="card-art"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/EMI_studio_mixer_%281940s%29%2C_Abbey_Road_Studios.jpg/960px-EMI_studio_mixer_%281940s%29%2C_Abbey_Road_Studios.jpg" alt="Beat 拆解实验室" loading="lazy"></div>
-        <div class="card-body">
-          <span class="chip">互动</span>
-          <h3>Beat 拆解实验室</h3>
-          <p class="card-meta">亲手静音/独奏每轨，拆开一首 trap beat</p>
-        </div>
+      <a class="big-card" href="/beat-lab/">
+        <div class="big-img"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/EMI_studio_mixer_%281940s%29%2C_Abbey_Road_Studios.jpg/960px-EMI_studio_mixer_%281940s%29%2C_Abbey_Road_Studios.jpg" alt="Beat 拆解实验室" loading="lazy"></div>
+        <div class="big-body"><span class="chip">互动</span><h3>Beat 拆解实验室</h3><p>亲手静音 / 独奏每轨，拆开一首 trap beat</p></div>
       </a>
-      <a class="card reveal" href="/timeline/">
-        <div class="card-art"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Street_art_stencil_painting_of_a_boy_popping_out_from_behind_a_wall%2C_by_German_artist_Tona%2C_in_Vang_Vieng%2C_Laos.jpg/960px-Street_art_stencil_painting_of_a_boy_popping_out_from_behind_a_wall%2C_by_German_artist_Tona%2C_in_Vang_Vieng%2C_Laos.jpg" alt="说唱编年史" loading="lazy"></div>
-        <div class="card-body">
-          <span class="chip">互动</span>
-          <h3>说唱编年史</h3>
-          <p class="card-meta">从 Old School 到如今的 Underground，一条时间线</p>
-        </div>
+      <a class="big-card" href="/timeline/">
+        <div class="big-img"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Street_art_stencil_painting_of_a_boy_popping_out_from_behind_a_wall%2C_by_German_artist_Tona%2C_in_Vang_Vieng%2C_Laos.jpg/960px-Street_art_stencil_painting_of_a_boy_popping_out_from_behind_a_wall%2C_by_German_artist_Tona%2C_in_Vang_Vieng%2C_Laos.jpg" alt="说唱编年史" loading="lazy"></div>
+        <div class="big-body"><span class="chip">互动</span><h3>说唱编年史</h3><p>从 Old School 到如今的 Underground，一条时间线</p></div>
       </a>
-      <a class="card reveal" href="/samples/">
-        <div class="card-art"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Lang%27s_Recording_Studio_console.jpg/960px-Lang%27s_Recording_Studio_console.jpg" alt="采样考古" loading="lazy"></div>
-        <div class="card-body">
-          <span class="chip chip-acc">考古</span>
-          <h3>采样考古</h3>
-          <p class="card-meta">一首歌的前世今生，顺着采样找回去</p>
-        </div>
+      <a class="big-card" href="/samples/">
+        <div class="big-img"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Lang%27s_Recording_Studio_console.jpg/960px-Lang%27s_Recording_Studio_console.jpg" alt="采样考古" loading="lazy"></div>
+        <div class="big-body"><span class="kicker">考古</span><h3>采样考古</h3><p>一首歌的前世今生，顺着采样找回去</p></div>
       </a>
-      <a class="card reveal" href="/awards/">
-        <div class="card-art"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/WikiCup_Trophy_Gold.png" alt="年度榜单" loading="lazy"></div>
-        <div class="card-body">
-          <span class="chip">年度</span>
-          <h3>年度榜单</h3>
-          <p class="card-meta">年度 10 大新人 + 10 大专辑，年底见</p>
-        </div>
+      <a class="big-card" href="/awards/">
+        <div class="big-img"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/WikiCup_Trophy_Gold.png" alt="年度榜单" loading="lazy"></div>
+        <div class="big-body"><span class="chip">年度</span><h3>年度榜单</h3><p>年度 10 大新人 + 10 大专辑，年底见</p></div>
       </a>
-      <a class="card reveal" href="/submit/">
-        <div class="card-art"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Shanghai-neon_%28279418574%29.jpg/960px-Shanghai-neon_%28279418574%29.jpg" alt="投稿入口" loading="lazy"></div>
-        <div class="card-body">
-          <span class="chip chip-acc">投稿</span>
-          <h3>我要投稿</h3>
-          <p class="card-meta">新歌、演出、故事线索，好内容值得被看到</p>
-        </div>
+      <a class="big-card" href="/submit/">
+        <div class="big-img"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Shanghai-neon_%28279418574%29.jpg/960px-Shanghai-neon_%28279418574%29.jpg" alt="投稿入口" loading="lazy"></div>
+        <div class="big-body"><span class="kicker">投稿</span><h3>我要投稿</h3><p>新歌、演出、故事线索，好内容值得被更多人看到</p></div>
       </a>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta-band reveal">
+<section class="cta">
   <div class="wrap cta-inner">
-    <div style="margin-bottom:20px">{{ partial "waveform.html" . }}</div>
+    {{ partial "waveform.html" . }}
     <h2>有料？来投稿。</h2>
     <p>新歌、演出、艺人故事——好内容值得被更多人看到。</p>
     <a class="btn btn-gold" href="/submit/">去投稿</a>
