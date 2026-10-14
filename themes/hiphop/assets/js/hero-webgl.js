@@ -94,7 +94,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   var pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 
-  /* 灯光：弱环境 + 亮主光（边缘高光）+ 正面补光 + 冷轮廓光 */
+  /* 灯光：弱环境 + 亮主光（边缘高光）+ 正面补光 + 双轮廓光（黑盘在黑底上靠轮廓光显形） */
   scene.add(new THREE.AmbientLight(0xffffff, 0.3));
   var key = new THREE.DirectionalLight(0xffffff, 2.4);
   key.position.set(5, 6, 7);
@@ -102,9 +102,12 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   var fill = new THREE.DirectionalLight(0xffffff, 0.7);
   fill.position.set(0, 0, 8);
   scene.add(fill);
-  var rim = new THREE.DirectionalLight(0x88aaff, 1.5);
+  var rim = new THREE.DirectionalLight(0x88aaff, 2.5);
   rim.position.set(-6, 2, -6);
   scene.add(rim);
+  var rim2 = new THREE.DirectionalLight(0xffffff, 1.2);
+  rim2.position.set(6, -3, -8);
+  scene.add(rim2);
 
   var LABELS = [
     { bg: "#ffe600", fg: "#111111" },
@@ -198,8 +201,8 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   items.forEach(function (item, i) {
     var rec = new THREE.Group();
     var tex = makeVinylTexture(item, LABELS[i % LABELS.length]);
-    var faceMat = new THREE.MeshPhysicalMaterial({ map: tex, roughness: 0.32, metalness: 0.05, clearcoat: 1, clearcoatRoughness: 0.28, envMapIntensity: 1 });
-    var sideMat = new THREE.MeshPhysicalMaterial({ color: 0x111111, roughness: 0.35, clearcoat: 0.8, clearcoatRoughness: 0.35 });
+    var faceMat = new THREE.MeshPhysicalMaterial({ map: tex, roughness: 0.32, metalness: 0.05, clearcoat: 1, clearcoatRoughness: 0.28, envMapIntensity: 1.4 });
+    var sideMat = new THREE.MeshPhysicalMaterial({ color: 0x1e1e1e, roughness: 0.35, clearcoat: 0.8, clearcoatRoughness: 0.35 });
     var botMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.6 });
     var disc = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 0.1, 64), [sideMat, faceMat, botMat]);
     disc.rotation.x = Math.PI / 2;
