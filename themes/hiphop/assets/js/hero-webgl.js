@@ -130,6 +130,7 @@ import * as THREE from "three";
   var lastX = 0;
   var downX = 0, downY = 0, downTime = 0;
   var lastInteract = 0;
+  var hovering = false;
   var raycaster = new THREE.Raycaster();
   var pointer = new THREE.Vector2();
   var hoverCheck = false;
@@ -177,6 +178,8 @@ import * as THREE from "three";
   }
   el.addEventListener("pointerup", endDrag);
   el.addEventListener("pointercancel", function () { dragging = false; });
+  el.addEventListener("pointerenter", function () { hovering = true; });
+  el.addEventListener("pointerleave", function () { hovering = false; lastInteract = Date.now(); });
 
   /* 可见时才渲染，省电 */
   var visible = true;
@@ -191,7 +194,7 @@ import * as THREE from "three";
     var dt = Math.min((now - last) / 1000, 0.05);
     last = now;
     if (!dragging) {
-      if (Date.now() - lastInteract > 3000) targetRot += dt * 0.12; /* 无人操作时缓慢自转 */
+      if (Date.now() - lastInteract > 3000 && !hovering) targetRot += dt * 0.12; /* 无人操作时缓慢自转，悬停时暂停方便点选 */
       targetRot += velocity;
       velocity *= 0.94;
     }
