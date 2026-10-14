@@ -16,7 +16,7 @@
 <p class="sub">这是本站的 RSS 订阅源，更新文章会自动推送到你的阅读器。</p>
 <div class="box">
 <h2>怎么用？</h2>
-<p>复制下面这个地址，粘贴到 RSS 阅读器里（比如 NetNewsWire、Feedly、Reeder、Follow）：</p>
+<p>复制下面这个地址，粘贴到你用的 RSS 阅读器里：</p>
 <div class="url">https://hiphopnote.com/index.xml</div>
 <ol>
 <li>打开你的 RSS 阅读器 App</li>
