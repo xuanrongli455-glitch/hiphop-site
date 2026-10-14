@@ -945,3 +945,5 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 .card:hover::after { opacity: 1; transform: none; }
 .site-nav a { font-family: var(--font-mono); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .header-cta { font-family: var(--font-mono); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+
+/* retrigger pages build */
