@@ -682,3 +682,9 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
   .cols-3 { grid-template-columns: 1fr; }
   .lead-body { padding: 26px 22px; }
 }
+
+/* ============ 启动画面（像 X 的黑屏 Logo） ============ */
+#splash { position: fixed; inset: 0; z-index: 9999; background: #000; display: flex; align-items: center; justify-content: center; animation: splashOut .5s ease 1.1s forwards; pointer-events: none; }
+.splash-logo { font-family: var(--font-display); font-weight: 900; color: #fff; font-size: clamp(52px, 11vw, 110px); letter-spacing: .02em; line-height: 1; animation: splashPop .45s cubic-bezier(.2,1.4,.4,1) both; }
+@keyframes splashPop { from { opacity: 0; transform: scale(.86); } to { opacity: 1; transform: scale(1); } }
+@keyframes splashOut { to { opacity: 0; visibility: hidden; } }

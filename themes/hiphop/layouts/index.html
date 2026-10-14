@@ -1,4 +1,7 @@
 {{ define "main" }}
+<!-- 启动画面 · 像 X 的黑屏 Logo -->
+<div id="splash" aria-hidden="true"><span class="splash-logo">HIPHOP</span></div>
+
 <!-- HERO · 全幅特稿 -->
 <section class="hero-bleed">
   {{ $news := where site.RegularPages "Section" "news" }}
