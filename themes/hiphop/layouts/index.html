@@ -68,6 +68,32 @@
   </div>
 </section>
 
+<!-- 地下新声 -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">地下<span>新声</span></h2>
+      <a class="sec-more" href="/underground/">全部新人 →</a>
+    </div>
+    <div class="card-grid">
+      {{ range first 3 (where site.RegularPages "Section" "underground") }}
+      {{ if ne .File.BaseFileName "_index" }}
+      <a class="card reveal" href="{{ .RelPermalink }}">
+        <div class="card-art art-{{ mod (len .Title) 4 }}">
+          <span class="card-initial">{{ substr .Title 0 1 }}</span>
+        </div>
+        <div class="card-body">
+          <span class="chip chip-red">新人</span>
+          <h3>{{ .Title }}</h3>
+          <p class="card-meta">{{ .Description | default (.Summary | plainify | truncate 60) }}</p>
+        </div>
+      </a>
+      {{ end }}
+      {{ end }}
+    </div>
+  </div>
+</section>
+
 <!-- 艺人 / 厂牌 -->
 <section class="section">
   <div class="wrap">
@@ -157,6 +183,44 @@
           <p class="card-meta">从 Old School 到如今的 Underground，一条时间线</p>
         </div>
       </a>
+      <a class="card reveal" href="/charts/">
+        <div class="card-art art-0"><span class="card-initial">榜</span></div>
+        <div class="card-body">
+          <span class="chip">榜单</span>
+          <h3>热歌榜</h3>
+          <p class="card-meta">每周一更新的中文说唱热歌 Top 10</p>
+        </div>
+      </a>
+      <a class="card reveal" href="/lyrics/">
+        <div class="card-art art-1"><span class="card-initial">词</span></div>
+        <div class="card-body">
+          <span class="chip">深度</span>
+          <h3>歌词解析</h3>
+          <p class="card-meta">方言梗、diss、典故，一句一句拆开看</p>
+        </div>
+      </a>
+      <a class="card reveal" href="/awards/">
+        <div class="card-art art-2"><span class="card-initial">奖</span></div>
+        <div class="card-body">
+          <span class="chip">年度</span>
+          <h3>年度榜单</h3>
+          <p class="card-meta">年度 10 大新人 + 10 大专辑，年底见</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 订阅 -->
+<section class="section section-alt">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">订阅<span>本站</span></h2>
+    </div>
+    <p class="hint reveal">域名可能被封，微信可能抽风——但 RSS 永远有效。微信公众号「嘻哈笔记」筹备中，敬请期待。</p>
+    <div class="hero-cta reveal">
+      <a class="btn btn-gold" href="/index.xml">RSS 订阅</a>
+      <a class="btn btn-ghost" href="/submit/">我要投稿 →</a>
     </div>
   </div>
 </section>
@@ -166,7 +230,7 @@
   <div class="wrap cta-inner">
     <h2>有料？来投稿。</h2>
     <p>新歌、演出、艺人故事——好内容值得被更多人看到。</p>
-    <a class="btn btn-gold" href="/about/">了解本站</a>
+    <a class="btn btn-gold" href="/submit/">去投稿</a>
   </div>
 </section>
 {{ end }}
