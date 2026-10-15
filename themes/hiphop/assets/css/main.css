@@ -375,6 +375,23 @@ body.custom-cursor.cursor-text, body.custom-cursor.cursor-text * { cursor: text 
 .article-title { font-size: clamp(30px, 5vw, 52px); line-height: 1.25; margin: 0 0 16px; font-weight: 900; }
 .article-meta { color: var(--muted); font-size: 12px; margin-bottom: 40px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; }
 .article-hero { margin: 0 0 40px; }
+
+/* 艺人档案头：方形图 + 大名 + 事实行 */
+.dossier { margin: 0 0 44px; }
+.dossier-grid { display: grid; grid-template-columns: 230px 1fr; gap: 36px; align-items: start; margin-top: 22px; }
+.dossier-art img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid var(--line); }
+.dossier-kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+.dossier-name { font-size: clamp(38px, 5.5vw, 68px); line-height: 1.02; font-weight: 900; letter-spacing: -0.01em; margin: 0 0 12px; }
+.dossier-tagline { font-size: 16px; line-height: 1.6; color: var(--muted); margin: 0; max-width: 62ch; }
+.dossier-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px 28px; margin: 26px 0 0; padding: 20px 0 0; border-top: 1px solid var(--line); }
+.dossier-fact dt { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+.dossier-fact dd { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.4; }
+.dossier-meta { margin: 18px 0 0; font-size: 13px; color: var(--muted); }
+.dossier-caption { margin-top: 12px; font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+@media (max-width: 700px) {
+  .dossier-grid { grid-template-columns: 1fr; gap: 20px; }
+  .dossier-art { max-width: 200px; }
+}
 .article-hero img { width: 100%; border-radius: 12px; border: 1px solid var(--line); display: block; }
 .article-hero figcaption { color: var(--muted); font-size: 13px; margin-top: 10px; text-align: center; }
 .article-body { font-size: 20px; line-height: 1.85; color: #e8e7e2; }

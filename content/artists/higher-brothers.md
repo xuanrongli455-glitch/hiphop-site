@@ -3,6 +3,12 @@ title: "更高兄弟 Higher Brothers：把成都说唱带向世界的四人组"
 date: 2026-10-13
 tags: ["艺人", "厂牌", "成都"]
 description: "更高兄弟（Higher Brothers）档案：成员、厂牌渊源与代表作品。"
+artist_name: "更高兄弟 Higher Brothers"
+artist_facts:
+  - ["成员", "马思唯 / KnowKnow / Psy.P / Melo"]
+  - ["地区", "四川成都"]
+  - ["厂牌", "88rising"]
+  - ["代表作", "《Made In China》"]
 image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Higher_Brothers_Icebox_2019.jpg/960px-Higher_Brothers_Icebox_2019.jpg"
 image_caption: "更高兄弟做客亚特兰大 Icebox 珠宝店（2019）。图片：Moyopoyo / Wikimedia Commons，CC BY-SA 4.0"
 ---

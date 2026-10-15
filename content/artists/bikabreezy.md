@@ -5,6 +5,12 @@ image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/Musicians_perfo
 image_caption: "配图：户外舞台演出，非 BikaBreezy 本人。图片：Shixart1985 / Wikimedia Commons，CC BY 2.0"
 tags: ["艺人", "新歌推荐"]
 description: "BikaBreezy 档案：哈萨克斯坦歌手，因《说唱巅峰对决2026》的《0.5x》被中国观众认识，与 JayTrue 合作的《巴适》拿下 Pop Songs Chart 2026 流行歌曲年度奖。"
+artist_name: "BikaBreezy"
+artist_facts:
+  - ["本名", "Binazir Yermaganbetova"]
+  - ["国籍", "哈萨克斯坦"]
+  - ["风格", "说唱 / Afrobeat"]
+  - ["代表作", "《0.5x》《巴适》"]
 ---
 
 # BikaBreezy：把 Afrobeat 唱进中文说唱的哈萨克斯坦歌手

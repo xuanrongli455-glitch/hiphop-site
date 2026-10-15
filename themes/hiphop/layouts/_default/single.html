@@ -1,6 +1,29 @@
 {{ define "main" }}
 <article class="article">
   <div class="wrap article-wrap">
+    {{ if and (eq .Section "artists") (.Params.artist_facts) }}
+    {{/* 艺人档案头：方形图 + 大名 + 事实行（Genius 式 dossier） */}}
+    <header class="dossier reveal">
+      <p class="eyebrow eyebrow-back"><a href="{{ .Parent.RelPermalink }}">← {{ .Parent.Title }}</a></p>
+      <div class="dossier-grid">
+        {{ with .Params.image }}
+        <div class="dossier-art"><img src="{{ . }}" alt="{{ $.Params.artist_name | default $.Title }}" loading="eager"></div>
+        {{ end }}
+        <div class="dossier-info">
+          <p class="dossier-kicker">艺人档案 · ARTIST FILE</p>
+          <h1 class="dossier-name">{{ .Params.artist_name | default .Title }}</h1>
+          {{ with .Description }}<p class="dossier-tagline">{{ . }}</p>{{ end }}
+          <dl class="dossier-facts">
+            {{ range .Params.artist_facts }}
+            <div class="dossier-fact"><dt>{{ index . 0 }}</dt><dd>{{ index . 1 }}</dd></div>
+            {{ end }}
+          </dl>
+          <p class="dossier-meta">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟阅读</p>
+        </div>
+      </div>
+      {{ with .Params.image_caption }}<p class="dossier-caption">{{ . }}</p>{{ end }}
+    </header>
+    {{ else }}
     <p class="eyebrow eyebrow-back reveal"><a href="{{ .Parent.RelPermalink }}">← {{ .Parent.Title }}</a></p>
     <h1 class="article-title reveal">{{ .Title }}</h1>
     <div class="article-meta reveal">
@@ -13,6 +36,7 @@
       <img src="{{ . }}" alt="{{ $.Title }}" loading="eager">
       {{ with $.Params.image_caption }}<figcaption>{{ . }}</figcaption>{{ end }}
     </figure>
+    {{ end }}
     {{ end }}
     <div class="article-body reveal">
       {{ .Content }}
