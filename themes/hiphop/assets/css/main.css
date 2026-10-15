@@ -381,6 +381,7 @@ body.custom-cursor.cursor-text, body.custom-cursor.cursor-text * { cursor: text 
 .stem-ring-1 { inset: 24px; background: #8a8a8a; }
 .stem-ring-2 { inset: 24px; background: #fff; }
 .stem-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 56px; height: 56px; padding: 0; border: 0; border-radius: 50%; background: #000; color: #fff; cursor: pointer; }
+a.stem-play { display: block; text-decoration: none; }
 .stem-play:hover { transform: translate(-50%, -50%) scale(1.08); }
 .stem-play-glyph { display: block; font-size: 20px; line-height: 1; transform: translateX(2px); }
 .stem-player.is-open .stem-play-glyph { transform: none; font-size: 22px; }
@@ -881,6 +882,7 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 .track-row:last-child { border-bottom: 1px solid var(--line); }
 .track-line { display: flex; align-items: center; gap: 12px; }
 .track-play { flex: 0 0 auto; width: 32px; height: 32px; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: #000; color: #fff; font-size: 12px; line-height: 1; cursor: pointer; }
+a.track-play { display: inline-grid; place-items: center; text-decoration: none; }
 .track-play:hover { background: var(--accent); color: #111; border-color: var(--accent); }
 .track-row.no-play .track-line { padding-left: 44px; }
 .track-no { width: 28px; flex: 0 0 auto; font-size: 14px; color: var(--muted); }

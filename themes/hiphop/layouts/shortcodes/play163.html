@@ -1,17 +1,11 @@
-{{/* 分轨式播放卡：圆形彩图 + 黑圆白三角按钮 + 波形条，点击展开网易云官方嵌入播放器
-  用法：{{< play163 id="网易云歌曲ID" title="歌曲名" >}}
-  注意：只做外观与触发，实际播放走网易云官方嵌入；不托管完整版权音乐。
-  波形条为装饰性图形，不代表真实播放进度；不展示未经核实的歌曲时长。 */}}
+{{/* 分轨式播放卡：圆形彩图 + 黑圆白三角按钮，点击跳转网易云音乐 App 听歌
+  用法：{{< play163 id="网易云歌曲ID" title="歌曲名" >}} */}}
 <div class="stem-player" data-song-id="{{ .Get "id" }}">
   <div class="stem-art">
     <div class="stem-ring stem-ring-1"><div class="stem-ring stem-ring-2"></div></div>
-    <button class="stem-play" type="button" aria-label="播放《{{ .Get "title" }}》" aria-expanded="false"><span class="stem-play-glyph" aria-hidden="true">▶</span></button>
+    <a class="stem-play" href="https://music.163.com/m/song/{{ .Get "id" }}" target="_blank" rel="noopener" aria-label="去网易云音乐听《{{ .Get "title" }}》"><span class="stem-play-glyph" aria-hidden="true">▶</span></a>
   </div>
   <div class="stem-wave" aria-hidden="true"></div>
   {{ with .Get "title" }}<p class="stem-title">《{{ . }}》</p>{{ end }}
-  <div class="stem-embed" hidden>
-    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="66" data-src="https://music.163.com/m/outchain/player?type=2&id={{ .Get "id" }}&auto=1&height=66"></iframe>
-    <p class="stem-tip">点播放器里的 ▶ 开始播放，若没反应再点一次</p>
-    <p class="stem-link"><a href="https://music.163.com/#/song?id={{ .Get "id" }}" target="_blank" rel="noopener">在网易云音乐里听 →</a></p>
-  </div>
+  <p class="stem-tip">点击去网易云音乐 App 收听</p>
 </div>
