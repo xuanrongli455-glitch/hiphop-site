@@ -15,7 +15,7 @@
       {{ $isIndex := false }}{{ with .File }}{{ if eq .BaseFileName "_index" }}{{ $isIndex = true }}{{ end }}{{ end }}
       {{ if not $isIndex }}
       <a class="card reveal" href="{{ .RelPermalink }}">
-        <div class="card-art art-{{ mod (len .Title) 4 }}{{ if .Params.image_color }} art-color{{ end }}">
+        <div class="card-art art-{{ mod (len .Title) 4 }}">
           {{ with .Params.image }}
           <img src="{{ . }}" alt="" loading="lazy" onerror="this.remove()">
           {{ else }}

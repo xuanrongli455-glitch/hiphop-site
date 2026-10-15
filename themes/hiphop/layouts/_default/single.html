@@ -9,7 +9,7 @@
       {{ with .Params.tags }}<span>·</span>{{ range . }}<span class="chip">{{ . }}</span>{{ end }}{{ end }}
     </div>
     {{ with .Params.image }}
-    <figure class="article-hero reveal{{ if $.Params.image_color }} art-color{{ end }}">
+    <figure class="article-hero reveal">
       <img src="{{ . }}" alt="{{ $.Title }}" loading="eager">
       {{ with $.Params.image_caption }}<figcaption>{{ . }}</figcaption>{{ end }}
     </figure>

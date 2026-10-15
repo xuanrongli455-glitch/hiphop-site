@@ -518,16 +518,11 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
   .article-nav { grid-template-columns: 1fr; }
 }
 
-/* 真图：有 image frontmatter 时替代占位 */
+/* 真图：有 image frontmatter 时替代占位（用户要求：图片保留彩色） */
 .card-art img, .feed-thumb img, .hero-main-art img, .side-art img, .fresh-art img {
   width: 100%; height: 100%; object-fit: cover; display: block;
-  filter: grayscale(1) contrast(1.05);
   transition: transform 0.4s ease;
 }
-/* 文章头图也统一黑白 */
-.article-hero img { filter: grayscale(1) contrast(1.05); }
-/* 例外：frontmatter 设 image_color: true 的图保留彩色 */
-.card-art.art-color img, .article-hero.art-color img { filter: none; }
 .card:hover .card-art img, .feed-row:hover .feed-thumb img,
 .hero-main:hover .hero-main-art img, .side-card:hover .side-art img,
 .fresh-card:hover .fresh-art img { transform: scale(1.05); }
@@ -887,7 +882,7 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 .genre-artists strong { color: #fff; }
 .genre-photo-wrap { position: relative; }
 .genre-photo-wrap::after { content: ""; position: absolute; width: 90px; height: 90px; background: var(--accent); bottom: -14px; left: -14px; z-index: 0; }
-.genre-photo-wrap img { position: relative; z-index: 1; display: block; width: 100%; border-radius: 6px; filter: grayscale(1) contrast(1.05); }
+.genre-photo-wrap img { position: relative; z-index: 1; display: block; width: 100%; border-radius: 6px; }
 .genre-tracks { margin-top: 44px; }
 .tracks-head { margin: 0 0 8px; font-family: var(--font-display); font-size: 28px; }
 .track-row { border-top: 1px solid var(--line); padding: 14px 0; }
