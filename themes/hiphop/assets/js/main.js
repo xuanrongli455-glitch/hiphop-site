@@ -115,6 +115,10 @@
       s.style.left = (e.clientX - d / 2) + "px"; s.style.top = (e.clientY - d / 2) + "px";
       document.body.appendChild(s);
       setTimeout(function () { s.remove(); }, 550);
+      /* 唱针落针动画：重触发 keyframes */
+      dot.classList.remove("needle-hit");
+      void dot.offsetWidth;
+      dot.classList.add("needle-hit");
     }, { passive: true });
   })();
 
