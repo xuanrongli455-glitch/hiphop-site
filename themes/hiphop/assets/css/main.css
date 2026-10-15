@@ -526,6 +526,8 @@ mark.anno { background: var(--acc); color: var(--acc-ink); padding: 1px 5px; bor
 }
 /* 文章头图也统一黑白 */
 .article-hero img { filter: grayscale(1) contrast(1.05); }
+/* 例外：frontmatter 设 image_color: true 的图保留彩色 */
+.card-art.art-color img, .article-hero.art-color img { filter: none; }
 .card:hover .card-art img, .feed-row:hover .feed-thumb img,
 .hero-main:hover .hero-main-art img, .side-card:hover .side-art img,
 .fresh-card:hover .fresh-art img { transform: scale(1.05); }

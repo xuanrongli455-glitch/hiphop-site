@@ -1,5 +1,6 @@
 ---
 image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Graffiti-wall-street-art_%2823957362689%29.jpg/960px-Graffiti-wall-street-art_%2823957362689%29.jpg"
+image_color: true
 image_caption: "配图：街头涂鸦墙（非 Dongifuk安允胜本人，Wikimedia Commons，CC0）"
 title: "地下新声 Vol.01｜Dongifuk安允胜：抖音 5 千粉、网易云 10 张专辑的 21 岁"
 date: 2026-10-14
