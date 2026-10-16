@@ -1,7 +1,7 @@
 ---
 title: "Diddy 头部受伤送医一周后转监：监狱局确认从新泽西 Fort Dix 转至宾州 Allenwood Low，打斗传闻遭官方否认"
 
-date: 2026-10-17
+date: 2026-10-16
 
 tags: ["资讯", "Diddy"]
 
