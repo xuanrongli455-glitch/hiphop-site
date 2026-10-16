@@ -345,15 +345,48 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
   var dragging = false, moved = 0, lastX = 0, lastY = 0, velX = 0;
   var downX = 0, downY = 0, downT = 0;
   var lastInteract = Date.now();
+  /* 双指捏合缩放（iPad/触屏）：两指开合映射到镜头 z，与滚轮同一范围 3.5-12 */
+  var activePointers = {};
+  var pinchDist = 0;
+  var wasPinch = false;
+  function trackPointer(e) { activePointers[e.pointerId] = { x: e.clientX, y: e.clientY }; }
+  function untrackPointer(e) {
+    delete activePointers[e.pointerId];
+    if (Object.keys(activePointers).length < 2) pinchDist = 0;
+  }
+  function currentPinchDist() {
+    var ks = Object.keys(activePointers);
+    if (ks.length < 2) return 0;
+    var a = activePointers[ks[0]], b = activePointers[ks[1]];
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  }
 
   el.addEventListener("pointerdown", function (e) {
+    trackPointer(e);
     dragging = true; moved = 0; lastX = e.clientX; lastY = e.clientY;
     downX = e.clientX; downY = e.clientY; downT = Date.now(); velX = 0;
+    if (Object.keys(activePointers).length === 2) {
+      /* 第二指落下：切换为捏合缩放，停止旋转 */
+      pinchDist = currentPinchDist();
+      dragging = false;
+    }
     try { el.setPointerCapture(e.pointerId); } catch (err) {}
     el.style.cursor = "grabbing";
   });
   el.addEventListener("pointermove", function (e) {
     lastInteract = Date.now();
+    trackPointer(e);
+    if (Object.keys(activePointers).length === 2) {
+      /* 双指捏合：张开=推进，合拢=拉远 */
+      var pd = currentPinchDist();
+      if (pinchDist > 0 && pd > 0) {
+        camera.position.z = Math.max(3.5, Math.min(12, camera.position.z * (pinchDist / pd)));
+        lastZoom = lastInteract;
+        wasPinch = true;
+      }
+      pinchDist = pd;
+      return;
+    }
     if (dragging) {
       var dx = e.clientX - lastX;
       var dy = e.clientY - lastY;
@@ -373,8 +406,13 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     }
   });
   el.addEventListener("pointerup", function (e) {
+    untrackPointer(e);
     dragging = false;
     el.style.cursor = "grab";
+    if (wasPinch) {
+      if (Object.keys(activePointers).length === 0) wasPinch = false;
+      return;
+    }
     if (moved < 8 && Date.now() - downT < 400) {
       var hit = pick(e.clientX, e.clientY);
       if (hit && hit.userData.url) {
@@ -385,6 +423,11 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
     }
   });
   el.addEventListener("pointerleave", function () { if (canHover) setSelected(null); });
+  el.addEventListener("pointercancel", function (e) {
+    untrackPointer(e);
+    dragging = false;
+    wasPinch = false;
+  });
   /* 滚轮 = 镜头在世界里推进/拉远 */
   el.addEventListener("wheel", function (e) {
     lastInteract = Date.now();

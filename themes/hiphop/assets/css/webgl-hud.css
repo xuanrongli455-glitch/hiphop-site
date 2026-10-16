@@ -1,7 +1,7 @@
 /* 首页 = 全屏 3D 世界：画布铺满整屏，标题与取景器标注浮在世界之上 */
 body.world-home { overflow: hidden; height: 100vh; }
 /* 菜单 3D：顶栏是浮在世界里的 3D 面板（透视倾斜 + 阴影），链接与投稿全部保留 */
-body.world-home .site-header { position: fixed; top: 0; left: 0; right: 0; background: rgba(10, 10, 10, .55); transform: perspective(1200px) rotateX(8deg); transform-origin: top center; transition: none; box-shadow: 0 12px 24px rgba(0, 0, 0, .5); border-bottom: 1px solid rgba(255, 255, 255, .12); }
+body.world-home .site-header { position: fixed; top: 0; left: 0; right: 0; background: #0a0a0a; transform: perspective(1200px) rotateX(8deg); transform-origin: top center; transition: none; box-shadow: 0 12px 24px rgba(0, 0, 0, .5); border-bottom: 1px solid rgba(255, 255, 255, .12); }
 .world-stage { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: #000; cursor: grab; }
 .world-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
 .world-head { position: fixed; top: 96px; left: 0; right: 0; z-index: 10; text-align: center; pointer-events: none; }
