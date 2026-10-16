@@ -8,10 +8,10 @@ body.world-home .site-header { position: fixed; top: 0; left: 0; right: 0; backg
 .world-head { transition: opacity .5s ease; }
 /* 探索世界时标题自动让路：拖动/滚轮/落针时淡出，停手恢复 */
 .world-head.dim { opacity: .07; }
-.world-title { margin: 0; font-family: var(--font-hei); font-weight: 900; font-size: clamp(64px, 11vw, 180px); line-height: 1.0; letter-spacing: -0.01em; color: #fff; mix-blend-mode: difference; }
+.world-title { margin: 0; font-family: var(--font-hei); font-weight: 900; font-size: clamp(64px, 11vw, 180px); line-height: 1.0; letter-spacing: -0.01em; color: #fff; text-shadow: 0 2px 28px rgba(0,0,0,.9), 0 0 6px rgba(0,0,0,.85); }
 .world-title .world-line { display: block; }
-/* Bizarro 式四栏大写表头：随标题一起差值混合，压在黑胶上始终可读 */
-.world-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 1100px; margin: 20px auto 0; padding: 9px 4px; border-top: 1px solid rgba(255,255,255,.6); border-bottom: 1px solid rgba(255,255,255,.6); font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #fff; mix-blend-mode: difference; }
+/* 巨字标题与四栏表头：实心白字 + 强阴影，压在任何亮度的黑胶上始终可读（差值混合在亮色照片盘上会把字反成深色，已弃用） */
+.world-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 1100px; margin: 20px auto 0; padding: 9px 4px; border-top: 1px solid rgba(255,255,255,.6); border-bottom: 1px solid rgba(255,255,255,.6); font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #fff; text-shadow: 0 1px 12px rgba(0,0,0,.9); }
 .world-cols span:nth-child(4) { text-align: right; }
 .world-frame { position: absolute; top: 84px; right: 12px; bottom: 12px; left: 12px; border: 1px dashed rgba(255, 255, 255, .25); pointer-events: none; z-index: 2; }
 .world-frame-tag { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); background: #000; padding: 0 8px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 10px; letter-spacing: .14em; color: rgba(255, 255, 255, .65); white-space: nowrap; }
