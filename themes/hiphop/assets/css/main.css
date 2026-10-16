@@ -984,9 +984,13 @@ a.track-play { display: inline-grid; place-items: center; text-decoration: none;
 /* retrigger pages build */
 
 /* ============ 公众号二维码（页脚） ============ */
-.footer-grid { grid-template-columns: 1.4fr 1fr auto; }
-.footer-qr { border: 1px solid var(--line); background: #000; padding: 18px 18px 14px; text-align: center; align-self: start; }
-.footer-qr img { display: block; width: 150px; height: 150px; margin: 0 auto 12px; }
+/* 注意：三列布局只在桌面端生效，不能覆盖 900px 以下的单列媒体查询（同优先级下后写胜出会导致手机端溢出） */
+@media (min-width: 901px) {
+  .footer-grid { grid-template-columns: 1.4fr 1fr auto; }
+}
+.footer-grid > * { min-width: 0; }
+.footer-qr { border: 1px solid var(--line); background: #000; padding: 18px 18px 14px; text-align: center; align-self: start; max-width: 100%; }
+.footer-qr img { display: block; width: 150px; height: 150px; max-width: 100%; margin: 0 auto 12px; }
 .footer-qr-name { margin: 0 0 4px; font-size: 16px; font-weight: 700; letter-spacing: .06em; }
 .footer-qr-tip { margin: 0; font-size: 13px; color: var(--muted); }
 @media (max-width: 900px) { .footer-qr { justify-self: center; } }
