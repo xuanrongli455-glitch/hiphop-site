@@ -261,7 +261,8 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
       rec.scale.setScalar(p.s);
       rec.userData.baseY = p.y;
     });
-    group.position.y = 0;
+    /* 竖屏：整摞黑胶下移，顶部给巨字标题留白，避免唱片从字中间穿过 */
+    group.position.y = isPortrait ? -1.6 : 0;
     group.rotation.x = 0;
   }
 

@@ -42,7 +42,7 @@ body.world-home .site-header { position: fixed; top: 0; left: 0; right: 0; backg
   .world-frame { top: 76px; }
   .world-tape { left: 16px; bottom: 14px; max-width: 52%; }
   .world-hint { display: none; }
-  .world-sound { top: 80px; right: 16px; }
+  .world-sound { top: auto; bottom: 16px; right: 16px; }
   .world-fallback { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 180px 16px 24px; }
   .world-guide-v, .world-guide-h { display: none !important; }
 }
