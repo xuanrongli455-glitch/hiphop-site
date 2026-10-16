@@ -371,7 +371,7 @@ body.custom-cursor.cursor-text, body.custom-cursor.cursor-text * { cursor: text 
 .page-title { font-family: var(--font-display); font-size: clamp(44px, 7.5vw, 92px); margin: 0 0 12px; letter-spacing: 0.02em; }
 .page-desc { color: var(--muted); font-size: 17px; margin: 0; max-width: 640px; }
 .article { padding: 150px 0 96px; }
-.article-wrap { max-width: 760px; }
+.article-wrap { max-width: 960px; }
 .article-title { font-size: clamp(30px, 5vw, 52px); line-height: 1.25; margin: 0 0 16px; font-weight: 900; }
 .article-meta { color: var(--muted); font-size: 12px; margin-bottom: 40px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; }
 .article-hero { margin: 0 0 40px; }
