@@ -7,8 +7,7 @@ tags: ["资讯", "Diddy"]
 
 description: "Sean 'Diddy' Combs 已从新泽西 FCI Fort Dix 转监至宾州 FCI Allenwood Low，联邦监狱局向 Page Six、EW、法新社等多家媒体确认了转监事实，但未说明原因。一周前他曾因头部受伤被送往医院，伤势无生命危险。TMZ 关于他与牙买加毒枭发生冲突的说法被官方否认。"
 
-image:
-"https://commons.wikimedia.org/wiki/Special:FilePath/Prison_cell_in_West_Virginia_Penitentiary.jpg"
+image: "https://commons.wikimedia.org/wiki/Special:FilePath/Prison_cell_in_West_Virginia_Penitentiary.jpg"
 
 image_caption: "配图：监狱牢房示意（IndyDina / Wikimedia Commons，CC BY-SA）"
 

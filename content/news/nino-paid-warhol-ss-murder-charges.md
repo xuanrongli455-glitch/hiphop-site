@@ -7,8 +7,7 @@ tags: ["资讯", "Nino Paid", "Warhol.SS"]
 
 description: "亚特兰大警方宣布：Rapper Nino Paid、Warhol.SS 因涉嫌 2026 年 4 月一起致命枪击案，被控加重谋杀、持械抢劫等多项重罪，两人目前均被羁押、不得保释。"
 
-image:
-"https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Hip-hop_DJ_with_a_microphone_%28Unsplash%29.jpg/1280px-Hip-hop_DJ_with_a_microphone_%28Unsplash%29.jpg"
+image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Hip-hop_DJ_with_a_microphone_%28Unsplash%29.jpg/1280px-Hip-hop_DJ_with_a_microphone_%28Unsplash%29.jpg"
 
 image_caption: "配图：Hip-hop 现场示意（Unsplash / Wikimedia Commons）"
 
