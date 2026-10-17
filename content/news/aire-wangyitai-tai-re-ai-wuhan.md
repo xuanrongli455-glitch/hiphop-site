@@ -43,3 +43,5 @@ caption="配图：说唱演出示意图，与本文事件无关（Wikimedia Comm
 ---
 
 *信息来源：[腾讯新闻](https://news.qq.com/rain/a/20260930A05CYU00)（引用武汉市文旅局审批信息）、[新浪娱乐](https://k.sina.cn/article_2092947541_m7cbfd85503302kh4k.html?from=ent)（GAI 打 call 应援）、[新浪娱乐](https://ent.sina.cn/2026-09-20/detail-inisnssr1381189.d.html?from=ent)（《茶花开了》三公）、[新浪娱乐](https://k.sina.cn/article_7879995944_1d5af322806802oud4.html?from=ent)（四公《Believer》）、乐迷现场录像（[Bilibili](https://www.bilibili.com/video/BV17rNw6DE2j?p=16)）。*
+
+<!-- retrigger pages build 2026-10-17 -->
