@@ -1005,11 +1005,12 @@ a.track-play { display: inline-grid; place-items: center; text-decoration: none;
 }
 
 /* ============ 文章末尾公众号关注区块 ============ */
-.follow-block { display: flex; align-items: center; gap: 24px; border: 1px solid var(--line); background: #000; padding: 24px; margin: 48px 0 0; }
-.follow-qr { flex-shrink: 0; }
-.follow-qr img { display: block; width: 132px; height: 132px; }
+.follow-block { display: flex; align-items: center; gap: 24px; border: 1px solid var(--line); background: #000; padding: 24px; margin: 48px 0 0; overflow: hidden; }
+.follow-qr { flex: 0 0 auto; width: 132px; height: 132px; }
+.follow-qr img { display: block; width: 132px; height: 132px; max-width: none; }
+.follow-info { flex: 1 1 auto; min-width: 0; }
 .follow-kicker { margin: 0 0 10px; font-size: 12px; font-weight: 700; letter-spacing: .2em; color: #ffe600; }
 .follow-title { margin: 0 0 8px; font-size: 22px; font-weight: 900; letter-spacing: .05em; }
 .follow-title em { font-style: normal; }
 .follow-desc { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.7; }
-@media (max-width: 600px) { .follow-block { flex-direction: column; text-align: center; gap: 18px; padding: 28px 20px; } }
+@media (max-width: 768px) { .follow-block { flex-direction: column; text-align: center; gap: 18px; padding: 28px 20px; } .follow-qr, .follow-qr img { width: 140px; height: 140px; } }
