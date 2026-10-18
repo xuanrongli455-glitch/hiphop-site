@@ -1014,3 +1014,7 @@ a.track-play { display: inline-grid; place-items: center; text-decoration: none;
 .follow-title em { font-style: normal; }
 .follow-desc { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.7; }
 @media (max-width: 768px) { .follow-block { flex-direction: column; text-align: center; gap: 18px; padding: 28px 20px; } .follow-qr, .follow-qr img { width: 140px; height: 140px; } }
+
+/* 新 logo 图片 */
+.brand-logo-img img { display: block; height: 44px; width: auto; }
+.brand-logo-img { display: inline-flex; align-items: center; }
