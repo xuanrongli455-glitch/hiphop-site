@@ -1014,3 +1014,10 @@ a.track-play { display: inline-grid; place-items: center; text-decoration: none;
 .follow-title em { font-style: normal; }
 .follow-desc { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.7; }
 @media (max-width: 768px) { .follow-block { flex-direction: column; text-align: center; gap: 18px; padding: 28px 20px; } .follow-qr, .follow-qr img { width: 140px; height: 140px; } }
+
+/* ============ 页眉导航：链接永不换行，超宽时横滑（2026-10-18） ============ */
+@media (min-width: 641px) {
+  .site-nav { flex-wrap: nowrap; min-width: 0; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+  .site-nav::-webkit-scrollbar { display: none; }
+  .site-nav a { white-space: nowrap; flex-shrink: 0; }
+}
