@@ -14,6 +14,10 @@
 <link rel="stylesheet" href="{{ $css.RelPermalink }}">
 {{ $hud := resources.Get "css/webgl-hud.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $hud.RelPermalink }}">
+{{ if .IsHome }}
+{{ $mag := resources.Get "css/home-mag.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $mag.RelPermalink }}">
+{{ end }}
 {{/* Three.js 本地托管：构建时从 CDN 拉取一次，随站发布；浏览器不再直连 CDN，单 CDN 挂掉不再导致黑胶消失 */}}
 {{ $three := resources.GetRemote "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" | resources.Copy "js/vendor/three.module.min.js" }}
 {{ $roomEnv := resources.GetRemote "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/environments/RoomEnvironment.js" | resources.Copy "js/vendor/addons/environments/RoomEnvironment.js" }}

@@ -1,0 +1,31 @@
+{{ define "main" }}
+{{ $feed := where site.RegularPages "Section" "in" (slice "news" "music" "underground" "lyrics" "artists" "samples" "events") }}
+{{ $label := dict "news" "资讯" "music" "新歌推荐" "underground" "地下新声" "lyrics" "歌词解析" "artists" "艺人厂牌" "samples" "采样考古" "events" "演出日历" }}
+
+<div class="lab-wrap" style="max-width:1200px;margin:0 auto;padding:40px 24px;">
+  <header style="margin-bottom:28px;">
+    <p style="color:#ffe600;font-size:12px;letter-spacing:.4em;margin:0 0 12px;font-family:ui-monospace,Menlo,Consolas,monospace;">互动实验室 · INTERACTIVE LAB</p>
+    <h1 style="font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;font-weight:900;font-size:clamp(28px,4vw,44px);margin:0 0 12px;line-height:1.3;color:#f5f4f0;">3D 磁带唱片箱</h1>
+    <p style="color:#9b9ba3;font-size:14px;line-height:1.9;max-width:640px;margin:0;">原来首页那个全屏黑胶世界搬到这里了。拖动旋转 · 滚轮推进 · 点击落针，直接跳进文章。</p>
+  </header>
+
+  {{ $tapes := slice }}
+  {{ range first 8 $feed }}{{ $tapes = $tapes | append (dict "title" .Title "col" (index $label .Section) "url" .RelPermalink "image" (.Params.image | default "")) }}{{ end }}
+  <div class="world-stage" id="worldStage">
+    <div class="world-frame" aria-hidden="true"><span class="world-frame-tag">ARTBOARD — HIPHOPNOTE · VINYL FIELD</span><i class="wx tl">×</i><i class="wx tr">×</i><i class="wx bl">×</i><i class="wx br">×</i></div>
+    <span class="world-guide-v" id="worldGuideX" aria-hidden="true"></span>
+    <span class="world-guide-h" id="worldGuideY" aria-hidden="true"></span>
+    <span class="world-tape" id="worldTape">VINYL — / —</span>
+    <p class="world-hint" id="worldHint" hidden>拖动旋转 · 滚轮推进 · 点击落针</p>
+    <button class="world-sound" id="worldSound" type="button">SOUND: ON</button>
+    <div class="world-fallback" id="worldFallback">
+      {{ range first 8 $feed }}
+      <a href="{{ .RelPermalink }}">{{ with .Params.image }}<img src="{{ . | safeURL }}" alt="" loading="lazy">{{ end }}<span>{{ .Title }}</span></a>
+      {{ end }}
+    </div>
+    <script type="application/json" id="tapeData">{{ $tapes | jsonify | safeJS }}</script>
+  </div>
+  {{ $herojs := resources.Get "js/hero-webgl.js" | fingerprint }}
+  <script type="module" src="{{ $herojs.RelPermalink }}"></script>
+</div>
+{{ end }}

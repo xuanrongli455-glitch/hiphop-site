@@ -32,6 +32,9 @@ menu:
     - name: 演出日历
       url: /events/
       weight: 40
+    - name: 互动实验室
+      url: /lab/
+      weight: 45
     - name: 关于
       url: /about/
       weight: 50
