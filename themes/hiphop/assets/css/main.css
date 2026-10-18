@@ -1062,7 +1062,9 @@ a.track-play { display: inline-grid; place-items: center; text-decoration: none;
   transition: background-size .28s ease;
   padding-bottom: 1px;
 }
-.mag h2 a:hover, .mag h3 a:hover {
+.mag h2 a:hover, .mag h3 a:hover,
+.mag h2 a:active, .mag h3 a:active,
+.mag h2 a:focus-visible, .mag h3 a:focus-visible {
   background-size: 100% 42%;
 }
 @media (prefers-reduced-motion: reduce) {
