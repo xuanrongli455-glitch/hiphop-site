@@ -1,5 +1,5 @@
 <header class="site-header" id="siteHeader">
-  <div class="wrap header-inner">
+  <div class="wrap header-top">
     <a class="brand" href="/">
       <span class="brand-mark" aria-hidden="true">
         <svg width="42" height="42" viewBox="0 0 64 64">
@@ -16,7 +16,10 @@
       </span>
       <span class="brand-text">HIPHOP<em>中文站</em></span>
     </a>
-    <nav class="site-nav" id="siteNav">
+    <a class="header-cta" href="/submit/">投稿</a>
+  </div>
+  <nav class="site-nav" id="siteNav" aria-label="栏目导航">
+    <div class="nav-pills">
       {{ $cur := .RelPermalink }}
       <a href="/news/"{{ if hasPrefix $cur "/news/" }} class="active"{{ end }}>资讯</a>
       <a href="/music/"{{ if hasPrefix $cur "/music/" }} class="active"{{ end }}>新歌推荐</a>
@@ -28,10 +31,6 @@
       <a href="/lab/"{{ if hasPrefix $cur "/lab/" }} class="active"{{ end }}>互动实验室</a>
       <a href="/timeline/"{{ if hasPrefix $cur "/timeline/" }} class="active"{{ end }}>编年史</a>
       <a href="/about/"{{ if hasPrefix $cur "/about/" }} class="active"{{ end }}>关于</a>
-    </nav>
-    <a class="header-cta" href="/submit/">投稿</a>
-    <button class="menu-btn" id="menuBtn" aria-label="菜单">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
+    </div>
+  </nav>
 </header>
