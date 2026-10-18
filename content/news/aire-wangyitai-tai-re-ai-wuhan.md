@@ -3,45 +3,52 @@ title: "艾热、王以太「太热爱」巡演武汉站 11 月 14 日开唱，G
 date: 2026-10-17
 tags: ["资讯", "艾热", "王以太", "太热爱", "演唱会"]
 description: "「太热爱」2026 巡回演唱会武汉站定档 11 月 14 日，登陆武汉光谷国际网球中心中央球馆；GAI 发布视频花式打 call 为艾热、王以太应援。两人同在《披荆斩棘 2026》热播，「太热爱」北京站已于 7 月开唱。"
-image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/20220610_Hip-Hop-Crew_0101099_Heroes-Festival_Auestadion_Kassel_01.jpg/1280px-20220610_Hip-Hop-Crew_0101099_Heroes-Festival_Auestadion_Kassel_01.jpg"
-image_caption: "配图：说唱演出示意（Wikimedia Commons）"
+image: "https://mmbiz.qpic.cn/sz_mmbiz_jpg/ia6iaETpJ3ibFfYLCRzIu0ToNT4WEZ1YH41kjOndNCqFnBDgcevbgGZO6UssGkpmxjAM1IN2CPhebsWoRsuMtrh9V5vAo0nGWoCbiaZLwutb1dk/0?from=appmsg"
+image_caption: "艾热（AIR）。图源：TOM 娱乐"
 ---
 
-据武汉市文化和旅游局审批信息，**「太热爱」2026 巡回演唱会－武汉站**（大型演出）已获批，将于 **2026 年 11 月 14 日**在**武汉光谷国际网球中心中央球馆**开唱。这场由艾热（AIR）与王以太（3HO）联手打造的说唱联合巡演，再添一站。
+武汉的说唱乐迷，这个 11 月有福了。
+
+据武汉市文化和旅游局审批信息，「太热爱」2026 巡回演唱会武汉站已经拿下批文，**11 月 14 日**空降**武汉光谷国际网球中心中央球馆**。艾热（AIR）× 王以太（3HO），这对"说唱双子星"终于要来武汉了。
 
 {{< figure
-src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/TheUnderachievers2013.jpg/1280px-TheUnderachievers2013.jpg"
-caption="配图：说唱演出示意图，与本文事件无关（Wikimedia Commons）" >}}
+src="https://mmbiz.qpic.cn/sz_mmbiz_jpg/ia6iaETpJ3ibFfYLCRzIu0ToNT4WEZ1YH41kjOndNCqFnBDgcevbgGZO6UssGkpmxjAM1IN2CPhebsWoRsuMtrh9V5vAo0nGWoCbiaZLwutb1dk/0?from=appmsg"
+caption="艾热（AIR）。图源：TOM 娱乐" >}}
 
-## GAI 花式打 call：说唱兄弟的应援
+## GAI 先把气氛搞起来了
 
-近日，GAI 周延发布视频"花式打 call"，公开为艾热、王以太的武汉演唱会应援，对 11 月 14 日的现场舞台表示期待。据新浪娱乐报道，GAI 以一贯的直接风格"盖章认可"了这场演出。
+演唱会还没开，GAI 周延先整活了——发了条视频"花式打 call"，给两位老兄弟的武汉站公开应援。
 
-三人都是中文说唱圈的代表性人物：艾热与王以太都出自 2018 年《中国新说唱》，如今 GAI 为两位老友的新巡演站台，也被乐迷视为中文说唱"自己人"的又一次互相撑场。
+按他一贯的风格，这波"盖章"相当直接。2018 年《中国新说唱》出来的这批人，感情是真没散，评论区已经开始刷"自己人"了。
 
-## 「太热爱」巡演：北京站已开唱，武汉是新一站
+## 北京站珠玉在前，武汉站值得蹲
 
-「太热爱」是艾热与王以太的联合巡演品牌。此前 2026 年 7 月 11 日，巡演已在北京开唱——据乐迷上传的现场录像，两人现场演绎了《周旋》《不称职的天才》等曲目，乐迷称两人互唱对方代表作、互动不断。
+「太热爱」这个品牌今年 7 月 11 日已经在北京开过一场。
 
-武汉站是巡演新公布的站点。从审批信息看，本场为"大型演出"规格，单场举办。
+据现场乐迷的饭拍，两人互唱对方代表作，《周旋》《不称职的天才》都安排上了，互动直接拉满。
 
-## 披荆斩棘 2026 的"说唱双子星"
+武汉站是新公布的一站，审批规格"大型演出"，单场。想去的建议先定好闹钟——开票时间还没公布。
 
-巡演之外，两人今年还以"说唱双子星"的姿态活跃在综艺舞台：
+{{< figure
+src="https://mmbiz.qpic.cn/mmbiz_jpg/ia6iaETpJ3ibFfp4RicEFYPU6QPLrnyWTfujt0P400DPhnIC8qNFHssYUMv8jnGpQiac6GNoUL4lsh0eJ3YdhryhvEWXq5kVVl4vsWrBOxrHk1Qk/0?from=appmsg"
+caption="王以太（3HO）演出照。图源：MyTruthMedia" >}}
 
-- 在《披荆斩棘 2026》三公中，艾热、王以太与小沈阳、曾辉、张睿合作的《茶花开了》拿下 900 火力值，获三公团秀第一；
-- 四公中，两人又与王传君、王啸坤合作摇滚曲目《Believer》，以 875 火力值全员晋级。
+## 综艺里也在发光的"双子星"
 
-综艺热度与巡演互相导流，也让「太热爱」武汉站未演先热。
+除了巡演，这俩今年在《披荆斩棘 2026》里也没闲着。
 
-## 武汉 11 月：说唱浓度拉满
+三公和一群哥哥们合作的《茶花开了》直接拿下 900 火力值，团秀第一。四公又整了首摇滚《Believer》，875 火力值全员晋级。
 
-同一批审批信息还显示，**马思唯「乐透人生」巡回演唱会武汉站**将于 **11 月 28 日**在同一场馆（光谷国际网球中心中央球馆）开唱。11 月的武汉，对说唱乐迷来说会很忙。
+综艺粉转演唱会观众，这波互相导流属实双赢，也难怪武汉站未演先热。
 
-**购票提醒**：截至 9 月底的审批汇总，武汉站开票时间暂未公布，具体票价、开票渠道以主办方官方公告为准，建议通过官方票务平台购票。
+## 11 月的武汉，说唱浓度超标
+
+顺带一提，同一批审批里还有马思唯「乐透人生」武汉站——11 月 28 日，同一个场馆。
+
+武汉乐迷这个月，钱包和嗓子都得准备好。
+
+**购票提醒**：开票时间、票价都还没公布，一切以主办方官方消息为准。别信黄牛，蹲官方渠道。
 
 ---
 
-*信息来源：[腾讯新闻](https://news.qq.com/rain/a/20260930A05CYU00)（引用武汉市文旅局审批信息）、[新浪娱乐](https://k.sina.cn/article_2092947541_m7cbfd85503302kh4k.html?from=ent)（GAI 打 call 应援）、[新浪娱乐](https://ent.sina.cn/2026-09-20/detail-inisnssr1381189.d.html?from=ent)（《茶花开了》三公）、[新浪娱乐](https://k.sina.cn/article_7879995944_1d5af322806802oud4.html?from=ent)（四公《Believer》）、乐迷现场录像（[Bilibili](https://www.bilibili.com/video/BV17rNw6DE2j?p=16)）。*
-
-<!-- retrigger pages build 2026-10-17 -->
+*信息来源：[腾讯新闻](https://news.qq.com/rain/a/20260930A05CYU00)（引用武汉市文旅局审批信息）、[新浪娱乐](https://k.sina.cn/article_2092947541_m7cbfd85503302kh4k.html?from=ent)（GAI 打 call 应援）、[新浪娱乐](https://ent.sina.cn/2026-09-20/detail-inisnssr1381189.d.html?from=ent)（《茶花开了》三公）、[新浪娱乐](https://k.sina.cn/article_7879995944_1d5af322806802oud4.html?from=ent)（四公《Believer》）、乐迷现场录像（[Bilibili](https://www.bilibili.com/video/BV17rNw6DE2j?p=16)）。图片：TOM 娱乐、MyTruthMedia。*
