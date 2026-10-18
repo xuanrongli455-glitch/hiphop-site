@@ -1,5 +1,5 @@
 {{/* 文内插图：{{< figure src="图片URL" caption="图注" alt="替代文本" >}} */}}
 <figure class="article-figure">
-  <img src="{{ .Get "src" }}" alt="{{ .Get "alt" | default (.Get "caption") }}" loading="lazy">
+  <img src="{{ .Get "src" | safeURL }}" alt="{{ .Get "alt" | default (.Get "caption") }}" loading="lazy">
   {{ with .Get "caption" }}<figcaption>{{ . }}</figcaption>{{ end }}
 </figure>
