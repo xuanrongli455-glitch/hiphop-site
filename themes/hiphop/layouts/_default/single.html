@@ -33,7 +33,7 @@
     </div>
     {{ with .Params.image }}
     <figure class="article-hero reveal">
-      <img src="{{ . }}" alt="{{ $.Title }}" loading="eager">
+      <img src="{{ . | safeURL }}" alt="{{ $.Title }}" loading="eager">
       {{ with $.Params.image_caption }}<figcaption>{{ . }}</figcaption>{{ end }}
     </figure>
     {{ end }}
