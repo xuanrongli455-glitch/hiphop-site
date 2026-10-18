@@ -93,3 +93,46 @@ body.mag-home .site-header { display:none; }
 @media (max-width:720px) {
   .mag-toc .en { display:none; }
 }
+
+/* ============ 活的杂志：纸纹 + 翻页 + LIVE ============ */
+/* 纸纹质感 */
+.mag { position: relative; }
+.mag::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .055;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>");
+  z-index: 0;
+}
+.mag > * { position: relative; z-index: 1; }
+/* 翻页动效 */
+.js .mag .page-turn {
+  opacity: 0;
+  transform: perspective(1400px) rotateX(-10deg) translateY(26px);
+  transform-origin: top center;
+  transition: opacity .85s ease, transform .85s cubic-bezier(.2,.7,.25,1);
+}
+.js .mag .page-turn.in {
+  opacity: 1;
+  transform: none;
+}
+/* LIVE 呼吸点 */
+.live-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--acc, #ffe600);
+  margin-right: 6px;
+  vertical-align: 1px;
+  animation: livePulse 2.2s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,230,0,.45); }
+  50% { box-shadow: 0 0 0 7px rgba(255,230,0,0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .mag .page-turn { opacity: 1; transform: none; transition: none; }
+  .live-dot { animation: none; }
+}
