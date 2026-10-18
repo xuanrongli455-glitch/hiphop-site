@@ -1021,3 +1021,8 @@ a.track-play { display: inline-grid; place-items: center; text-decoration: none;
   .site-nav::-webkit-scrollbar { display: none; }
   .site-nav a { white-space: nowrap; flex-shrink: 0; }
 }
+
+/* ============ 页脚三栏防溢出：fr 轨道用 minmax(0, ...) 锁死（2026-10-18 二维码右切修复） ============ */
+@media (min-width: 901px) {
+  .footer-grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto; }
+}
