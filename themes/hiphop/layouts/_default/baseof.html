@@ -4,16 +4,6 @@
   {{ partial "head.html" . }}
 </head>
 <body{{ if .IsHome }} class="mag-home"{{ end }}>
-  {{ if .IsHome }}
-  <!-- X 式开屏：人像 + 大字，进站闪现 -->
-  <div id="splash" aria-hidden="true" onclick="this.style.display='none'">
-    <div class="splash-type">
-      <div class="splash-script">HipHop</div>
-      <div class="splash-serif">NOTE</div>
-      <div class="splash-tag">WORLDWIDE · EST. 2026</div>
-    </div>
-  </div>
-  {{ end }}
   {{ partial "header.html" . }}
   <main>
     {{ block "main" . }}{{ end }}
