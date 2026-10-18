@@ -1,0 +1,37 @@
+{{ define "main" }}
+<div style="padding:40px 24px;max-width:800px;margin:0 auto;color:#f5f4f0;">
+  <h1 style="font-size:24px;">页脚诊断数据</h1>
+  <p style="color:#9b9ba3;">请把这一屏截图发我。</p>
+  <pre id="dbg" style="background:#111;padding:20px;white-space:pre-wrap;font-size:15px;line-height:1.8;border:1px solid #333;">测量中…</pre>
+</div>
+{{ partial "footer.html" . }}
+<script>
+window.addEventListener('load', function(){
+  var g = document.querySelector('.footer-grid');
+  var qr = document.querySelector('.footer-qr');
+  var img = qr ? qr.querySelector('img') : null;
+  var out = [];
+  out.push('innerWidth: ' + window.innerWidth);
+  out.push('scrollWidth(html): ' + document.documentElement.scrollWidth);
+  out.push('body scrollWidth: ' + document.body.scrollWidth);
+  if (g) {
+    var r = g.getBoundingClientRect();
+    out.push('footer-grid rect: x=' + Math.round(r.x) + ' w=' + Math.round(r.width));
+    out.push('grid computed columns: ' + getComputedStyle(g).gridTemplateColumns);
+    out.push('grid scrollWidth: ' + g.scrollWidth + ' clientWidth: ' + g.clientWidth);
+  }
+  if (qr) {
+    var r2 = qr.getBoundingClientRect();
+    out.push('footer-qr rect: x=' + Math.round(r2.x) + ' w=' + Math.round(r2.width) + ' right=' + Math.round(r2.right));
+    out.push('qr cut by viewport: ' + (r2.right > window.innerWidth ? Math.round(r2.right - window.innerWidth) + 'px' : 'no'));
+  }
+  if (img) {
+    var r3 = img.getBoundingClientRect();
+    out.push('qr img rect: w=' + Math.round(r3.width) + ' h=' + Math.round(r3.height));
+    out.push('img natural: ' + img.naturalWidth + 'x' + img.naturalHeight);
+  }
+  out.push('userAgent: ' + navigator.userAgent.substring(0, 80));
+  document.getElementById('dbg').textContent = out.join('\n');
+});
+</script>
+{{ end }}
