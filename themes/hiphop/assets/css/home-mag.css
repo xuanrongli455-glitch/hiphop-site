@@ -141,3 +141,108 @@ body.mag-home .site-header { display:none; }
 .mag-qr { text-align: center; padding: 18px 0 6px; }
 .mag-qr img { width: 128px; height: 128px; border-radius: 8px; display: inline-block; }
 .mag-qr p { font-size: 12px; color: var(--mag-muted, #9b9ba3); margin: 8px 0 0; letter-spacing: .1em; }
+
+/* ============ v.22 改版层（2026-10-23）：封面优先 + 马赛克网格 + 动效编排 ============ */
+/* 颜色一律走 --mag-* 变量，日夜双主题通用；桌面布局规则包在 min-width:901px 里 */
+
+/* 容器放宽：让版面用满宽屏，不再浮在虚空里 */
+.mag { max-width: 1240px; }
+
+/* ---- 报头入场编排 ---- */
+@keyframes magFadeDown { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:none; } }
+@keyframes magLogoIn { from { opacity:0; transform:translateY(16px) scale(.985); clip-path:inset(0 0 100% 0); } to { opacity:1; transform:none; clip-path:inset(0 0 0% 0); } }
+.mag-masthead .mag-kicker { animation:magFadeDown .7s ease both; }
+.mag-title img { animation:magLogoIn .95s cubic-bezier(.2,.7,.25,1) .08s both; }
+.mag-meta { animation:magFadeDown .7s ease .28s both; font-variant-numeric:tabular-nums; }
+
+/* 波形 EQ：签名元素动起来 */
+.mag-wave i { transform-origin:bottom; animation:magEQ 1.5s ease-in-out infinite alternate; }
+.mag-wave i:nth-child(4n) { animation-duration:1.15s; animation-delay:-.4s; }
+.mag-wave i:nth-child(4n+1) { animation-duration:1.8s; animation-delay:-.9s; }
+.mag-wave i:nth-child(4n+2) { animation-duration:1.35s; animation-delay:-.2s; }
+.mag-wave i:nth-child(4n+3) { animation-duration:2.05s; animation-delay:-1.2s; }
+@keyframes magEQ { from { transform:scaleY(.45); } to { transform:scaleY(1); } }
+
+/* ---- 章节头：编号 + 细线 + 十字对位 ---- */
+.mag-sec { display:flex; align-items:center; gap:14px; margin:0 0 16px; font-size:12px; }
+.mag-sec h2 { font-size:12px; letter-spacing:.4em; color:var(--mag-dim); font-weight:400; margin:0; }
+.mag-sec h2 .y { color:var(--mag-acc); }
+.mag-sec .no { color:var(--mag-acc); letter-spacing:.15em; }
+.mag-sec .line { flex:1; height:1px; background:var(--mag-line); }
+.mag-sec .plus { color:var(--mag-acc); }
+.mag > .mag-sec { padding-top:30px; margin-bottom:2px; }
+
+/* ---- 头条 ---- */
+.mag-lead { position:relative; }
+.mag-lead-art, .mag-lead-body { position:relative; z-index:1; }
+.mag-lead-ghost { display:none; }
+.mag-lead h2 { text-wrap:balance; }
+.mag-lead-art img { animation:magKB 16s ease-in-out infinite alternate; }
+@keyframes magKB { from { transform:scale(1); } to { transform:scale(1.07); } }
+.mag-lead-fb { position:absolute; inset:0; min-height:0; }
+.mag-lead-tag { position:absolute; left:14px; bottom:14px; z-index:2; background:rgba(10,10,12,.72); color:#f5f4f0; border:1px solid rgba(255,255,255,.28); padding:5px 10px; font-size:11px; letter-spacing:.18em; backdrop-filter:blur(4px); }
+
+/* ---- 目录 ---- */
+.mag-toc a { transition:box-shadow .25s ease; }
+.mag-toc a:hover { box-shadow:inset 3px 0 0 var(--mag-acc); }
+.mag-toc .ch { transition:color .25s ease, transform .25s ease; }
+.mag-toc a:hover .ch { transform:translateX(4px); }
+
+/* ---- 次条网格 ---- */
+.mag-story { position:relative; transition:background .3s ease; }
+.mag-story::before { content:""; position:absolute; top:0; left:0; height:2px; width:100%; background:var(--mag-acc); transform:scaleX(0); transform-origin:left; transition:transform .35s ease; }
+.mag-story:hover::before { transform:scaleX(1); }
+.mag-story:hover { background:color-mix(in srgb, var(--mag-card), var(--mag-ink) 5%); }
+.mag-story-art { display:block; margin:-26px -22px 16px; aspect-ratio:16/9; overflow:hidden; }
+.mag-story-art img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease; }
+.mag-story:hover .mag-story-art img { transform:scale(1.04); }
+.js .mag-grid .mag-story { opacity:0; }
+.js .mag-grid.in .mag-story { animation:magRise .65s cubic-bezier(.2,.7,.25,1) both; animation-delay:calc(var(--d, 0) * 70ms); }
+@keyframes magRise { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+
+/* ---- CTA 带 ---- */
+.mag-band--lab { background:var(--mag-card); border:1px solid var(--mag-line); padding:38px 32px; margin-top:4px; }
+.mag-band--submit { padding-top:52px; }
+.mag-band--submit h2 { font-size:clamp(30px, 4.8vw, 48px); line-height:1.25; }
+.mag-btn { transition:background .25s ease, color .25s ease, transform .25s ease; }
+.mag-btn:hover { transform:translateY(-2px); }
+
+/* ---- 全局细节 ---- */
+.mag ::selection { background:var(--mag-acc); color:#111; }
+.mag a:focus-visible { outline:2px solid var(--mag-acc); outline-offset:3px; }
+
+/* ---- 桌面布局（≥901px） ---- */
+@media (min-width:901px) {
+  .mag-lead { grid-template-columns:7fr 5fr; gap:46px; align-items:center; padding:46px 0 50px; }
+  .mag-lead-art { aspect-ratio:4/3.05; min-height:0; }
+  .mag-lead-art img { height:100%; min-height:0; }
+  .mag-lead-ghost { display:block; position:absolute; right:4px; top:-16px; z-index:0; font-size:clamp(130px, 15vw, 210px); line-height:1; color:transparent; -webkit-text-stroke:1px var(--mag-line); opacity:.38; pointer-events:none; }
+  .mag-lead h2 { font-size:clamp(34px, 4.3vw, 54px); line-height:1.24; }
+  .mag-dek { font-size:15px; }
+  .mag-toc .ch { font-size:clamp(20px, 2.2vw, 25px); }
+  .mag-grid { grid-template-columns:repeat(12, 1fr); }
+  .mag-story--a { grid-column:span 7; }
+  .mag-story--b { grid-column:span 5; }
+  .mag-story--c { grid-column:span 4; }
+  .mag-story--wide { grid-column:1 / -1; }
+  .mag-grid .mag-story:nth-child(2), .mag-grid .mag-story:nth-child(5), .mag-grid .mag-story:nth-child(6) { border-right:none; }
+  .mag-story--a h3 { font-size:22px; line-height:1.5; }
+  .mag-story--wide { display:flex; align-items:baseline; gap:30px; }
+  .mag-story--wide .no { margin:0; white-space:nowrap; }
+  .mag-story--wide h3 { flex:1 1 46%; margin:0; font-size:20px; }
+  .mag-story--wide .dek { flex:1 1 38%; margin:0; }
+}
+
+/* ---- 移动收紧（≤720px） ---- */
+@media (max-width:720px) {
+  .mag-masthead .mag-kicker { letter-spacing:.3em; }
+  .mag-kicker2 { letter-spacing:.16em; font-size:11px; }
+  .mag-band--lab { padding:30px 22px; }
+}
+
+/* ---- 减动效 ---- */
+@media (prefers-reduced-motion: reduce) {
+  .mag-masthead .mag-kicker, .mag-title img, .mag-meta, .mag-wave i, .mag-lead-art img { animation:none; }
+  .js .mag-grid .mag-story { opacity:1; animation:none; }
+  .mag-btn:hover { transform:none; }
+}
