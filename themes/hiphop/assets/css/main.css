@@ -1017,3 +1017,32 @@ a.track-play { display: inline-grid; place-items: center; text-decoration: none;
 .follow-title em { font-style: normal; }
 .follow-desc { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.7; }
 @media (max-width: 768px) { .follow-block { flex-direction: column; text-align: center; gap: 18px; padding: 28px 20px; } .follow-qr, .follow-qr img { width: 140px; height: 140px; } }
+
+/* ============ Galaxy 黑黄组件（2026-10-25，用户从预览页选定：按钮2、按钮3、加载2） ============ */
+/* 只新增 .gx- 前缀 class，不改现有 .btn/.btn-gold/.btn-play；未在任何模板里挂接前，上线后页面外观不变 */
+/* 来源：uiverse-io/galaxy（MIT），原作者见各段注释；颜色统一改成品牌黄 #ffe600，悬停文字改黑字保对比度 */
+/* 按钮2：黑底，悬停黄波浪漫上来 — 原作 satyamchaudharydev hot-fox，原波浪 #8792eb → #ffe600 */
+.gx-btn-wave { border: none; width: 160px; height: 50px; color: #fff; display: flex; align-items: center; justify-content: center; background: #000; position: relative; cursor: pointer; font-size: 17px; font-weight: bold; }
+.gx-btn-wave span { position: relative; z-index: 1; }
+.gx-btn-wave::after { position: absolute; content: ""; width: 100%; z-index: 0; height: 10%; bottom: 0; left: 0; clip-path: polygon(0% 74%, 4% 75%, 8% 76%, 11% 77%, 15% 78%, 20% 78%, 25% 77%, 32% 77%, 37% 75%, 40% 74%, 43% 74%, 46% 73%, 52% 72%, 57% 72%, 65% 74%, 66% 75%, 71% 78%, 75% 82%, 81% 86%, 83% 88%, 88% 91%, 90% 94%, 94% 96%, 98% 98%, 100% 100%, 82% 100%, 0 100%); background: #ffe600; transition: 0.2s ease; }
+.gx-btn-wave::before { position: absolute; content: ""; transform: rotate(180deg); width: 100%; height: 10%; transition: 0.2s ease; z-index: 0; left: 0; top: 0; clip-path: polygon(0% 74%, 4% 75%, 8% 76%, 11% 77%, 15% 78%, 20% 78%, 25% 77%, 32% 77%, 37% 75%, 40% 74%, 43% 74%, 46% 73%, 52% 72%, 57% 72%, 65% 74%, 66% 75%, 71% 78%, 75% 82%, 81% 86%, 83% 88%, 88% 91%, 90% 94%, 94% 96%, 98% 98%, 100% 100%, 82% 100%, 0 100%); background: #ffe600; }
+.gx-btn-wave:hover::after, .gx-btn-wave:hover::before { clip-path: polygon(0 30%, 9% 34%, 7% 39%, 11% 43%, 13% 33%, 17% 30%, 24% 34%, 25% 35%, 30% 31%, 30% 38%, 39% 33%, 35% 43%, 43% 45%, 55% 46%, 65% 74%, 67% 66%, 81% 57%, 75% 82%, 81% 86%, 83% 88%, 88% 91%, 90% 94%, 94% 96%, 98% 98%, 100% 100%, 82% 100%, 0 100%); height: 80%; }
+.gx-btn-wave:hover { color: #000; }
+.gx-btn-wave:focus-visible { outline: 2px solid #ffe600; outline-offset: 3px; }
+/* 按钮3：毛玻璃 + 黄色光晕浮动 — 原作 reshades purple-otter，原光晕 #4073ff → #ffe600 */
+.gx-btn-glow { width: 10em; height: 3em; background-color: #e8e8e810; color: #e8e8e8; border: 1.2px solid #e8e8e870; border-radius: 15px; transition: all 0.5s ease; cursor: pointer; overflow: hidden; position: relative; }
+.gx-btn-glow:hover { border: 1.2px solid #ffe600; background-color: #00000000; }
+.gx-btn-glow .gx-glow-text { margin-top: 10px; position: relative; z-index: 1; }
+.gx-btn-glow .gx-glow-blob { filter: blur(20px); z-index: 0; opacity: 70%; width: 6em; animation: gx-glow-anim 3s infinite; position: absolute; left: 50%; margin-left: -3em; top: 0; }
+@keyframes gx-glow-anim { 0% { transform: translateY(-60px); } 50% { transform: translateY(-35px); } 100% { transform: translateY(-60px); } }
+.gx-btn-glow:focus-visible { outline: 2px solid #ffe600; outline-offset: 3px; }
+/* 加载2：四条黄竖条依次长高 — 原作 satyamchaudharydev yellow-dragon，原色 #d62d20 → #ffe600 */
+.gx-loader-bars { --gap: 5px; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; gap: var(--gap); }
+.gx-loader-bars span { background: #ffe600; width: 6px; height: 23px; animation: gx-bars-grow 1s ease-in-out infinite; }
+.gx-loader-bars span:nth-child(2) { animation-delay: 0.15s; }
+.gx-loader-bars span:nth-child(3) { animation-delay: 0.3s; }
+.gx-loader-bars span:nth-child(4) { animation-delay: 0.475s; }
+@keyframes gx-bars-grow { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.8); } }
+@media (prefers-reduced-motion: reduce) {
+  .gx-btn-wave, .gx-btn-wave::after, .gx-btn-wave::before, .gx-btn-glow, .gx-btn-glow .gx-glow-blob, .gx-loader-bars span { animation: none !important; transition: none !important; }
+}
