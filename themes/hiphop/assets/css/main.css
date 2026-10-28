@@ -1,16 +1,16 @@
 /* ============ Tokens · Bizarro 式：黑白单色 + 巨字排版 ============ */
 :root {
-  --bg0: #000000;
-  --bg1: #000000;
-  --panel: #0a0a0a;
-  --panel-2: #141414;
+  --bg0: #1e1e24;
+  --bg1: #0d0d10;
+  --panel: #17171c;
+  --panel-2: #202028;
   --ink: #f5f4f0;
   --muted: #9b9ba3;
-  --acc: #ffffff;
-  --acc-ink: #000000;
-  --red: #ffffff;
+  --acc: #ffe600;
+  --acc-ink: #0d0d10;
+  --red: #ff4b2e;
   --paper: #ffffff;
-  --card: #0a0a0a;
+  --card: #17171c;
   --ink-dim: #9b9ba3;
   --line: rgba(255, 255, 255, 0.12);
   --font-display: "Anton", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
@@ -29,7 +29,7 @@
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
-  background: var(--bg1);
+  background: var(--bg1) linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 100%) fixed;
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 17px;
@@ -272,7 +272,7 @@ body.custom-cursor.cursor-text, body.custom-cursor.cursor-text * { cursor: text 
   margin: 0 8px 8px 0;
 }
 .chip-acc { background: var(--acc); color: var(--acc-ink); border-color: var(--acc); }
-.chip-red { background: rgba(255, 255, 255, 0.14); color: var(--red); border-color: rgba(255, 255, 255, 0.4); }
+.chip-red { background: var(--red); color: var(--acc-ink); border-color: var(--red); }
 
 /* 评分徽章（Pitchfork 式） */
 .score {
@@ -399,7 +399,7 @@ body.custom-cursor.cursor-text, body.custom-cursor.cursor-text * { cursor: text 
 /* 导语：首段放大，当作杂志导语 */
 .article-body > p:first-of-type { font-size: 22px; line-height: 1.75; font-weight: 600; }
 /* 人名/关键信息突出：反白 */
-.article-body strong { background: #ffffff; color: #000000; padding: 0 4px; }
+.article-body strong { background: linear-gradient(transparent 55%, rgba(255, 230, 0, 0.38) 0); color: #ffffff; padding: 0 2px; }
 /* 网易云嵌入播放器 */
 /* 分轨式播放卡：圆形彩图 + 黑圆白三角按钮 + 波形条 */
 .stem-player { margin: 24px 0 36px; text-align: center; }
