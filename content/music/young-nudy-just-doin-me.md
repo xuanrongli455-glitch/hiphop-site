@@ -9,9 +9,6 @@ image_caption: "配图：Young Nudy 2024 年 Clout Festival 现场（Wikimedia C
 
 亚特兰大东区在警察分区的地图上叫 Zone 6，Young Nudy 把这个编号活成了自己的地名：Paradise East、Slimeball、那条叫 Bouldercrest 的路。十年过去，他还是用那种鼻音、慢半拍、像在跟人闲聊的语气说唱。**10 月 28 日，他发了新专辑《Just Doin Me》，16 首歌，几乎什么都没改——而这正是这张专辑值得讨论的原因。**
 
-{{< figure
-src="https://commons.wikimedia.org/wiki/Special:FilePath/Young%20Nudy%2C%20Clout%20Festival%202024.jpg"
-caption="配图：Young Nudy 2024 年 Clout Festival 现场（Wikimedia Commons，摄影：Wojciech Pędzich，CC BY 4.0，须署名使用）" >}}
 
 ## 10 月 28 日，他又发了 16 首
 
