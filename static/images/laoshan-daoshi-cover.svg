@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#000000"/>
+  <circle cx="1015" cy="125" r="65" fill="#ffe600"/>
+  <text x="60" y="100" font-family="Noto Sans CJK SC, sans-serif" font-size="50" font-weight="bold" fill="#ffe600">歌词拆解</text>
+  <text x="60" y="270" font-family="Noto Sans CJK SC, sans-serif" font-size="150" font-weight="bold" fill="#ffffff">崂山道士</text>
+  <text x="60" y="350" font-family="Noto Sans CJK SC, sans-serif" font-size="42" font-weight="bold" fill="#ffe600">马思唯 · 穿墙术背后的修炼手册</text>
+  <polygon points="0,675 300,430 520,600 760,400 1000,600 1200,500 1200,675" fill="#191919" stroke="#ffe600" stroke-width="5"/>
+  <polygon points="760,400 815,490 705,490" fill="#ffe600"/>
+</svg>
